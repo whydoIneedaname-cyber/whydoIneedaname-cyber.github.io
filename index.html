@@ -1,13 +1,161 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>My First Blog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人生活志</title>
+    <!-- 引入 Tailwind CSS 用于快速美化 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Lucide 图标库 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+        
+        :root {
+            --primary: #5b8a72; /* 森林绿 */
+            --accent: #f4a261;  /* 温暖橙 */
+        }
+
+        body { 
+            font-family: 'Noto Sans SC', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 { 
+            font-family: 'Noto Serif SC', serif; 
+        }
+
+        .blog-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 渐变背景装饰 */
+        .header-bg {
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        }
+    </style>
 </head>
-<body>
-  <h1>Hello, world!</h1>
-  <p>This is my personal blog.</p>
-  <p>Hosted on GitHub Pages.</p>
+<body class="bg-[#f9fbf9] text-gray-800">
+
+    <!-- 顶部导航 -->
+    <nav class="fixed w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="text-xl font-bold tracking-wider text-[#5b8a72]">小木的日志</a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-500">
+                <a href="#home" class="hover:text-[#5b8a72] transition">首页</a>
+                <a href="#articles" class="hover:text-[#5b8a72] transition">文章</a>
+                <a href="#about" class="hover:text-[#5b8a72] transition">关于</a>
+            </div>
+            <button class="md:hidden text-gray-500">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 个人介绍区 (Hero Section) -->
+    <section id="home" class="header-bg pt-32 pb-20 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="relative inline-block mb-6">
+                <div class="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden mx-auto">
+                    <!-- 这里可以换成你自己的头像链接 -->
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar">
+                </div>
+                <div class="absolute -bottom-1 -right-1 bg-green-500 w-6 h-6 rounded-full border-4 border-white"></div>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">你好，我是一只快乐的小UP主 🌿</h1>
+            <p class="text-gray-500 text-lg mb-8 leading-relaxed">
+                这里是我分享校园生活、读书笔记和奇思妙想的地方。
+                <br><span class="text-sm italic">"种一棵树最好的时间是十年前，其次是现在。"</span>
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="#articles" class="bg-[#5b8a72] text-white px-6 py-2 rounded-full font-medium hover:bg-[#4a705d] transition shadow-md">开始阅读</a>
+                <a href="#about" class="bg-white text-gray-600 px-6 py-2 rounded-full font-medium border border-gray-200 hover:border-[#5b8a72] transition">了解更多</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 文章列表区 -->
+    <main id="articles" class="max-w-4xl mx-auto px-6 py-20">
+        <div class="flex items-center justify-between mb-12">
+            <h2 class="text-2xl font-bold flex items-center">
+                <i data-lucide="pen-tool" class="mr-2 text-[#5b8a72]"></i> 最近更新
+            </h2>
+            <div class="h-px flex-1 bg-gray-200 ml-6"></div>
+        </div>
+
+        <div class="grid gap-12">
+            <!-- 文章 1 -->
+            <article class="blog-card flex flex-col md:flex-row gap-8 bg-white p-4 rounded-3xl border border-gray-100">
+                <div class="w-full md:w-64 h-48 bg-gray-100 rounded-2xl overflow-hidden shrink-0">
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400" class="w-full h-full object-cover" alt="Blog Image">
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center text-xs text-[#5b8a72] font-bold mb-3 uppercase tracking-widest">
+                        <span class="bg-green-50 px-2 py-1 rounded">学习笔记</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">我的第一篇 GitHub 博客文章</h3>
+                    <p class="text-gray-500 line-clamp-2 mb-4">
+                        今天我终于学会了如何利用代码搭建网站！虽然一开始觉得很难，但看到网页上显示出自己的文字时，那种成就感真的难以言表...
+                    </p>
+                    <div class="flex items-center text-sm text-gray-400">
+                        <i data-lucide="calendar" class="w-4 h-4 mr-1"></i> 2024-05-20
+                        <span class="mx-3 text-gray-200">|</span>
+                        <i data-lucide="clock" class="w-4 h-4 mr-1"></i> 3 min read
+                    </div>
+                </div>
+            </article>
+
+            <!-- 文章 2 -->
+            <article class="blog-card flex flex-col md:flex-row gap-8 bg-white p-4 rounded-3xl border border-gray-100">
+                <div class="w-full md:w-64 h-48 bg-gray-100 rounded-2xl overflow-hidden shrink-0">
+                    <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400" class="w-full h-full object-cover" alt="Blog Image">
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center text-xs text-orange-500 font-bold mb-3 uppercase tracking-widest">
+                        <span class="bg-orange-50 px-2 py-1 rounded">书评分享</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">读《小王子》有感</h3>
+                    <p class="text-gray-500 line-clamp-2 mb-4">
+                        “所有的大人都曾经是小孩，虽然，只有少数的人记得。”再次重读这本经典，我有了完全不一样的感触...
+                    </p>
+                    <div class="flex items-center text-sm text-gray-400">
+                        <i data-lucide="calendar" class="w-4 h-4 mr-1"></i> 2024-05-18
+                        <span class="mx-3 text-gray-200">|</span>
+                        <i data-lucide="clock" class="w-4 h-4 mr-1"></i> 5 min read
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- 关于我 -->
+    <section id="about" class="bg-white py-20 border-t">
+        <div class="max-w-2xl mx-auto px-6 text-center">
+            <h2 class="text-2xl font-bold mb-6">关于我</h2>
+            <p class="text-gray-600 leading-relaxed mb-8">
+                我是一名对世界充满好奇的学生。我希望通过这个博客，能结识到志同道合的朋友，一起成长。
+            </p>
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="text-gray-400 hover:text-[#5b8a72] transition"><i data-lucide="github"></i></a>
+                <a href="#" class="text-gray-400 hover:text-[#5b8a72] transition"><i data-lucide="mail"></i></a>
+                <a href="#" class="text-gray-400 hover:text-[#5b8a72] transition"><i data-lucide="instagram"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-10 text-center text-gray-400 text-sm">
+        <p>© 2026 我的个人生活志. 由 GitHub Pages 驱动.</p>
+    </footer>
+
+    <!-- 初始化图标 -->
+    <script>
+      lucide.createIcons();
+    </script>
 </body>
 </html>
-

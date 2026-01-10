@@ -1,7 +1,9 @@
 layout: post
-title: "这是我的第一篇正式博文"
+#title: "这是我的第一篇正式博文"
 date: 2026-01-10
 category: "创刊说明"
+image：“/assets/0000000000.png/"
+-------
 
 大家好！
 

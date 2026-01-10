@@ -1,5 +1,5 @@
 ---
-# 这一块是 Jekyll 的启动钥匙，必须保留
+# 这三行是开启 Jekyll 自动化的钥匙，必须放在文件最开头
 layout: null
 ---
 <!DOCTYPE html>
@@ -7,16 +7,12 @@ layout: null
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 网站标题，自动读取配置或使用默认值 -->
-    <title>{{ site.title | default: "我的阅读日志 - 记录成长" }}</title>
+    <title>{{ site.title | default: "我的青春日志" }}</title>
     
-    <!-- 引入美化工具 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入图标库 Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        /* 导入清新健康的字体 */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
         
         body { 
@@ -27,7 +23,6 @@ layout: null
 
         h1, h2 { font-family: 'Noto Serif SC', serif; }
 
-        /* 卡片悬停的小动画，让网页动起来 */
         .hover-lift {
             transition: all 0.3s ease;
         }
@@ -36,23 +31,13 @@ layout: null
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
-        /* 渐变背景 */
         .bg-soft-green {
             background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-        }
-        
-        /* 限制文章正文显示的行数 */
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;  
-            overflow: hidden;
         }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- 顶部导航栏 -->
     <nav class="fixed w-full bg-white/90 backdrop-blur-sm border-b border-gray-100 z-50">
         <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
@@ -62,126 +47,88 @@ layout: null
                 <span class="text-xl font-bold text-gray-900 tracking-tight">青春日志</span>
             </div>
             <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-600">
-                <a href="#home" class="hover:text-green-600 transition">首页</a>
-                <a href="#posts" class="hover:text-green-600 transition">我的文章</a>
-                <a href="#about" class="hover:text-green-600 transition">关于我</a>
+                <a href="/" class="hover:text-green-600 transition">首页</a>
+                <a href="#posts" class="hover:text-green-600 transition">文章</a>
+                <a href="#about" class="hover:text-green-600 transition">联系我</a>
             </div>
         </div>
     </nav>
 
-    <!-- 欢迎区域 -->
-    <section id="home" class="bg-soft-green pt-32 pb-20 px-6">
+    <header class="bg-soft-green pt-32 pb-20 px-6">
         <div class="max-w-3xl mx-auto text-center">
             <div class="mb-8 relative inline-block">
                 <div class="w-28 h-28 rounded-full border-4 border-white shadow-xl overflow-hidden mx-auto">
-                    <!-- 【修改点1】头像改成了读取你上传的 avatar.jpg -->
-                    <img src="avatar.jpg" alt="头像" class="w-full h-full object-cover">
+                    <!-- 【修改点】头像使用本地 avatar.jpg -->
+                    <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover">
                 </div>
                 <span class="absolute bottom-1 right-1 bg-yellow-400 p-1.5 rounded-full border-2 border-white">
                     <i data-lucide="sparkles" class="w-3 h-3 text-white"></i>
                 </span>
             </div>
-            <h1 class="text-4xl font-bold text-gray-900 mb-6 leading-tight">欢迎来到我的数字花园 🌿</h1>
-            <p class="text-lg text-gray-600 mb-10">
-                我是一名正在探索世界的中学生。这里记录着我的学习笔记、阅读心得和生活中的小确幸。
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#posts" class="bg-green-600 text-white px-8 py-3 rounded-full font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-100 flex items-center justify-center">
-                    阅读文章 <i data-lucide="chevron-right" class="ml-2 w-4 h-4"></i>
-                </a>
-                <a href="#about" class="bg-white text-gray-700 px-8 py-3 rounded-full font-bold border border-gray-200 hover:border-green-600 transition-all flex items-center justify-center">
-                    了解我
-                </a>
-            </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-6">欢迎来到我的数字花园 🌿</h1>
+            <p class="text-lg text-gray-600">我是一名正在探索世界的中学生。这里记录着我的学习笔记和心得。</p>
         </div>
-    </section>
+    </header>
 
-    <!-- 文章列表 (Jekyll 自动化区域) -->
     <main id="posts" class="max-w-5xl mx-auto px-6 py-20">
-        <div class="flex items-center space-x-4 mb-12">
-            <h2 class="text-2xl font-bold text-gray-900">最新更新</h2>
-            <div class="h-1 flex-1 bg-gray-100 rounded-full"></div>
-        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-12">最新更新</h2>
 
         <div class="grid md:grid-cols-2 gap-8">
-            <!-- 【修改点2】自动化循环：自动读取 _posts 里的文章 -->
+            <!-- 【核心修改】自动循环抓取 _posts 里的内容 -->
             {% for post in site.posts %}
-            <article class="bg-white rounded-3xl border border-gray-100 overflow-hidden hover-lift flex flex-col h-full shadow-sm">
-                <!-- 封面图区域 -->
-                <div class="h-44 bg-gray-100 flex items-center justify-center overflow-hidden">
+            <article class="bg-white rounded-3xl border border-gray-100 overflow-hidden hover-lift flex flex-col shadow-sm transition-all">
+                <div class="h-44 bg-gray-100 flex items-center justify-center">
                     {% if post.image %}
-                    <img src="{{ post.image }}" alt="文章封面" class="w-full h-full object-cover">
+                    <img src="{{ post.image | relative_url }}" class="w-full h-full object-cover">
                     {% else %}
-                    <!-- 如果没有配图，显示一个默认的图标 -->
                     <i data-lucide="image" class="w-12 h-12 text-gray-300"></i>
                     {% endif %}
                 </div>
-                
                 <div class="p-8 flex flex-col flex-1">
-                    <div class="text-xs font-bold text-green-600 mb-3 tracking-widest uppercase">
-                        {{ post.category | default: "未分类" }}
+                    <div class="text-xs font-bold text-green-600 mb-3 uppercase tracking-widest">
+                        {{ post.category | default: "日常随笔" }}
                     </div>
-                    <h3 class="text-2xl font-bold mb-4 text-gray-900">
-                        <a href="{{ post.url | relative_url }}" class="hover:text-green-600 transition">{{ post.title }}</a>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-900 hover:text-green-600">
+                        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
                     </h3>
-                    <p class="text-gray-500 mb-6 line-clamp-2 flex-1">
+                    <div class="text-gray-500 mb-6 line-clamp-2">
                         {{ post.excerpt | strip_html | truncate: 80 }}
-                    </p>
+                    </div>
                     <div class="flex items-center text-sm text-gray-400 border-t border-gray-50 pt-4 mt-auto">
-                        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> 
-                        {{ post.date | date: "%Y年%m月%d日" }}
+                        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> {{ post.date | date: "%Y年%m月%d日" }}
                     </div>
                 </div>
             </article>
             {% else %}
-            <!-- 如果没有文章，显示提示 -->
-            <div class="col-span-full py-12 text-center text-gray-400 border-2 border-dashed border-gray-200 rounded-2xl">
-                <p class="mb-2">暂时还没有文章哦 🌱</p>
-                <p class="text-sm">快去 _posts 文件夹新建一个 .md 文件吧！</p>
+            <!-- 如果没有检测到文章，会显示这个提示 -->
+            <div class="col-span-full py-20 text-center text-gray-400 border-2 border-dashed border-gray-200 rounded-3xl">
+                请确认是否在 _posts 文件夹内创建了正确格式的 .md 文件。
             </div>
             {% endfor %}
         </div>
     </main>
 
-    <!-- 关于我 -->
-    <section id="about" class="bg-white py-20 border-t border-gray-50">
+    <section id="about" class="bg-white py-20 border-t">
         <div class="max-w-2xl mx-auto px-6 text-center">
-            <h2 class="text-2xl font-bold mb-6 text-gray-900">关于我</h2>
-            <p class="text-gray-600 leading-relaxed mb-10 italic">
-                “保持好奇心，勇敢去探索。”
-                <br>我喜欢尝试新事物。这个博客是我成长的见证，希望能和你一起变得更好。
-            </p>
-            <div class="flex justify-center space-x-8">
-                <!-- GitHub 链接 -->
-                <a href="#" class="flex flex-col items-center space-y-2 group">
-                    <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:text-green-600 group-hover:bg-green-50 transition-colors">
+            <h2 class="text-2xl font-bold mb-10 text-gray-900">关于我</h2>
+            <div class="flex justify-center space-x-12">
+                <a href="#" class="group flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-green-50 group-hover:text-green-600 transition-all">
                         <i data-lucide="github"></i>
                     </div>
-                    <span class="text-xs text-gray-400 font-medium group-hover:text-green-600 transition-colors">GitHub</span>
+                    <span class="text-xs font-medium text-gray-500">GitHub</span>
                 </a>
-                
-                <!-- 【修改点3】邮箱链接：点击可以直接发邮件 -->
-                <a href="mailto:michaelzhangjm@outlook.com" class="flex flex-col items-center space-y-2 group">
-                    <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:text-blue-400 group-hover:bg-blue-50 transition-colors">
+                <!-- 【修改点】加入你的邮箱 -->
+                <a href="mailto:abcd@gmail.com" class="group flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-all">
                         <i data-lucide="mail"></i>
                     </div>
-                    <span class="text-xs text-gray-400 font-medium group-hover:text-blue-400 transition-colors">michaelzhangjm@outlook.com</span>
+                    <span class="text-xs font-medium text-gray-500">michaelzhangjm@outlook.com</span>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 底部版权 -->
-    <footer class="py-12 border-t border-gray-50 text-center">
-        <p class="text-sm text-gray-400">© {{ "now" | date: "%Y" }} 青春日志. 纯净、健康、向上.</p>
-    </footer>
-
-    <!-- 初始化图标脚本 -->
-    <script>
-        // 等待页面加载后生成图标
-        window.addEventListener('load', () => {
-            lucide.createIcons();
-        });
-    </script>
+    <script>window.addEventListener('load', () => lucide.createIcons());</script>
 </body>
 </html>

@@ -1,4 +1,8 @@
-layout: post title: "在数字花园中留下的第一串足迹" date: 2026-01-10 category: "生活感悟" image: "/assets/suibi.png" # 
+layout: post
+title: "创刊说明" 
+date: 2026-01-10 
+category: "说明"
+！image: "/assets/suibi.png" # 
 
 在数字花园中留下的*第一串足迹*
 

@@ -7,11 +7,17 @@ layout: null
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <!-- 1. 强制索引指令：告诉所有爬虫允许索引和跟踪链接 -->
+    <meta name="robots" content="index, follow">
+    
+    <!-- 2. 针对必应的特别指令（有时必应需要更明确的信号） -->
+    <meta name="bingbot" content="index, follow">
     <!-- 1. SEO 标题 -->
     <title>{{ site.title | default: "我的个人空间 - 记录成长与思考" }}</title>
     
     <!-- 2. 规范网址 -->
-    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <link rel="canonical" href="https://readeverything.us.ci/">
     
     <!-- 3. 【修复错误 1】SEO 描述：确保这段文字始终存在，不为空 -->
     <meta name="description" content="欢迎来到我什么都读个人空间。这里记录了一名中学生的学习笔记、阅读心得和生活感悟，分享成长的每一个瞬间。Welcome to Readeverything's personal blog, I hope we could have fun together here!">

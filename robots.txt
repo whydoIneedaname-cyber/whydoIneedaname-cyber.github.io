@@ -1,3 +1,6 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.google.com/search?q=https://%E4%BD%A0%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D.github.io/sitemap.xml
+Disallow: /assets/css/
+Disallow: /assets/js/
+
+Sitemap: https://readeverything.us.ci/sitemap.xml

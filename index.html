@@ -1,5 +1,4 @@
 ---
-# 这三行是开启 Jekyll 自动化的钥匙，必须放在文件最开头
 layout: null
 ---
 <!DOCTYPE html>
@@ -8,16 +7,17 @@ layout: null
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 1. 强制索引指令 -->
-    <meta name="robots" content="index, follow">
-    <meta name="bingbot" content="index, follow">
-
-    <!-- 2. 核心修改：SEO 标题 -->
-    <!-- 这样设置后，首页标题会显示为“我什么都读的个人空间”，而不是仓库名 -->
+    <!-- SEO 核心：必须放在最前面 -->
     <title>我什么都读的个人空间</title>
+    <meta name="description" content="欢迎来到我什么都读的个人空间。这里记录了一名中学生的学习笔记、阅读心得和生活感悟，分享成长的每一个瞬间。">
+    <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客">
     
-    <!-- 3. Google 站点名称结构化数据 (非常重要) -->
-    <!-- 这段代码专门用来告诉 Google 搜索结果中应显示的网站名称 -->
+    <!-- 索引指令 -->
+    <meta name="robots" content="index, follow">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://readeverything.us.ci/">
+
+    <!-- 结构化数据 (告知 Google 网站名称) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -26,13 +26,6 @@ layout: null
       "url": "https://readeverything.us.ci/"
     }
     </script>
-    
-    <!-- 4. 规范网址 -->
-    <link rel="canonical" href="https://readeverything.us.ci/">
-    
-    <!-- 5. SEO 描述与关键词 -->
-    <meta name="description" content="欢迎来到我什么都读的个人空间。这里记录了一名中学生的学习笔记、阅读心得和生活感悟，分享成长的每一个瞬间。">
-    <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客">
 
     <!-- 社交媒体预览 (OG Tags) -->
     <meta property="og:site_name" content="我什么都读的个人空间">
@@ -43,7 +36,6 @@ layout: null
     <!-- 资源引入 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    
     <script>
         tailwind.config = { darkMode: 'class' }
     </script>
@@ -51,10 +43,10 @@ layout: null
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
         body { 
-            font-family: 'Noto Sans SC', sans-serif;
-            scroll-behavior: smooth;
+            font-family: 'Noto Sans SC', sans-serif; 
+            scroll-behavior: smooth; 
             -webkit-font-smoothing: antialiased;
-            transition: background-color 0.4s ease, color 0.4s ease;
+            transition: background-color 0.4s ease, color 0.4s ease; 
         }
         h1, h2 { font-family: 'Noto Serif SC', serif; }
         .hover-lift { transition: all 0.3s ease; }
@@ -63,11 +55,11 @@ layout: null
         .dark .bg-soft-green { background: linear-gradient(135deg, #064e3b 0%, #111827 100%); }
         #backToTop.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
     </style>
+    <!-- 统计代码 -->
     <script src="https://cloud.umami.is/script.js" data-website-id="f291870c-3549-4f53-a1c1-5f740bdae6bd"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
 
-    <!-- 导航栏 -->
     <nav class="fixed w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 z-50">
         <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
@@ -78,9 +70,9 @@ layout: null
             </div>
             <div class="flex items-center space-x-4">
                 <div class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="/" class="hover:text-green-600">首页Home Page</a>
-                    <a href="#posts" class="hover:text-green-600">文章Articles</a>
-                    <a href="#about" class="hover:text-green-600">关于About me</a>
+                    <a href="/" class="hover:text-green-600 transition">首页 Home Page</a>
+                    <a href="#posts" class="hover:text-green-600 transition">文章 Articles</a>
+                    <a href="#about" class="hover:text-green-600 transition">关于 About me</a>
                 </div>
                 <button id="themeToggle" class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800">
                     <i data-lucide="sun" class="hidden dark:block w-5 h-5 text-yellow-400"></i>
@@ -90,7 +82,6 @@ layout: null
         </div>
     </nav>
 
-    <!-- 头部 -->
     <header class="bg-soft-green pt-32 pb-20 px-6 text-center">
         <div class="mb-8 relative inline-block">
             <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto">
@@ -101,7 +92,6 @@ layout: null
         <p class="text-lg text-gray-600 dark:text-gray-400">我是一名正在探索世界的中学生。这里记录着我的个人笔记和心得。</p>
     </header>
 
-    <!-- 列表 -->
     <main id="posts" class="max-w-5xl mx-auto px-6 py-20">
         <h2 class="text-2xl font-bold mb-12">最新更新 Updates</h2>
         <div class="grid md:grid-cols-2 gap-8">
@@ -115,7 +105,7 @@ layout: null
                     {% endif %}
                 </div>
                 <div class="p-8 flex flex-col flex-1">
-                    <div class="text-xs font-bold text-green-600 mb-3 uppercase tracking-widest">{{ post.category | default: "博文" }}</div>
+                    <div class="text-xs font-bold text-green-600 mb-3 uppercase tracking-widest">{{ post.category | default: "日常随笔" }}</div>
                     <h3 class="text-2xl font-bold mb-4 hover:text-green-600">
                         <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
                     </h3>
@@ -125,26 +115,28 @@ layout: null
                     </div>
                 </div>
             </article>
+            {% else %}
+            <div class="col-span-full py-20 text-center text-gray-400 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-3xl">
+                请确认是否在 _posts 文件夹内创建了正确格式的 .md 文件。
+            </div>
             {% endfor %}
         </div>
     </main>
 
-    <!-- 关于 -->
     <section id="about" class="py-20 border-t dark:border-gray-800">
         <div class="max-w-2xl mx-auto text-center">
             <h2 class="text-2xl font-bold mb-10">关于我 Info</h2>
             <div class="flex justify-center space-x-12">
-                <a href="mailto:michaelzhangjm@outlook.com" class="flex flex-col items-center gap-2">
-                    <div class="w-14 h-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500">
+                <a href="mailto:michaelzhangjm@outlook.com" class="group flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 group-hover:text-blue-600 transition-all">
                         <i data-lucide="mail"></i>
                     </div>
-                    <span class="text-xs">邮件联系Mail me </span>
+                    <span class="text-xs font-medium">邮件联系 Mail me</span>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 返回顶部 -->
     <button id="backToTop" class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 text-green-600 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 opacity-0 -translate-y-4 pointer-events-none transition-all duration-300 z-50">
         <i data-lucide="chevron-up" class="w-6 h-6"></i>
     </button>
@@ -154,9 +146,15 @@ layout: null
     </footer>
 
     <script>
+        // 初始化图标
         lucide.createIcons();
+
+        // 暗黑模式逻辑
         const themeToggle = document.getElementById('themeToggle');
-        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+        
         themeToggle.addEventListener('click', () => {
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
@@ -166,10 +164,15 @@ layout: null
                 localStorage.setItem('theme', 'dark');
             }
         });
+
+        // 返回顶部逻辑
         const btt = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) btt.classList.add('show');
-            else btt.classList.remove('show');
+            if (window.scrollY > 400) {
+                btt.classList.add('show');
+            } else {
+                btt.classList.remove('show');
+            }
         });
         btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>

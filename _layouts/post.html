@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }} - 我什么都读</title>
     
-    <!-- 引入资源 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
@@ -16,60 +15,64 @@
                     typography: ({ theme }) => ({
                         DEFAULT: {
                             css: {
-                                // 基础间距与颜色
+                                // 基础配置
                                 '--tw-prose-headings': theme('colors.gray[900]'),
                                 '--tw-prose-invert-headings': theme('colors.white'),
                                 
-                                // 1级标题 (文章内的大节)
-                                h1: {
-                                    fontSize: '2.5rem',
-                                    fontWeight: '800',
-                                    marginTop: '3rem',
-                                    marginBottom: '1.5rem',
-                                    color: theme('colors.green[700]'),
-                                    fontFamily: '"Noto Serif SC", serif',
-                                },
-                                // 2级标题 (主要的章节)
-                                h2: {
-                                    fontSize: '2rem',
-                                    fontWeight: '700',
-                                    marginTop: '2.5rem',
-                                    marginBottom: '1.25rem',
-                                    paddingBottom: '0.5rem',
-                                    borderBottom: '2px solid rgba(22, 163, 74, 0.2)', // 淡淡的绿色底线
-                                    fontFamily: '"Noto Serif SC", serif',
-                                },
-                                // 3级标题 (小节)
-                                h3: {
-                                    fontSize: '1.5rem',
-                                    fontWeight: '700',
-                                    marginTop: '1.75rem',
-                                    marginBottom: '0.75rem',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    fontFamily: '"Noto Serif SC", serif',
-                                },
-                                // 给 H3 自动加上一个小圆点装饰
-                                'h3::before': {
-                                    content: '""',
-                                    display: 'inline-block',
-                                    width: '8px',
-                                    height: '8px',
-                                    backgroundColor: theme('colors.green[500]'),
-                                    borderRadius: '50%',
-                                    marginRight: '0.75rem',
-                                },
-                                // 正文样式
+                                // 正文基准 (1.125rem = 18px)
                                 p: {
                                     fontSize: '1.125rem',
                                     lineHeight: '1.8',
-                                    marginBottom: '1.5rem',
+                                    color: theme('colors.gray[600]'),
                                 },
-                                li: {
-                                    fontSize: '1.125rem',
-                                    marginTop: '0.5rem',
-                                    marginBottom: '0.5rem',
-                                }
+
+                                // 三级标题 (H3) = 正文的 1.5 倍 ≈ 1.68rem (约 27px)
+                                h3: {
+                                    fontSize: '1.68rem',
+                                    fontWeight: '700',
+                                    marginTop: '2rem',
+                                    marginBottom: '0.8rem',
+                                    fontFamily: '"Noto Serif SC", serif',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                },
+                                'h3::before': {
+                                    content: '""',
+                                    width: '6px',
+                                    height: '1.2em',
+                                    backgroundColor: theme('colors.green[500]'),
+                                    marginRight: '0.75rem',
+                                    borderRadius: '3px',
+                                },
+
+                                // 二级标题 (H2) = H3 的 1.5 倍 ≈ 2.5rem (约 40px)
+                                h2: {
+                                    fontSize: '2.5rem',
+                                    fontWeight: '800',
+                                    marginTop: '3.5rem',
+                                    marginBottom: '1.5rem',
+                                    fontFamily: '"Noto Serif SC", serif',
+                                    color: theme('colors.gray[800]'),
+                                    borderBottom: '4px solid rgba(22, 163, 74, 0.1)',
+                                    paddingBottom: '0.3rem',
+                                    lineHeight: '1.2',
+                                },
+
+                                // 一级标题 (H1) = H2 的 1.5 倍 ≈ 3.75rem (约 60px)
+                                h1: {
+                                    fontSize: '3.75rem',
+                                    fontWeight: '900',
+                                    marginTop: '4rem',
+                                    marginBottom: '2rem',
+                                    fontFamily: '"Noto Serif SC", serif',
+                                    color: theme('colors.green[700]'),
+                                    lineHeight: '1.1',
+                                    letterSpacing: '-0.02em',
+                                },
+
+                                // 其他细节
+                                li: { fontSize: '1.125rem' },
+                                blockquote: { fontStyle: 'italic', fontSize: '1.2rem' }
                             }
                         }
                     })
@@ -82,61 +85,58 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500&display=swap');
         
         body { font-family: 'Noto Sans SC', sans-serif; transition: background-color 0.3s ease; }
-        .dark .prose h2 { border-color: rgba(34, 197, 94, 0.2); }
         .dark .prose h1 { color: #4ade80; }
+        .dark .prose h2 { color: #f3f4f6; border-color: rgba(34, 197, 94, 0.2); }
+        .dark .prose h3 { color: #e5e7eb; }
 
-        /* 背景装饰 */
+        /* 背景微调装饰 */
         body::before {
-            content: ""; position: fixed; top: 10%; left: -5%; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(22, 163, 74, 0.05) 0%, transparent 70%);
-            z-index: -1; pointer-events: none;
-        }
-        body::after {
-            content: ""; position: fixed; bottom: 10%; right: -5%; width: 300px; height: 300px;
-            border: 2px dashed rgba(22, 163, 74, 0.05); border-radius: 50%;
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(22, 163, 74, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(22, 163, 74, 0.03) 0%, transparent 40%);
             z-index: -1; pointer-events: none;
         }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased">
 
-    <!-- 悬浮返回首页按钮 -->
+    <!-- 返回首页按钮 -->
     <a href="{{ '/' | relative_url }}" 
        class="fixed top-6 left-6 z-50 flex items-center justify-center w-12 h-12 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md text-gray-600 dark:text-gray-300 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 hover:text-green-600 dark:hover:text-green-400 hover:scale-110 active:scale-95 transition-all duration-300 group">
         <i data-lucide="home" class="w-6 h-6"></i>
-        <span class="absolute left-14 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
-            首页 Home
-        </span>
     </a>
 
-    <!-- 主体内容卡片 -->
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
-        <article class="bg-white dark:bg-gray-800/60 backdrop-blur-sm shadow-xl border border-gray-100 dark:border-gray-800 rounded-[2.5rem] overflow-hidden">
+    <!-- 内容卡片 -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
+        <article class="bg-white dark:bg-gray-800/60 backdrop-blur-md shadow-2xl border border-gray-100 dark:border-gray-800 rounded-[3rem] overflow-hidden">
             
-            <header class="p-8 md:p-16 pb-0">
-                <div class="flex items-center gap-3 text-green-600 dark:text-green-400 font-bold text-sm uppercase tracking-widest mb-6">
-                    <span class="w-8 h-[2px] bg-current opacity-30"></span>
-                    {{ page.category | default: "博文" }}
+            <header class="p-8 md:p-20 pb-0">
+                <div class="flex items-center gap-3 text-green-600 dark:text-green-400 font-bold text-sm uppercase tracking-[0.3em] mb-8">
+                    <span class="w-12 h-[3px] bg-current"></span>
+                    {{ page.category | default: "ARTICLE" }}
                 </div>
-                <!-- 文章大标题采用 900 极粗权重 -->
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white mb-8 leading-[1.1] font-[Noto Serif SC]">{{ page.title }}</h1>
-                <div class="flex items-center gap-6 text-gray-400 text-sm mb-8">
-                    <div class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i>{{ page.date | date: "%Y年%m月%d日" }}</div>
+                <!-- 这是文章最顶部的标题 -->
+                <h1 class="text-5xl md:text-7xl font-black text-gray-900 dark:text-white mb-10 leading-[1.1] font-[Noto Serif SC] tracking-tight">
+                    {{ page.title }}
+                </h1>
+                <div class="flex items-center gap-6 text-gray-400 text-sm mb-12">
+                    <div class="flex items-center"><i data-lucide="calendar" class="w-5 h-5 mr-2"></i>{{ page.date | date: "%Y年%m月%d日" }}</div>
+                    <div class="flex items-center"><i data-lucide="edit-3" class="w-5 h-5 mr-2"></i>作者：我什么都读</div>
                 </div>
             </header>
 
-            <!-- 正文区域 -->
-            <div class="p-8 md:p-16 pt-6 prose prose-lg dark:prose-invert max-w-none 
-                        prose-p:text-gray-600 dark:prose-p:text-gray-300">
+            <!-- Markdown 渲染的正文内容 -->
+            <div class="p-8 md:px-20 pt-10 pb-20 prose prose-lg dark:prose-invert max-w-none">
                 {{ content }}
             </div>
 
-            <footer class="p-8 md:p-16 pt-0 mt-8">
-                <div class="pt-8 border-t border-gray-100 dark:border-gray-800 flex flex-col items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/30 flex items-center justify-center text-green-600">
-                        <i data-lucide="leaf" class="w-5 h-5"></i>
+            <footer class="p-8 md:p-20 pt-0 mt-8 text-center border-t border-gray-50 dark:border-gray-700/50">
+                <div class="py-12 flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center text-green-600 mb-4">
+                        <i data-lucide="anchor"></i>
                     </div>
-                    <p class="text-gray-400 text-sm italic">—— 既然来到了这里，就多留一会吧 ——</p>
+                    <p class="text-gray-400 dark:text-gray-500 text-sm italic">E N D</p>
                 </div>
             </footer>
         </article>

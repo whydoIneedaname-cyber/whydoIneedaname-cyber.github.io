@@ -24,55 +24,93 @@
                                     fontSize: '1.125rem',
                                     lineHeight: '1.8',
                                     color: theme('colors.gray[600]'),
+                                    marginBottom: '1.5rem',
                                 },
 
-                                // 三级标题 (H3) = 正文的 1.5 倍 ≈ 1.68rem (约 27px)
+                                // 三级标题 (H3)：比正文大 1.5 倍，带侧边修饰
                                 h3: {
                                     fontSize: '1.68rem',
                                     fontWeight: '700',
-                                    marginTop: '2rem',
-                                    marginBottom: '0.8rem',
+                                    marginTop: '2.5rem',
+                                    marginBottom: '1rem',
                                     fontFamily: '"Noto Serif SC", serif',
                                     display: 'flex',
                                     alignItems: 'center',
+                                    color: theme('colors.gray[800]'),
                                 },
                                 'h3::before': {
                                     content: '""',
-                                    width: '6px',
-                                    height: '1.2em',
-                                    backgroundColor: theme('colors.green[500]'),
-                                    marginRight: '0.75rem',
-                                    borderRadius: '3px',
+                                    width: '12px',
+                                    height: '12px',
+                                    border: '3px solid ' + theme('colors.green[500]'),
+                                    marginRight: '12px',
+                                    borderRadius: '50%',
                                 },
 
-                                // 二级标题 (H2) = H3 的 1.5 倍 ≈ 2.5rem (约 40px)
+                                // 二级标题 (H2)：比 H3 大 1.5 倍，带装饰色块和底线
                                 h2: {
                                     fontSize: '2.5rem',
                                     fontWeight: '800',
-                                    marginTop: '3.5rem',
+                                    marginTop: '4rem',
                                     marginBottom: '1.5rem',
                                     fontFamily: '"Noto Serif SC", serif',
-                                    color: theme('colors.gray[800]'),
-                                    borderBottom: '4px solid rgba(22, 163, 74, 0.1)',
-                                    paddingBottom: '0.3rem',
+                                    color: theme('colors.gray[900]'),
+                                    position: 'relative',
+                                    paddingLeft: '1.5rem',
                                     lineHeight: '1.2',
                                 },
+                                'h2::before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    left: '0',
+                                    top: '10%',
+                                    height: '80%',
+                                    width: '6px',
+                                    backgroundColor: theme('colors.green[500]'),
+                                    borderRadius: '3px',
+                                },
+                                'h2::after': {
+                                    content: '""',
+                                    display: 'block',
+                                    marginTop: '8px',
+                                    height: '4px',
+                                    width: '100px',
+                                    backgroundColor: 'rgba(22, 163, 74, 0.1)',
+                                    borderRadius: '2px',
+                                },
 
-                                // 一级标题 (H1) = H2 的 1.5 倍 ≈ 3.75rem (约 60px)
+                                // 一级标题 (H1)：比 H2 大 1.5 倍，渐变色处理
                                 h1: {
                                     fontSize: '3.75rem',
                                     fontWeight: '900',
-                                    marginTop: '4rem',
-                                    marginBottom: '2rem',
+                                    marginTop: '5rem',
+                                    marginBottom: '2.5rem',
                                     fontFamily: '"Noto Serif SC", serif',
-                                    color: theme('colors.green[700]'),
                                     lineHeight: '1.1',
-                                    letterSpacing: '-0.02em',
+                                    letterSpacing: '-0.03em',
+                                    background: 'linear-gradient(to right, #15803d, #22c55e)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
                                 },
 
-                                // 其他细节
-                                li: { fontSize: '1.125rem' },
-                                blockquote: { fontStyle: 'italic', fontSize: '1.2rem' }
+                                // 列表细节
+                                li: { fontSize: '1.125rem', color: theme('colors.gray[600]') },
+                                blockquote: { 
+                                    borderLeftColor: theme('colors.green[500]'),
+                                    backgroundColor: theme('colors.green[50]'),
+                                    padding: '1.5rem',
+                                    borderRadius: '0.75rem',
+                                    fontSize: '1.25rem'
+                                }
+                            }
+                        },
+                        dark: {
+                            css: {
+                                'h1': { background: 'linear-gradient(to right, #4ade80, #86efac)' },
+                                'h2': { color: theme('colors.gray[100]') },
+                                'h3': { color: theme('colors.gray[200]') },
+                                'p, li': { color: theme('colors.gray[400]') },
+                                'blockquote': { backgroundColor: 'rgba(21, 128, 61, 0.1)' }
                             }
                         }
                     })
@@ -85,16 +123,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500&display=swap');
         
         body { font-family: 'Noto Sans SC', sans-serif; transition: background-color 0.3s ease; }
-        .dark .prose h1 { color: #4ade80; }
-        .dark .prose h2 { color: #f3f4f6; border-color: rgba(34, 197, 94, 0.2); }
-        .dark .prose h3 { color: #e5e7eb; }
 
         /* 背景微调装饰 */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: 
-                radial-gradient(circle at 10% 10%, rgba(22, 163, 74, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(22, 163, 74, 0.03) 0%, transparent 40%);
+                radial-gradient(circle at 5% 5%, rgba(22, 163, 74, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 95% 95%, rgba(22, 163, 74, 0.05) 0%, transparent 30%);
             z-index: -1; pointer-events: none;
         }
     </style>
@@ -103,40 +138,41 @@
 
     <!-- 返回首页按钮 -->
     <a href="{{ '/' | relative_url }}" 
-       class="fixed top-6 left-6 z-50 flex items-center justify-center w-12 h-12 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md text-gray-600 dark:text-gray-300 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 hover:text-green-600 dark:hover:text-green-400 hover:scale-110 active:scale-95 transition-all duration-300 group">
-        <i data-lucide="home" class="w-6 h-6"></i>
+       class="fixed top-8 left-8 z-50 flex items-center justify-center w-14 h-14 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl text-gray-600 dark:text-gray-300 rounded-3xl shadow-2xl border border-white/50 dark:border-gray-700/50 hover:text-green-600 dark:hover:text-green-400 hover:scale-110 hover:-rotate-6 active:scale-95 transition-all duration-300 group">
+        <i data-lucide="home" class="w-7 h-7"></i>
     </a>
 
     <!-- 内容卡片 -->
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
-        <article class="bg-white dark:bg-gray-800/60 backdrop-blur-md shadow-2xl border border-gray-100 dark:border-gray-800 rounded-[3rem] overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-32 pb-24">
+        <article class="bg-white/90 dark:bg-gray-800/70 backdrop-blur-2xl shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border border-white dark:border-gray-700/50 rounded-[4rem] overflow-hidden">
             
-            <header class="p-8 md:p-20 pb-0">
-                <div class="flex items-center gap-3 text-green-600 dark:text-green-400 font-bold text-sm uppercase tracking-[0.3em] mb-8">
-                    <span class="w-12 h-[3px] bg-current"></span>
+            <header class="p-10 md:p-24 pb-0">
+                <div class="inline-flex items-center gap-4 text-green-600 dark:text-green-400 font-bold text-sm uppercase tracking-[0.4em] mb-10 px-4 py-2 bg-green-50 dark:bg-green-900/30 rounded-full">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
                     {{ page.category | default: "ARTICLE" }}
                 </div>
                 <!-- 这是文章最顶部的标题 -->
-                <h1 class="text-5xl md:text-7xl font-black text-gray-900 dark:text-white mb-10 leading-[1.1] font-[Noto Serif SC] tracking-tight">
+                <h1 class="text-6xl md:text-8xl font-black text-gray-900 dark:text-white mb-12 leading-[1] font-[Noto Serif SC] tracking-tight">
                     {{ page.title }}
                 </h1>
-                <div class="flex items-center gap-6 text-gray-400 text-sm mb-12">
-                    <div class="flex items-center"><i data-lucide="calendar" class="w-5 h-5 mr-2"></i>{{ page.date | date: "%Y年%m月%d日" }}</div>
-                    <div class="flex items-center"><i data-lucide="edit-3" class="w-5 h-5 mr-2"></i>作者：我什么都读</div>
+                <div class="flex flex-wrap items-center gap-8 text-gray-400 text-base mb-16">
+                    <div class="flex items-center"><i data-lucide="calendar" class="w-5 h-5 mr-3"></i>{{ page.date | date: "%Y年%m月%d日" }}</div>
+                    <div class="flex items-center"><i data-lucide="user" class="w-5 h-5 mr-3"></i>我什么都读</div>
                 </div>
             </header>
 
             <!-- Markdown 渲染的正文内容 -->
-            <div class="p-8 md:px-20 pt-10 pb-20 prose prose-lg dark:prose-invert max-w-none">
+            <div class="p-10 md:px-24 pt-4 pb-24 prose prose-lg dark:prose-invert max-w-none">
                 {{ content }}
             </div>
 
-            <footer class="p-8 md:p-20 pt-0 mt-8 text-center border-t border-gray-50 dark:border-gray-700/50">
-                <div class="py-12 flex flex-col items-center">
-                    <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center text-green-600 mb-4">
-                        <i data-lucide="anchor"></i>
+            <footer class="p-12 md:p-24 pt-0 mt-8 text-center">
+                <div class="pt-16 border-t border-gray-100 dark:border-gray-700/50 flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-3xl bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/40 dark:to-green-800/20 flex items-center justify-center text-green-600 mb-6 shadow-inner">
+                        <i data-lucide="leaf" class="w-8 h-8"></i>
                     </div>
-                    <p class="text-gray-400 dark:text-gray-500 text-sm italic">E N D</p>
+                    <p class="text-gray-400 dark:text-gray-500 text-sm font-medium tracking-[0.5em] mb-2 uppercase">End of Passage</p>
+                    <p class="text-gray-300 dark:text-gray-600 text-xs">感谢阅览 · 来了就多留一会吧！</p>
                 </div>
             </footer>
         </article>

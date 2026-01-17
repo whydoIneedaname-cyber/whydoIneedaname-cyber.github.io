@@ -13,53 +13,79 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    // 深度定制排版插件
                     typography: ({ theme }) => ({
                         DEFAULT: {
                             css: {
+                                // 基础间距与颜色
                                 '--tw-prose-headings': theme('colors.gray[900]'),
                                 '--tw-prose-invert-headings': theme('colors.white'),
+                                
+                                // 1级标题 (文章内的大节)
                                 h1: {
-                                    fontSize: '2.25rem',
-                                    marginTop: '2rem',
-                                    marginBottom: '1rem',
+                                    fontSize: '2.5rem',
                                     fontWeight: '800',
-                                    lineHeight: '1.2',
-                                },
-                                h2: {
-                                    fontSize: '1.875rem',
-                                    marginTop: '2.5rem',
-                                    marginBottom: '1rem',
-                                    fontWeight: '700',
-                                    borderBottom: '1px solid #e5e7eb',
-                                    paddingBottom: '0.5rem',
-                                },
-                                h3: {
-                                    fontSize: '1.5rem',
-                                    marginTop: '2rem',
-                                    marginBottom: '0.75rem',
-                                    fontWeight: '600',
-                                },
-                                'h2, h3, h4': {
+                                    marginTop: '3rem',
+                                    marginBottom: '1.5rem',
+                                    color: theme('colors.green[700]'),
                                     fontFamily: '"Noto Serif SC", serif',
                                 },
-                            },
-                        },
-                    }),
+                                // 2级标题 (主要的章节)
+                                h2: {
+                                    fontSize: '2rem',
+                                    fontWeight: '700',
+                                    marginTop: '2.5rem',
+                                    marginBottom: '1.25rem',
+                                    paddingBottom: '0.5rem',
+                                    borderBottom: '2px solid rgba(22, 163, 74, 0.2)', // 淡淡的绿色底线
+                                    fontFamily: '"Noto Serif SC", serif',
+                                },
+                                // 3级标题 (小节)
+                                h3: {
+                                    fontSize: '1.5rem',
+                                    fontWeight: '700',
+                                    marginTop: '1.75rem',
+                                    marginBottom: '0.75rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    fontFamily: '"Noto Serif SC", serif',
+                                },
+                                // 给 H3 自动加上一个小圆点装饰
+                                'h3::before': {
+                                    content: '""',
+                                    display: 'inline-block',
+                                    width: '8px',
+                                    height: '8px',
+                                    backgroundColor: theme('colors.green[500]'),
+                                    borderRadius: '50%',
+                                    marginRight: '0.75rem',
+                                },
+                                // 正文样式
+                                p: {
+                                    fontSize: '1.125rem',
+                                    lineHeight: '1.8',
+                                    marginBottom: '1.5rem',
+                                },
+                                li: {
+                                    fontSize: '1.125rem',
+                                    marginTop: '0.5rem',
+                                    marginBottom: '0.5rem',
+                                }
+                            }
+                        }
+                    })
                 }
             }
         }
     </script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;800&family=Noto+Sans+SC:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500&display=swap');
         
         body { font-family: 'Noto Sans SC', sans-serif; transition: background-color 0.3s ease; }
-        
-        /* 强制覆盖：确保标题在暗黑模式下也清晰 */
-        .dark .prose h2 { border-color: #374151; }
+        .dark .prose h2 { border-color: rgba(34, 197, 94, 0.2); }
+        .dark .prose h1 { color: #4ade80; }
 
-        /* 背景装饰保持不变 */
+        /* 背景装饰 */
         body::before {
             content: ""; position: fixed; top: 10%; left: -5%; width: 400px; height: 400px;
             background: radial-gradient(circle, rgba(22, 163, 74, 0.05) 0%, transparent 70%);
@@ -70,8 +96,6 @@
             border: 2px dashed rgba(22, 163, 74, 0.05); border-radius: 50%;
             z-index: -1; pointer-events: none;
         }
-        .dark body::before { background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%); }
-        .dark body::after { border-color: rgba(34, 197, 94, 0.1); }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased">
@@ -94,17 +118,15 @@
                     <span class="w-8 h-[2px] bg-current opacity-30"></span>
                     {{ page.category | default: "博文" }}
                 </div>
-                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-8 leading-[1.2] font-[Noto Serif SC]">{{ page.title }}</h1>
+                <!-- 文章大标题采用 900 极粗权重 -->
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white mb-8 leading-[1.1] font-[Noto Serif SC]">{{ page.title }}</h1>
                 <div class="flex items-center gap-6 text-gray-400 text-sm mb-8">
                     <div class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i>{{ page.date | date: "%Y年%m月%d日" }}</div>
                 </div>
             </header>
 
-            <!-- 正文区域：通过定制类确保标题明显 -->
+            <!-- 正文区域 -->
             <div class="p-8 md:p-16 pt-6 prose prose-lg dark:prose-invert max-w-none 
-                        prose-h1:text-gray-900 dark:prose-h1:text-white
-                        prose-h2:text-gray-900 dark:prose-h2:text-white
-                        prose-h3:text-gray-800 dark:prose-h3:text-gray-200
                         prose-p:text-gray-600 dark:prose-p:text-gray-300">
                 {{ content }}
             </div>
@@ -114,7 +136,7 @@
                     <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/30 flex items-center justify-center text-green-600">
                         <i data-lucide="leaf" class="w-5 h-5"></i>
                     </div>
-                    <p class="text-gray-400 text-sm italic">—— 感谢阅读，我们下期再会！！ ——</p>
+                    <p class="text-gray-400 text-sm italic">—— 既然来到了这里，就多留一会吧 ——</p>
                 </div>
             </footer>
         </article>

@@ -12,14 +12,64 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
-        body { font-family: 'Noto Sans SC', sans-serif; transition: background-color 0.3s ease; }
+        
+        body { 
+            font-family: 'Noto Sans SC', sans-serif; 
+            transition: background-color 0.3s ease;
+            overflow-x: hidden;
+        }
+        
         h1, h2, h3 { font-family: 'Noto Serif SC', serif; }
-        .prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin: 2rem auto; }
-        .prose blockquote { border-left: 4px solid #16a34a; background: #f0fdf4; padding: 1rem 2rem; border-radius: 0.5rem; font-style: italic; }
+
+        /* 背景装饰：左侧叶片水印 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 10%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(22, 163, 74, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 背景装饰：右侧几何圆环 */
+        body::after {
+            content: "";
+            position: fixed;
+            bottom: 10%;
+            right: -5%;
+            width: 300px;
+            height: 300px;
+            border: 2px dashed rgba(22, 163, 74, 0.05);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .dark body::before { background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%); }
+        .dark body::after { border-color: rgba(34, 197, 94, 0.1); }
+
+        .prose img { border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); margin: 2.5rem auto; }
+        .prose blockquote { border-left: 4px solid #16a34a; background: #f0fdf4; padding: 1.5rem 2rem; border-radius: 0.75rem; font-style: italic; }
         .dark .prose blockquote { background: #064e3b; color: #ecfdf5; }
+
+        /* 侧边进度装饰 */
+        .side-decoration {
+            position: fixed;
+            left: 2rem;
+            bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0.3;
+        }
+        .side-decoration div { width: 1px; height: 100px; background: currentColor; }
     </style>
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased">
 
     <!-- 悬浮返回首页按钮 -->
     <a href="{{ '/' | relative_url }}" 
@@ -30,41 +80,60 @@
         </span>
     </a>
 
-    <!-- 文章内容区域 -->
-    <article class="max-w-3xl mx-auto px-6 pt-32 pb-20">
-        <header class="mb-12">
-            <div class="text-green-600 font-bold text-sm uppercase tracking-widest mb-4">{{ page.category }}</div>
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">{{ page.title }}</h1>
-            <div class="flex items-center text-gray-400 text-sm">
-                <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>
-                {{ page.date | date: "%Y年%m月%d日" }}
+    <!-- 侧边美化装饰 (仅在大屏幕显示) -->
+    <div class="hidden xl:flex side-decoration text-gray-400 dark:text-gray-600">
+        <span class="text-[10px] uppercase tracking-[0.2em] [writing-mode:vertical-lr]">Digital Garden</span>
+        <div></div>
+        <span class="text-[10px] font-bold">2026</span>
+    </div>
+
+    <!-- 主体内容卡片 -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 relative">
+        <article class="bg-white dark:bg-gray-800/50 backdrop-blur-sm shadow-[0_0_50px_-12px_rgba(0,0,0,0.05)] border border-gray-100 dark:border-gray-800 rounded-[2.5rem] overflow-hidden">
+            
+            <!-- 文章页眉：带背景装饰 -->
+            <header class="p-8 md:p-16 pb-0">
+                <div class="flex items-center gap-3 text-green-600 dark:text-green-400 font-bold text-sm uppercase tracking-widest mb-6">
+                    <span class="w-8 h-[2px] bg-current opacity-30"></span>
+                    {{ page.category | default: "记录" }}
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-8 leading-[1.2]">{{ page.title }}</h1>
+                <div class="flex items-center gap-6 text-gray-400 text-sm mb-8">
+                    <div class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i>{{ page.date | date: "%Y年%m月%d日" }}</div>
+                    <div class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-2"></i>{{ content | number_of_words | divided_by: 200 | plus: 1 }} 分钟阅读</div>
+                </div>
+            </header>
+
+            {% if page.image %}
+            <div class="px-8 md:px-16">
+                <div class="rounded-3xl overflow-hidden shadow-xl">
+                    <img src="{{ page.image | relative_url }}" alt="Cover" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
             </div>
-        </header>
+            {% endif %}
 
-        {% if page.image %}
-        <div class="mb-12 rounded-3xl overflow-hidden shadow-2xl">
-            <img src="{{ page.image | relative_url }}" alt="Cover" class="w-full h-auto">
-        </div>
-        {% endif %}
+            <!-- 正文区域 -->
+            <div class="p-8 md:p-16 pt-12 prose prose-lg dark:prose-invert max-w-none 
+                        prose-headings:text-gray-900 dark:prose-headings:text-white
+                        prose-p:leading-relaxed prose-p:text-gray-600 dark:prose-p:text-gray-300
+                        prose-a:text-green-600 hover:prose-a:text-green-500 prose-a:no-underline prose-a:border-b prose-a:border-green-200 dark:prose-a:border-green-900">
+                {{ content }}
+            </div>
 
-        <!-- 正文 -->
-        <div class="prose prose-lg dark:prose-invert max-w-none 
-                    prose-headings:text-gray-900 dark:prose-headings:text-white
-                    prose-p:leading-relaxed prose-p:text-gray-600 dark:prose-p:text-gray-300
-                    prose-a:text-green-600 hover:prose-a:text-green-500">
-            {{ content }}
-        </div>
-
-        <footer class="mt-20 pt-8 border-t dark:border-gray-800">
-            <p class="text-center text-gray-400 text-sm">感谢阅读！保持热爱，奔赴山海。</p>
-        </footer>
-    </article>
+            <!-- 页脚装饰 -->
+            <footer class="p-8 md:p-16 pt-0 mt-8">
+                <div class="pt-8 border-t border-gray-100 dark:border-gray-800 flex flex-col items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/30 flex items-center justify-center text-green-600">
+                        <i data-lucide="leaf" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm">感谢阅读！我们在下一篇文字里再见。</p>
+                </div>
+            </footer>
+        </article>
+    </div>
 
     <script>
-        // 初始化图标
         lucide.createIcons();
-
-        // 同步首页的暗黑模式设置
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
         }

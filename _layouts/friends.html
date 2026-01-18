@@ -50,9 +50,30 @@
             {% endfor %}
         </div>
 
+        <!-- 法律免责声明板块 -->
+        <section class="mt-24 p-8 md:p-12 bg-white/50 dark:bg-gray-800/40 backdrop-blur-sm rounded-[2.5rem] border border-gray-100 dark:border-gray-700/50">
+            <div class="flex items-center gap-3 mb-6 text-gray-400">
+                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                <h2 class="text-sm font-bold tracking-widest uppercase">免责声明 / Disclaimer</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 text-xs md:text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                <!-- 中文声明 -->
+                <div class="space-y-3">
+                    <p class="font-medium text-gray-700 dark:text-gray-200">本站友情链接所指向的网站内容均由第三方提供，本站对其内容的真实性、合法性或安全性不承担任何责任。</p>
+                    <p>若链接网站内容涉及侵权、违法或包含不良信息，请及时联系本站进行删除处理。所有链接不代表本站赞同其观点或立场，各站点的具体观点仍由其作者独立负责。</p>
+                </div>
+                <!-- 英文声明 -->
+                <div class="space-y-3 border-t md:border-t-0 md:border-l border-gray-100 dark:border-gray-700/50 pt-6 md:pt-0 md:pl-8">
+                    <p class="font-medium text-gray-700 dark:text-gray-200">The content of the websites linked on this page is provided by third parties. This site assumes no responsibility for the accuracy, legality, or safety of such content.</p>
+                    <p>If any linked site contains infringing, illegal, or inappropriate content, please contact us for immediate removal. Inclusion of a link does not imply endorsement of its views，individual views remain the responsibility of their respective authors.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- 底部说明 -->
-        <footer class="mt-24 pt-12 border-t border-gray-100 dark:border-gray-800 text-center">
+        <footer class="mt-16 pt-12 border-t border-gray-100 dark:border-gray-800 text-center">
             <p class="text-gray-400 text-sm mb-4">欢迎交换友链，共同构建数字花园。</p>
+            <p>Exchanging ideas for a better, interconnected world！ </p>
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-full text-xs text-gray-500 dark:text-gray-400">
                 <i data-lucide="mail" class="w-3 h-3"></i>
                 <span>请致信笔者 Please contact me via email</span>

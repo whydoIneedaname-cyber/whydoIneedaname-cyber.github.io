@@ -108,7 +108,7 @@ layout: null
         <div id="postContainer" class="grid md:grid-cols-2 gap-8">
             {% for post in site.posts %}
             <!-- 使用 loop.index 判断是否为前 4 篇 -->
-            <article class="article-card bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col {% if forloop.index > 2 %}post-hidden{% endif %} shadow-sm">
+            <article class="article-card bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col {% if forloop.index > 4 %}post-hidden{% endif %} shadow-sm">
                 <div class="img-container">
                     {% if post.image %}
                     <img src="{{ post.image | relative_url }}" loading="lazy" class="w-full h-full object-cover" alt="{{ post.title }}">
@@ -131,7 +131,7 @@ layout: null
         </div>
 
         <!-- 查看更多按钮 -->
-        {% if site.posts.size > 2 %}
+        {% if site.posts.size > 4 %}
         <div id="loadMoreArea" class="mt-16 text-center">
             <button id="loadMoreBtn" class="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl font-bold text-gray-600 dark:text-gray-300 hover:border-green-600 hover:text-green-600 transition-all group">
                 <span>查看更多文章 Read More</span>

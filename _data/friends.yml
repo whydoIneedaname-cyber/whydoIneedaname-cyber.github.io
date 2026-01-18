@@ -1,10 +1,8 @@
 - name: "Zelda's Blog"
   url: "https://blog.zelda-110.link"
-  avatar: "https://www.google.com/s2/favicons?domain=blog.zelda-110.link&sz=128"
   bio: "Zelda 大佬个人博客，分享技术见解与生活点滴。"
 
 - name: "WFLS Wiki"
   url: "https://wflswiki.zelda-110.link"
-  avatar: "https://www.google.com/s2/favicons?domain=wflswiki.zelda-110.link&sz=128"
   bio: "WFLS 校园维基，记录属于我们的校园记忆。"
 

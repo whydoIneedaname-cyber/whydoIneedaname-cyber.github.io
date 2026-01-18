@@ -2,173 +2,165 @@
 layout: null
 ---
 <!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//unpkg.com">
 
-   <!-- SEO 核心：必须放在最前面 -->
+    <!-- SEO 核心 -->
     <title>我什么都读的个人空间</title>
     <meta name="description" content="欢迎来到我什么都读的个人空间。这里记录了一名中学生的学习笔记、阅读心得和生活感悟，分享成长的每一个瞬间。">
-    <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客">
     <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客，readeverything">
-
+    
     <!-- 索引指令 -->
     <meta name="robots" content="index, follow">
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://readeverything.us.ci/">
 
-    <!-- 结构化数据 (告知 Google 网站名称) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "我什么都读的个人空间",
-      "url": "https://readeverything.us.ci/"
-    }
-    </script>
-
-    <!-- 社交媒体预览 (OG Tags) -->
-    <meta property="og:site_name" content="我什么都读的个人空间">
-    <meta property="og:title" content="我什么都读的个人空间">
-    <meta property="og:description" content="记录成长，分享感悟。">
-    <meta property="og:url" content="https://readeverything.us.ci/">
-    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = { darkMode: 'class' }
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        }
     </script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
-        body { font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; }
+        body { 
+            font-family: 'Noto Sans SC', sans-serif; 
+            scroll-behavior: smooth; 
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease; 
+        }
         h1, h2 { font-family: 'Noto Serif SC', serif; }
-        
-        .post-hidden { display: none; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
-        .post-visible { display: flex !important; opacity: 1; transform: translateY(0); }
-        
+        .hover-lift { transition: all 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
         .bg-soft-green { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); }
         .dark .bg-soft-green { background: linear-gradient(135deg, #064e3b 0%, #111827 100%); }
+        #backToTop.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
         
-        #mobileMenu { visibility: hidden; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
-        #mobileMenu.active { visibility: visible; opacity: 1; transform: translateY(0); }
+        /* 移动端菜单激活状态 */
+        #mobileMenu.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+            transform: scale(1);
+        }
     </style>
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap" media="print" onload="this.media='all'">
     <script src="https://cloud.umami.is/script.js" data-website-id="f291870c-3549-4f53-a1c1-5f740bdae6bd"></script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased">
 
     <!-- 导航栏 -->
-    <nav class="fixed w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 z-[60]">
+    <nav class="fixed w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 z-[60]">
         <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="/" class="flex items-center space-x-2">
+            <div class="flex items-center space-x-2">
                 <div class="bg-green-600 p-1.5 rounded-lg text-white">
                     <i data-lucide="leaf" class="w-5 h-5"></i>
                 </div>
-                <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">我什么都读</span>
-            </a>
+                <span class="text-xl font-bold tracking-tight">我什么都读</span>
+            </div>
+
             <div class="flex items-center space-x-2">
+                <!-- 电脑端链接 -->
                 <div class="hidden md:flex space-x-8 text-sm font-medium mr-4">
-                    <a href="/" class="hover:text-green-600 transition-colors">首页 Home</a>
+                    <a href="/" class="hover:text-green-600 transition-colors">首页 Home page</a>
                     <a href="#posts" class="hover:text-green-600 transition-colors">文章 Articles</a>
                     <a href="#about" class="hover:text-green-600 transition-colors">关于 About</a>
                     <a href="/friends/" class="hover:text-green-600 transition-colors">友链 Friends</a>
                 </div>
-                <button id="themeToggle" class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-all">
+
+                <!-- 切换主题 -->
+                <button id="themeToggle" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <i data-lucide="sun" class="hidden dark:block w-5 h-5 text-yellow-400"></i>
                     <i data-lucide="moon" class="block dark:hidden w-5 h-5 text-gray-600"></i>
                 </button>
-                <button id="menuBtn" class="md:hidden p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-all">
+
+                <!-- 移动端菜单按钮 -->
+                <button id="menuBtn" class="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- 手机菜单 -->
-    <div id="mobileMenu" class="fixed inset-0 bg-white dark:bg-gray-950 z-[100] flex flex-col items-center justify-center space-y-10 md:hidden">
-        <button id="closeMenu" class="absolute top-8 right-8 p-3"><i data-lucide="x" class="w-10 h-10 text-gray-400"></i></button>
-        <nav class="flex flex-col items-center space-y-8 text-3xl font-bold">
-            <a href="/" class="mobile-link">首页 Home</a>
-            <a href="#posts" class="mobile-link">文章 Posts</a>
-            <a href="#about" class="mobile-link">关于 About</a>
-            <a href="/friends/" class="mobile-link">友链 Friends</a>
+    <!-- 手机端弹出菜单 -->
+    <div id="mobileMenu" class="fixed inset-0 bg-white dark:bg-gray-950 z-[100] flex flex-col items-center justify-center space-y-10 opacity-0 pointer-events-none transform scale-95 transition-all duration-300 md:hidden">
+        <button id="closeMenu" class="absolute top-8 right-8 p-3 text-gray-500 hover:text-green-600 transition-colors">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+
+        <nav class="flex flex-col items-center space-y-8">
+            <a href="/" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">首页 Home</a>
+            <a href="#posts" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">文章 Articles</a>
+            <a href="#about" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">关于 About</a>
+            <a href="/friends/" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">友链 Friends</a>
         </nav>
+
+        <div class="pt-10">
+             <div class="bg-green-600/10 p-4 rounded-2xl">
+                 <i data-lucide="leaf" class="w-8 h-8 text-green-600"></i>
+             </div>
+        </div>
     </div>
 
+    <!-- 页面内容主体 -->
     <header class="bg-soft-green pt-32 pb-20 px-6 text-center border-b dark:border-gray-800">
-        <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto mb-8 bg-gray-100">
-            <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover">
+        <div class="mb-8 relative inline-block">
+            <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto">
+                <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover">
+            </div>
         </div>
         <h1 class="text-4xl font-bold mb-6 text-gray-900 dark:text-white">欢迎来到我的数字天地 🌿</h1>
-        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">记录笔记、感悟与成长的每一个瞬间。</p>
+        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">我是一名正在探索世界的中学生。这里记录着我的个人笔记和心得。</p>
     </header>
 
-    <!-- 文章列表 -->
     <main id="posts" class="max-w-5xl mx-auto px-6 py-20">
         <h2 class="text-2xl font-bold mb-12 flex items-center gap-2">
             <i data-lucide="clock-3" class="w-6 h-6 text-green-600"></i>
-            最新发布 Updates
+            最新更新 Updates
         </h2>
-        
-        <div id="postContainer" class="grid md:grid-cols-2 gap-8">
+        <div class="grid md:grid-cols-2 gap-8">
             {% for post in site.posts %}
-            <article class="article-card bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col {% if forloop.index > 4 %}post-hidden{% endif %} shadow-sm">
-                <div class="aspect-video bg-gray-100 dark:bg-gray-900 flex items-center justify-center overflow-hidden">
+            <article class="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover-lift flex flex-col shadow-sm">
+                <div class="h-44 bg-gray-50 dark:bg-gray-900/50 flex items-center justify-center">
                     {% if post.image %}
-                    <img src="{{ post.image | relative_url }}" loading="lazy" class="w-full h-full object-cover" alt="{{ post.title }}">
+                    <img src="{{ post.image | relative_url }}" class="w-full h-full object-cover">
                     {% else %}
                     <i data-lucide="image" class="w-12 h-12 text-gray-200 dark:text-gray-700"></i>
                     {% endif %}
                 </div>
                 <div class="p-8 flex flex-col flex-1">
-                    <div class="text-xs font-bold text-green-600 mb-2 uppercase tracking-widest">{{ post.category | default: "随笔" }}</div>
-                    <h3 class="text-2xl font-bold mb-4 hover:text-green-600 transition-colors line-clamp-2">
+                    <div class="text-xs font-bold text-green-600 mb-3 uppercase tracking-widest">{{ post.category | default: "日常随笔" }}</div>
+                    <h3 class="text-2xl font-bold mb-4 hover:text-green-600">
                         <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
                     </h3>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2 mb-6 text-balance">{{ post.excerpt | strip_html | truncate: 80 }}</p>
-                    <div class="mt-auto pt-4 border-t border-gray-50 dark:border-gray-700/50 flex items-center justify-between text-xs text-gray-400">
-                        <div class="flex items-center"><i data-lucide="calendar" class="w-3 h-3 mr-2"></i> {{ post.date | date: "%Y-%m-%d" }}</div>
-                        <div class="font-medium">CC BY-NC-SA</div>
+                    <div class="text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 text-sm">{{ post.excerpt | strip_html | truncate: 80 }}</div>
+                    <div class="flex items-center text-sm text-gray-400 border-t dark:border-gray-700 pt-4 mt-auto">
+                        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> {{ post.date | date: "%Y年%m月%d日" }}
                     </div>
                 </div>
             </article>
+            {% else %}
+            <div class="col-span-full py-20 text-center text-gray-400 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-3xl">
+                请确认是否有文章发布。
+            </div>
             {% endfor %}
         </div>
-
-        {% if site.posts.size > 4 %}
-        <div id="loadMoreArea" class="mt-16 text-center">
-            <button id="loadMoreBtn" class="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl font-bold text-gray-600 dark:text-gray-300 hover:border-green-600 hover:text-green-600 transition-all group">
-                <span>阅读更多 Read More</span>
-                <i data-lucide="chevron-down" class="w-5 h-5 group-hover:translate-y-1 transition-transform"></i>
-            </button>
-        </div>
-        {% endif %}
     </main>
 
-    <!-- 关于与声明 (并列卡片设计) -->
+    <!-- 关于与声明 -->
     <section id="about" class="py-20 border-t dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950/50">
         <div class="max-w-5xl mx-auto px-6">
             <h2 class="text-2xl font-bold mb-10 text-center">关于与声明 Info & Legal</h2>
-            
             <div class="grid md:grid-cols-2 gap-8">
-                <!-- 联系卡片：隐藏邮箱跳转 -->
+                <!-- 联系卡片：隐藏并可复制 -->
                 <div class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col items-center text-center">
-                    <button id="mailActionBtn" class="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-2xl flex items-center justify-center mb-6 hover:scale-110 active:scale-95 transition-all">
-                        <i data-lucide="mail" class="w-8 h-8"></i>
+                    <button id="copyEmailBtn" class="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-2xl flex items-center justify-center mb-6 hover:scale-110 active:scale-95 transition-all">
+                        <i data-lucide="mail" id="mailIcon"></i>
                     </button>
                     <h3 class="font-bold text-lg mb-2">联系我 Contact</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 px-4">任何问题欢迎通过邮件联络我。</p>
-                    <button id="mailTextBtn" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-blue-600/20">
-                        发送邮件
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 px-4">任何想法，欢迎交流。</p>
+                    <button id="copyEmailText" class="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-blue-600/20 flex items-center gap-2">
+                        <span id="btnText">复制邮箱地址 Copy</span>
                     </button>
                 </div>
 
@@ -177,9 +169,9 @@ layout: null
                     <div class="w-16 h-16 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-2xl flex items-center justify-center mb-6">
                         <i data-lucide="shield-check" class="w-8 h-8"></i>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">站点条款 Legal</h3>
+                    <h3 class="font-bold text-lg mb-2">站点声明 Legal</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 px-4">了解关于本站的版权协议、免责声明及隐私保护政策。</p>
-                    <button onclick="document.getElementById('legalModal').classList.remove('hidden')" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20">
+                    <button onclick="document.getElementById('legalModal').classList.remove('hidden')" class="px-8 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20">
                         查看详细声明
                     </button>
                 </div>
@@ -187,7 +179,7 @@ layout: null
         </div>
     </section>
 
-    <!-- 法律申明弹窗 -->
+    <!-- 弹窗 -->
     <div id="legalModal" class="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">
         <div class="bg-white dark:bg-gray-800 w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col animate-in fade-in zoom-in duration-300">
             <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50">
@@ -198,78 +190,81 @@ layout: null
             </div>
             <div class="p-8 overflow-y-auto space-y-6 text-sm leading-relaxed text-gray-600 dark:text-gray-400 font-sans-custom">
                 <section>
-                    <h4 class="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                        <i data-lucide="creative-commons" class="w-4 h-4"></i> 版权申明
-                    </h4>
-                    <p>本站原创内容采用 <strong class="text-green-600">CC BY-NC-SA 4.0</strong> (署名-非商业性使用-相同方式共享) 许可协议。转载请务必保留出处。</p>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2"><i data-lucide="creative-commons" class="w-4 h-4"></i> 版权申明</h4>
+                    <p>本站内容采用 <strong>CC BY-NC-SA 4.0</strong> 许可协议。转载请务必保留出处。</p>
                 </section>
                 <section>
-                    <h4 class="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                        <i data-lucide="alert-circle" class="w-4 h-4"></i> 免责声明
-                    </h4>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4"></i> 免责声明</h4>
                     <p>内容仅代表个人观点。所载信息可能存在偏差，仅供参考，不构成专业建议。</p>
-                </section>
-                <section>
-                    <h4 class="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                        <i data-lucide="user-check" class="w-4 h-4"></i> 隐私政策
-                    </h4>
-                    <p>使用 Umami 进行匿名流量统计，不使用 Cookie，不收集任何个人隐私数据。</p>
                 </section>
             </div>
             <div class="p-6 border-t dark:border-gray-700 text-center">
-                <button onclick="document.getElementById('legalModal').classList.add('hidden')" class="px-10 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-600/30">
-                    确认并返回
-                </button>
+                <button onclick="document.getElementById('legalModal').classList.add('hidden')" class="px-10 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-600/30">确认返回</button>
             </div>
         </div>
     </div>
 
-    <footer class="py-12 border-t dark:border-gray-800 text-center text-gray-400 text-xs font-medium">
-        <div class="max-w-5xl mx-auto px-6">
-            <p class="mb-4 text-gray-500">© 2026 我什么都读的个人日志. 版权所有，保留所有权利.</p>
-            <div class="flex items-center justify-center gap-6">
-                <span class="flex items-center gap-1.5"><i data-lucide="shield" class="w-3.5 h-3.5 text-blue-500"></i> 隐私保护</span>
-                <span class="flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5 text-green-500"></i> CC协议保护</span>
-            </div>
-        </div>
+    <button id="backToTop" class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 text-green-600 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 opacity-0 -translate-y-4 pointer-events-none transition-all duration-300 z-50">
+        <i data-lucide="chevron-up" class="w-6 h-6"></i>
+    </button>
+
+    <footer class="py-12 border-t dark:border-gray-800 text-center text-gray-400 text-sm">
+        © 2026 我什么都读的个人日志. 版权所有，保留所有权利.
     </footer>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         lucide.createIcons();
 
-        // 邮箱安全解码逻辑
-        const mailAction = () => {
-            // bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20= = michaelzhangjm@outlook.com
-            const encoded = "bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20=";
-            window.location.href = `mailto:${atob(encoded)}`;
+        // 邮箱复制逻辑
+        const copyEmail = () => {
+            const encoded = "bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20="; // Base64 编码 
+            const email = atob(encoded);
+            
+            const tempInput = document.createElement("input");
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // 反馈效果
+            const btn = document.getElementById('copyEmailText');
+            const btnText = document.getElementById('btnText');
+            const originalText = btnText.innerText;
+            const originalBg = btn.className;
+
+            btnText.innerText = "已复制邮箱！";
+            btn.className = "px-8 py-2.5 bg-green-600 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-green-600/20 flex items-center gap-2";
+            
+            setTimeout(() => {
+                btnText.innerText = originalText;
+                btn.className = originalBg;
+            }, 2000);
         };
-        document.getElementById('mailActionBtn').onclick = mailAction;
-        document.getElementById('mailTextBtn').onclick = mailAction;
 
-        // 文章加载更多
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        const hiddenPosts = document.querySelectorAll('.post-hidden');
-        if (loadMoreBtn) {
-            loadMoreBtn.onclick = () => {
-                hiddenPosts.forEach((post, index) => {
-                    setTimeout(() => post.classList.add('post-visible'), index * 100);
-                });
-                document.getElementById('loadMoreArea').style.display = 'none';
-            };
-        }
+        document.getElementById('copyEmailBtn').onclick = copyEmail;
+        document.getElementById('copyEmailText').onclick = copyEmail;
 
-        // 手机菜单
-        const mMenu = document.getElementById('mobileMenu');
-        document.getElementById('menuBtn').onclick = () => { mMenu.classList.add('active'); document.body.style.overflow = 'hidden'; };
-        document.getElementById('closeMenu').onclick = () => { mMenu.classList.remove('active'); document.body.style.overflow = ''; };
+        // 菜单与主题逻辑保持不变
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        menuBtn.addEventListener('click', () => { mobileMenu.classList.add('active'); document.body.style.overflow = 'hidden'; });
+        const hideMenu = () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; };
+        closeMenu.addEventListener('click', hideMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', hideMenu));
 
-        // 主题切换
-        const themeBtn = document.getElementById('themeToggle');
-        themeBtn.onclick = () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.theme = isDark ? 'dark' : 'light';
-        };
+        const themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        const btt = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => { if (window.scrollY > 400) btt.classList.add('show'); else btt.classList.remove('show'); });
+        btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
 </body>
 </html>

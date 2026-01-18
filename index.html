@@ -7,7 +7,7 @@ layout: null
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO 核心：必须放在最前面 -->
+    <!-- SEO 核心 -->
     <title>我什么都读的个人空间</title>
     <meta name="description" content="欢迎来到我什么都读的个人空间。这里记录了一名中学生的学习笔记、阅读心得和生活感悟，分享成长的每一个瞬间。">
     <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客，readeverything">
@@ -17,7 +17,7 @@ layout: null
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://readeverything.us.ci/">
 
-    <!-- 结构化数据 (告知 Google 网站名称) -->
+    <!-- 结构化数据 -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -26,12 +26,6 @@ layout: null
       "url": "https://readeverything.us.ci/"
     }
     </script>
-
-    <!-- 社交媒体预览 (OG Tags) -->
-    <meta property="og:site_name" content="我什么都读的个人空间">
-    <meta property="og:title" content="我什么都读的个人空间">
-    <meta property="og:description" content="记录成长，分享感悟。">
-    <meta property="og:url" content="https://readeverything.us.ci/">
 
     <!-- 资源引入 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -54,13 +48,16 @@ layout: null
         .bg-soft-green { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); }
         .dark .bg-soft-green { background: linear-gradient(135deg, #064e3b 0%, #111827 100%); }
         #backToTop.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        
+        /* 移动端菜单展开样式 */
+        #mobileMenu.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
     </style>
     <!-- 统计代码 -->
     <script src="https://cloud.umami.is/script.js" data-website-id="f291870c-3549-4f53-a1c1-5f740bdae6bd"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
 
-    <nav class="fixed w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 z-50">
+    <nav class="fixed w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 z-[60]">
         <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <div class="bg-green-600 p-1.5 rounded-lg text-white">
@@ -68,22 +65,41 @@ layout: null
                 </div>
                 <span class="text-xl font-bold tracking-tight">我什么都读</span>
             </div>
-            <div class="flex items-center space-x-4">
-                <!-- 找到这一行 -->
-<div class="hidden md:flex space-x-8 text-sm font-medium">
-    <a href="/" class="hover:text-green-600">首页Home Page</a>
-    <a href="#posts" class="hover:text-green-600">文章Articles</a>
-    <a href="#about" class="hover:text-green-600">关于About me</a>
-    <!-- 添加下面这一行 -->
-    <a href="/friends/" class="hover:text-green-600">友链Friends</a>
-</div>
+
+            <!-- 右侧按钮区域 -->
+            <div class="flex items-center space-x-2">
+                <!-- 电脑端菜单 -->
+                <div class="hidden md:flex space-x-8 text-sm font-medium mr-4">
+                    <a href="/" class="hover:text-green-600">首页 Home Page</a>
+                    <a href="#posts" class="hover:text-green-600">文章 Articles</a>
+                    <a href="#about" class="hover:text-green-600">关于 About</a>
+                    <a href="/friends/" class="hover:text-green-600">友链 Friends</a>
+                </div>
+
+                <!-- 主题切换 -->
                 <button id="themeToggle" class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800">
                     <i data-lucide="sun" class="hidden dark:block w-5 h-5 text-yellow-400"></i>
                     <i data-lucide="moon" class="block dark:hidden w-5 h-5 text-gray-600"></i>
                 </button>
+
+                <!-- 移动端汉堡菜单触发器 -->
+                <button id="menuBtn" class="md:hidden p-2 rounded-xl bg-gray-100 dark:bg-gray-800">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- 移动端弹出导航层 -->
+    <div id="mobileMenu" class="fixed inset-0 bg-white/98 dark:bg-gray-950/98 z-[70] flex flex-col items-center justify-center space-y-8 opacity-0 pointer-events-none -translate-y-4 transition-all duration-300 md:hidden">
+        <button id="closeMenu" class="absolute top-8 right-8 p-3 text-gray-400">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <a href="/" class="mobile-link text-2xl font-bold">首页 Home</a>
+        <a href="#posts" class="mobile-link text-2xl font-bold">文章 Articles</a>
+        <a href="#about" class="mobile-link text-2xl font-bold">关于 About</a>
+        <a href="/friends/" class="mobile-link text-2xl font-bold">友链 Friends</a>
+    </div>
 
     <header class="bg-soft-green pt-32 pb-20 px-6 text-center">
         <div class="mb-8 relative inline-block">
@@ -92,7 +108,7 @@ layout: null
             </div>
         </div>
         <h1 class="text-4xl font-bold mb-6 text-gray-900 dark:text-white">欢迎来到我的数字天地 🌿</h1>
-        <p class="text-lg text-gray-600 dark:text-gray-400">我是一名正在探索世界的中学生。这里记录着我的个人笔记和心得。</p>
+        <p class="text-lg text-gray-600 dark:text-gray-400 px-4">我是一名正在探索世界的中学生。这里记录着我的个人笔记和心得。</p>
     </header>
 
     <main id="posts" class="max-w-5xl mx-auto px-6 py-20">
@@ -112,7 +128,7 @@ layout: null
                     <h3 class="text-2xl font-bold mb-4 hover:text-green-600">
                         <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
                     </h3>
-                    <div class="text-gray-500 dark:text-gray-400 mb-6 line-clamp-2">{{ post.excerpt | strip_html | truncate: 80 }}</div>
+                    <div class="text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 text-sm">{{ post.excerpt | strip_html | truncate: 80 }}</div>
                     <div class="flex items-center text-sm text-gray-400 border-t dark:border-gray-700 pt-4 mt-auto">
                         <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> {{ post.date | date: "%Y年%m月%d日" }}
                     </div>
@@ -120,16 +136,16 @@ layout: null
             </article>
             {% else %}
             <div class="col-span-full py-20 text-center text-gray-400 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-3xl">
-                请确认是否在 _posts 文件夹内创建了正确格式的 .md 文件。
+                请确认文章格式是否正确。
             </div>
             {% endfor %}
         </div>
     </main>
 
     <section id="about" class="py-20 border-t dark:border-gray-800">
-        <div class="max-w-2xl mx-auto text-center">
+        <div class="max-w-2xl mx-auto text-center px-6">
             <h2 class="text-2xl font-bold mb-10">关于我 Info</h2>
-            <div class="flex justify-center space-x-12">
+            <div class="flex justify-center">
                 <a href="mailto:michaelzhangjm@outlook.com" class="group flex flex-col items-center gap-2">
                     <div class="w-14 h-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 group-hover:text-blue-600 transition-all">
                         <i data-lucide="mail"></i>
@@ -145,37 +161,42 @@ layout: null
     </button>
 
     <footer class="py-12 border-t dark:border-gray-800 text-center text-gray-400 text-sm">
-        © 2026 我什么都读的个人日志. 纯净、健康、向上.
+        © 2026 我什么都读的个人日志.
     </footer>
 
     <script>
-        // 初始化图标
         lucide.createIcons();
 
-        // 暗黑模式逻辑
-        const themeToggle = document.getElementById('themeToggle');
-        if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
+        // 导航逻辑
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        const toggleMenu = () => mobileMenu.classList.toggle('active');
+
+        menuBtn.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
         
-        themeToggle.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
+        // 点击链接后自动关闭菜单
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
         });
 
-        // 返回顶部逻辑
+        // 暗黑模式
+        const themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+        
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // 返回顶部
         const btt = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) {
-                btt.classList.add('show');
-            } else {
-                btt.classList.remove('show');
-            }
+            if (window.scrollY > 400) btt.classList.add('show');
+            else btt.classList.remove('show');
         });
         btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>

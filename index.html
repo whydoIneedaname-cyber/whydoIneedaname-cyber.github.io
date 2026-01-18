@@ -7,54 +7,52 @@ layout: null
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 1. 优先级最高：DNS 预解析 -->
+    <!-- 性能优化：DNS 预解析 -->
     <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//unpkg.com">
 
     <title>我什么都读的个人空间</title>
     
-    <!-- 2. 核心 CSS (Tailwind) -->
+    <!-- 核心框架 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class' }
-        // 立即执行：防止暗黑模式闪屏
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
         }
     </script>
     
     <style>
-        /* 3. 字体优化策略：先使用系统字体，异步加载 Google Fonts */
-        /* 回退字体顺序：系统宋体 -> 华文宋体 -> 衬线体 */
-        .font-serif-custom { 
-            font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif; 
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
+        
+        body { 
+            font-family: 'Noto Sans SC', sans-serif; 
+            -webkit-font-smoothing: antialiased;
         }
-        .font-sans-custom { 
-            font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
-        }
+        h1, h2 { font-family: 'Noto Serif SC', serif; }
 
-        body { @extend .font-sans-custom; transition: opacity 0.3s ease; }
-        h1, h2 { @extend .font-serif-custom; }
+        /* 隐藏文章的过渡效果 */
+        .post-hidden { display: none; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
+        .post-visible { display: flex !important; opacity: 1; transform: translateY(0); }
 
-        /* 防止图片加载时的容器塌陷 */
-        .aspect-video-placeholder { aspect-ratio: 16 / 9; background-color: #f3f4f6; }
-        .dark .aspect-video-placeholder { background-color: #1f2937; }
+        .img-container { aspect-ratio: 16 / 9; background-color: #f3f4f6; position: relative; overflow: hidden; }
+        .dark .img-container { background-color: #1f2937; }
 
-        /* 菜单动画：优化性能，使用 transform 而非 margin/padding */
-        #mobileMenu { visibility: hidden; opacity: 0; transform: translateY(-10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bg-soft-green { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); }
+        .dark .bg-soft-green { background: linear-gradient(135deg, #064e3b 0%, #111827 100%); }
+
+        #mobileMenu { visibility: hidden; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
         #mobileMenu.active { visibility: visible; opacity: 1; transform: translateY(0); }
     </style>
 
-    <!-- 4. 异步加载非核心字体 -->
+    <!-- 异步加载字体 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap" media="print" onload="this.media='all'">
-    
     <script src="https://cloud.umami.is/script.js" data-website-id="f291870c-3549-4f53-a1c1-5f740bdae6bd"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
 
+    <!-- 导航栏 -->
     <nav class="fixed w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 z-[60]">
         <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center space-x-2">
@@ -63,13 +61,12 @@ layout: null
                 </div>
                 <span class="text-xl font-bold tracking-tight">我什么都读</span>
             </a>
-
             <div class="flex items-center space-x-2">
                 <div class="hidden md:flex space-x-8 text-sm font-medium mr-4">
-                    <a href="/" class="hover:text-green-600">首页</a>
-                    <a href="#posts" class="hover:text-green-600">文章</a>
-                    <a href="#about" class="hover:text-green-600">关于</a>
-                    <a href="/friends/" class="hover:text-green-600">友链</a>
+                    <a href="/" class="hover:text-green-600">首页 Home Page</a>
+                    <a href="#posts" class="hover:text-green-600">文章 Articles</a>
+                    <a href="#about" class="hover:text-green-600">关于 About</a>
+                    <a href="/friends/" class="hover:text-green-600">友链 Friends</a>
                 </div>
                 <button id="themeToggle" class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-all">
                     <i data-lucide="sun" class="hidden dark:block w-5 h-5 text-yellow-400"></i>
@@ -82,7 +79,7 @@ layout: null
         </div>
     </nav>
 
-    <!-- 手机导航层 (非透明，确保清晰) -->
+    <!-- 手机导航层 -->
     <div id="mobileMenu" class="fixed inset-0 bg-white dark:bg-gray-950 z-[100] flex flex-col items-center justify-center space-y-10 md:hidden">
         <button id="closeMenu" class="absolute top-8 right-8 p-3"><i data-lucide="x" class="w-10 h-10"></i></button>
         <nav class="flex flex-col items-center space-y-8 text-3xl font-bold">
@@ -94,50 +91,82 @@ layout: null
     </div>
 
     <header class="bg-soft-green pt-32 pb-20 px-6 text-center">
-        <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto mb-8 bg-gray-200">
-            <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover" loading="eager">
+        <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto mb-8 bg-gray-100">
+            <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover">
         </div>
-        <h1 class="text-4xl font-bold mb-6">欢迎来到我的数字天地 🌿</h1>
+        <h1 class="text-4xl font-bold mb-6 text-gray-900 dark:text-white">欢迎来到我的数字天地 🌿</h1>
         <p class="text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">记录笔记、感悟与成长的每一个瞬间。</p>
     </header>
 
+    <!-- 文章列表部分 -->
     <main id="posts" class="max-w-5xl mx-auto px-6 py-20">
         <h2 class="text-2xl font-bold mb-12 flex items-center gap-2">
-            <i data-lucide="clock-3" class="w-6 h-6 text-green-600"></i>最新发布
+            <i data-lucide="clock-3" class="w-6 h-6 text-green-600"></i>
+            最新发布 Updates
         </h2>
-        <div class="grid md:grid-cols-2 gap-8">
+        
+        <div id="postContainer" class="grid md:grid-cols-2 gap-8">
             {% for post in site.posts %}
-            <article class="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
-                <div class="aspect-video-placeholder">
+            <!-- 使用 loop.index 判断是否为前 4 篇 -->
+            <article class="article-card bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col {% if forloop.index > 4 %}post-hidden{% endif %} shadow-sm">
+                <div class="img-container">
                     {% if post.image %}
                     <img src="{{ post.image | relative_url }}" loading="lazy" class="w-full h-full object-cover" alt="{{ post.title }}">
                     {% else %}
                     <div class="w-full h-full flex items-center justify-center text-gray-200 dark:text-gray-700"><i data-lucide="image" class="w-12 h-12"></i></div>
                     {% endif %}
                 </div>
-                <div class="p-8">
-                    <div class="text-xs font-bold text-green-600 mb-2 uppercase">{{ post.category | default: "随笔" }}</div>
-                    <h3 class="text-2xl font-bold mb-4 hover:text-green-600 transition-colors">
+                <div class="p-8 flex flex-col flex-1">
+                    <div class="text-xs font-bold text-green-600 mb-2 uppercase tracking-widest">{{ post.category | default: "随笔" }}</div>
+                    <h3 class="text-2xl font-bold mb-4 hover:text-green-600 transition-colors line-clamp-2">
                         <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
                     </h3>
-                    <p class="text-gray-500 text-sm line-clamp-2">{{ post.excerpt | strip_html | truncate: 80 }}</p>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2 mb-6">{{ post.excerpt | strip_html | truncate: 80 }}</p>
+                    <div class="mt-auto pt-4 border-t border-gray-50 dark:border-gray-700/50 flex items-center text-xs text-gray-400">
+                        <i data-lucide="calendar" class="w-3 h-3 mr-2"></i> {{ post.date | date: "%Y年%m月%d日" }}
+                    </div>
                 </div>
             </article>
             {% endfor %}
         </div>
+
+        <!-- 查看更多按钮 -->
+        {% if site.posts.size > 4 %}
+        <div id="loadMoreArea" class="mt-16 text-center">
+            <button id="loadMoreBtn" class="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl font-bold text-gray-600 dark:text-gray-300 hover:border-green-600 hover:text-green-600 transition-all group">
+                <span>查看更多文章 Read More</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 group-hover:translate-y-1 transition-transform"></i>
+            </button>
+        </div>
+        {% endif %}
     </main>
 
     <footer class="py-12 border-t dark:border-gray-800 text-center text-gray-400 text-sm">
-        © 2026 我什么都读. 
+        © 2026 我什么都读的个人日志.
     </footer>
 
-    <!-- 底部脚本加载 -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        // 初始化图标
         lucide.createIcons();
 
-        // 极简菜单逻辑
+        // 查看更多逻辑
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const hiddenPosts = document.querySelectorAll('.post-hidden');
+        
+        if (loadMoreBtn) {
+            loadMoreBtn.onclick = () => {
+                hiddenPosts.forEach((post, index) => {
+                    // 设置一个小的延迟，让展开看起来更丝滑
+                    setTimeout(() => {
+                        post.classList.add('post-visible');
+                    }, index * 100);
+                });
+                // 展开后隐藏按钮区域
+                document.getElementById('loadMoreArea').style.display = 'none';
+            };
+        }
+
+        // 手机菜单
         const mMenu = document.getElementById('mobileMenu');
         const toggleMenu = (show) => {
             mMenu.classList.toggle('active', show);

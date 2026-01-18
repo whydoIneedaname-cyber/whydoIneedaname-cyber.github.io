@@ -10,7 +10,7 @@ layout: null
     <!-- SEO 核心：必须放在最前面 -->
     <title>我什么都读的个人空间</title>
     <meta name="description" content="欢迎来到我什么都读的个人空间。这里记录了一名中学生的学习笔记、阅读心得和生活感悟，分享成长的每一个瞬间。">
-    <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客">
+    <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客，readeverything">
     
     <!-- 索引指令 -->
     <meta name="robots" content="index, follow">
@@ -69,11 +69,14 @@ layout: null
                 <span class="text-xl font-bold tracking-tight">我什么都读</span>
             </div>
             <div class="flex items-center space-x-4">
-                <div class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="/" class="hover:text-green-600 transition">首页 Home Page</a>
-                    <a href="#posts" class="hover:text-green-600 transition">文章 Articles</a>
-                    <a href="#about" class="hover:text-green-600 transition">关于 About me</a>
-                </div>
+                <!-- 找到这一行 -->
+<div class="hidden md:flex space-x-8 text-sm font-medium">
+    <a href="/" class="hover:text-green-600">首页Home Page</a>
+    <a href="#posts" class="hover:text-green-600">文章Articles</a>
+    <a href="#about" class="hover:text-green-600">关于About me</a>
+    <!-- 添加下面这一行 -->
+    <a href="/friends/" class="hover:text-green-600">友链Friends</a>
+</div>
                 <button id="themeToggle" class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800">
                     <i data-lucide="sun" class="hidden dark:block w-5 h-5 text-yellow-400"></i>
                     <i data-lucide="moon" class="block dark:hidden w-5 h-5 text-gray-600"></i>
@@ -131,7 +134,7 @@ layout: null
                     <div class="w-14 h-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 group-hover:text-blue-600 transition-all">
                         <i data-lucide="mail"></i>
                     </div>
-                    <span class="text-xs font-medium">邮件联系 Mail me</span>
+                    <span class="text-xs font-medium">联系 Mail me</span>
                 </a>
             </div>
         </div>

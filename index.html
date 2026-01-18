@@ -7,24 +7,40 @@ layout: null
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- 1. 性能优化：DNS 预解析与预连接 (减少握手延迟) -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- SEO 核心 -->
     <title>我什么都读的个人空间</title>
     <meta name="description" content="欢迎来到我什么都读的个人空间。这里记录了一名中学生的学习笔记、阅读心得和生活感悟，分享成长的每一个瞬间。">
     <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客，readeverything">
-    
-    <!-- 索引指令 -->
     <meta name="robots" content="index, follow">
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://readeverything.us.ci/">
 
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "我什么都读的个人空间",
+      "url": "https://readeverything.us.ci/"
+    }
+    </script>
+
+    <!-- 核心框架：Tailwind (同步加载以防止样式闪烁) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = { darkMode: 'class' }
     </script>
     
     <style>
+        /* 字体优化：添加 &display=swap 确保文字优先显示 */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
+        
         body { 
             font-family: 'Noto Sans SC', sans-serif; 
             scroll-behavior: smooth; 
@@ -32,25 +48,28 @@ layout: null
             transition: background-color 0.4s ease, color 0.4s ease; 
         }
         h1, h2 { font-family: 'Noto Serif SC', serif; }
+        
+        /* 布局偏移优化：预留图片比例，防止加载时页面跳动 */
+        .img-container { aspect-ratio: 16 / 9; position: relative; overflow: hidden; background: #f9fafb; }
+        .dark .img-container { background: #111827; }
+
         .hover-lift { transition: all 0.3s ease; }
         .hover-lift:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
+        
         .bg-soft-green { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); }
         .dark .bg-soft-green { background: linear-gradient(135deg, #064e3b 0%, #111827 100%); }
-        #backToTop.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
         
-        /* 移动端菜单激活状态：完全不透明且层级最高 */
-        #mobileMenu.active { 
-            opacity: 1; 
-            pointer-events: auto; 
-            transform: scale(1);
-        }
+        #backToTop.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        #mobileMenu.active { opacity: 1; pointer-events: auto; transform: scale(1); }
     </style>
+
+    <!-- 非核心脚本：异步加载 (defer) -->
     <script src="https://cloud.umami.is/script.js" data-website-id="f291870c-3549-4f53-a1c1-5f740bdae6bd"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased">
 
     <!-- 导航栏 -->
-    <nav class="fixed w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 z-[60]">
+    <nav class="fixed w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 z-[60]">
         <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <div class="bg-green-600 p-1.5 rounded-lg text-white">
@@ -62,7 +81,7 @@ layout: null
             <div class="flex items-center space-x-2">
                 <!-- 电脑端链接 -->
                 <div class="hidden md:flex space-x-8 text-sm font-medium mr-4">
-                    <a href="/" class="hover:text-green-600 transition-colors">首页 Home page</a>
+                    <a href="/" class="hover:text-green-600 transition-colors">首页 Home</a>
                     <a href="#posts" class="hover:text-green-600 transition-colors">文章 Articles</a>
                     <a href="#about" class="hover:text-green-600 transition-colors">关于 About</a>
                     <a href="/friends/" class="hover:text-green-600 transition-colors">友链 Friends</a>
@@ -82,21 +101,19 @@ layout: null
         </div>
     </nav>
 
-    <!-- 手机端弹出菜单：采用实体色背景，确保极高对比度 -->
+    <!-- 手机端弹出菜单 -->
     <div id="mobileMenu" class="fixed inset-0 bg-white dark:bg-gray-950 z-[100] flex flex-col items-center justify-center space-y-10 opacity-0 pointer-events-none transform scale-95 transition-all duration-300 md:hidden">
-        <!-- 关闭按钮 -->
         <button id="closeMenu" class="absolute top-8 right-8 p-3 text-gray-500 hover:text-green-600 transition-colors">
             <i data-lucide="x" class="w-10 h-10"></i>
         </button>
 
-        <!-- 菜单链接 -->
         <nav class="flex flex-col items-center space-y-8">
             <a href="/" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">首页 Home</a>
             <a href="#posts" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">文章 Articles</a>
             <a href="#about" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">关于 About</a>
             <a href="/friends/" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">友链 Friends</a>
         </nav>
-
+        
         <div class="pt-10">
              <div class="bg-green-600/10 p-4 rounded-2xl">
                  <i data-lucide="leaf" class="w-8 h-8 text-green-600"></i>
@@ -104,17 +121,18 @@ layout: null
         </div>
     </div>
 
-    <!-- 页面内容主体保持不变 -->
+    <!-- Hero Section -->
     <header class="bg-soft-green pt-32 pb-20 px-6 text-center">
         <div class="mb-8 relative inline-block">
             <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto">
-                <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover">
+                <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover" width="112" height="112">
             </div>
         </div>
         <h1 class="text-4xl font-bold mb-6 text-gray-900 dark:text-white">欢迎来到我的数字天地 🌿</h1>
         <p class="text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">我是一名正在探索世界的中学生。这里记录着我的个人笔记和心得。</p>
     </header>
 
+    <!-- 文章列表 -->
     <main id="posts" class="max-w-5xl mx-auto px-6 py-20">
         <h2 class="text-2xl font-bold mb-12 flex items-center gap-2">
             <i data-lucide="clock-3" class="w-6 h-6 text-green-600"></i>
@@ -123,9 +141,10 @@ layout: null
         <div class="grid md:grid-cols-2 gap-8">
             {% for post in site.posts %}
             <article class="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover-lift flex flex-col shadow-sm">
-                <div class="h-44 bg-gray-50 dark:bg-gray-900/50 flex items-center justify-center">
+                <div class="img-container flex items-center justify-center">
                     {% if post.image %}
-                    <img src="{{ post.image | relative_url }}" class="w-full h-full object-cover">
+                    <!-- 原生图片懒加载 -->
+                    <img src="{{ post.image | relative_url }}" loading="lazy" class="w-full h-full object-cover" alt="{{ post.title }}">
                     {% else %}
                     <i data-lucide="image" class="w-12 h-12 text-gray-200 dark:text-gray-700"></i>
                     {% endif %}
@@ -149,6 +168,7 @@ layout: null
         </div>
     </main>
 
+    <!-- 关于 -->
     <section id="about" class="py-20 border-t dark:border-gray-800">
         <div class="max-w-2xl mx-auto text-center px-6">
             <h2 class="text-2xl font-bold mb-10">关于我 Info</h2>
@@ -163,6 +183,7 @@ layout: null
         </div>
     </section>
 
+    <!-- 返回顶部 -->
     <button id="backToTop" class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 text-green-600 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 opacity-0 -translate-y-4 pointer-events-none transition-all duration-300 z-50">
         <i data-lucide="chevron-up" class="w-6 h-6"></i>
     </button>
@@ -171,45 +192,51 @@ layout: null
         © 2026 我什么都读的个人日志.
     </footer>
 
+    <!-- 图标库：推迟到页面解析完后加载 -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     <script>
-        lucide.createIcons();
+        // 1. 初始化图标 (在资源加载完成后执行)
+        window.addEventListener('load', () => {
+            if(window.lucide) lucide.createIcons();
+        });
 
-        // 导航菜单逻辑
+        // 2. 导航菜单控制
         const menuBtn = document.getElementById('menuBtn');
         const closeMenu = document.getElementById('closeMenu');
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
 
-        // 打开菜单
-        menuBtn.addEventListener('click', () => {
+        const showMenu = () => {
             mobileMenu.classList.add('active');
-            document.body.style.overflow = 'hidden'; // 防止背景滚动
-        });
-
-        // 关闭菜单
+            document.body.style.overflow = 'hidden';
+        };
         const hideMenu = () => {
             mobileMenu.classList.remove('active');
-            document.body.style.overflow = ''; // 恢复滚动
+            document.body.style.overflow = '';
         };
 
+        menuBtn.addEventListener('click', showMenu);
         closeMenu.addEventListener('click', hideMenu);
         mobileLinks.forEach(link => link.addEventListener('click', hideMenu));
 
-        // 主题切换
-        const themeToggle = document.getElementById('themeToggle');
-        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
-        
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-        });
+        // 3. 主题切换 (使用立即执行函数防止闪烁)
+        (function() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+            
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+        })();
 
-        // 返回顶部
+        // 4. 返回顶部逻辑
         const btt = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 400) btt.classList.add('show');
             else btt.classList.remove('show');
-        });
+        }, { passive: true }); // 使用 passive 提升滚动性能
+        
         btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
 </body>

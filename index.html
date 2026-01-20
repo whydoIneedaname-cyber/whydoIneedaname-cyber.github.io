@@ -23,28 +23,56 @@ layout: null
         tailwind.config = { darkMode: 'class' }
     </script>
     
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
-        body { 
-            font-family: 'Noto Sans SC', sans-serif; 
-            scroll-behavior: smooth; 
-            -webkit-font-smoothing: antialiased;
-            transition: background-color 0.4s ease, color 0.4s ease; 
-        }
-        h1, h2 { font-family: 'Noto Serif SC', serif; }
-        .hover-lift { transition: all 0.3s ease; }
-        .hover-lift:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
-        .bg-soft-green { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); }
-        .dark .bg-soft-green { background: linear-gradient(135deg, #064e3b 0%, #111827 100%); }
-        #backToTop.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-        
-        /* 移动端菜单激活状态 */
-        #mobileMenu.active { 
-            opacity: 1; 
-            pointer-events: auto; 
-            transform: scale(1);
-        }
-    </style>
+<style>
+    /* 1. 字体引入：使用 loli.net 镜像加速国内访问，同时兼顾海外速度 */
+    @import url('https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
+
+    /* 2. 全局基础样式 */
+    body { 
+        font-family: 'Noto Sans SC', sans-serif; 
+        scroll-behavior: smooth; 
+        -webkit-font-smoothing: antialiased;
+        /* 平滑的昼夜模式切换动画 */
+        transition: background-color 0.4s ease, color 0.4s ease;
+    }
+    
+    /* 3. 标题与特定字体类 */
+    .serif, h1, h2 { 
+        font-family: 'Noto Serif SC', serif; 
+    }
+
+    /* 4. 交互动画：卡片悬浮提升效果 */
+    .hover-lift { 
+        transition: all 0.3s ease; 
+    }
+    .hover-lift:hover { 
+        transform: translateY(-8px); 
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); 
+    }
+
+    /* 5. 装饰背景：柔和的绿色渐变 */
+    .bg-soft-green { 
+        background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); 
+    }
+    .dark .bg-soft-green { 
+        background: linear-gradient(135deg, #064e3b 0%, #111827 100%); 
+    }
+
+    /* 6. 功能组件：回到顶部按钮 */
+    #backToTop.show { 
+        opacity: 1; 
+        transform: translateY(0); 
+        pointer-events: auto; 
+    }
+    
+    /* 7. 移动端导航菜单 */
+    #mobileMenu.active { 
+        opacity: 1; 
+        pointer-events: auto; 
+        transform: scale(1);
+    }
+</style>
+    
     <script src="https://cloud.umami.is/script.js" data-website-id="f291870c-3549-4f53-a1c1-5f740bdae6bd"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased">

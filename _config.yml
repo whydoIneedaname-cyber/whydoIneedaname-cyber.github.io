@@ -1,1 +1,19 @@
+# 站点基础信息
+title: 我什么都读的个人空间
+description: 记录成长感悟、技术分享与学习笔记，一个中学生的数字花园。
+url: "https://readeverything.us.ci" # 确保这是你的最终域名
 
+# 永久链接格式 (推荐这种简洁格式)
+permalink: /posts/:title/
+
+# 插件配置 (这是解决 SEO 的关键)
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# 排除不需要的文件
+exclude:
+  - README.md
+  - node_modules/
+  - .gitignore

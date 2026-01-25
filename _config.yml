@@ -2,6 +2,7 @@
 title: "我什么都读的个人空间"
 description: "一个人的梦话时刻，记录学习笔记与阅读心得。"
 url: "https://readeverything.us.ci"
+author: "我什么都读" # 建议添加作者信息，SEO 插件会自动抓取
 
 # 链接格式（SEO 核心：让链接变成 /posts/标题/ 这种 Google 喜欢的格式）
 permalink: /posts/:title/
@@ -10,9 +11,12 @@ permalink: /posts/:title/
 plugins:
   - jekyll-sitemap     # 自动生成 100% 正确的 sitemap.xml
   - jekyll-seo-tag     # 自动处理 {% seo %} 标签的所有内容
+  - jekyll-feed        # 建议开启，生成 RSS 订阅源
 
 # 排除不需要的文件
 exclude:
   - README.md
   - .gitignore
   - sitemap.xml        # 确保手动的文件不会干扰插件
+  - setup_guide.md
+  - seo_fix_guide.md

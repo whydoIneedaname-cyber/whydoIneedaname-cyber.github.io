@@ -5,12 +5,9 @@ layout: null
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    
-    <!-- 核心 SEO 插件 -->
     {% seo %}
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客, readeverything, Read Everything, Michael Zhang, Student Blog">
+    <meta name="keywords" content="我什么都读, Read Everything, 个人空间, Personal Space, 学习笔记, Study Notes, 中学生博客, Student Blog">
     <meta name="robots" content="index, follow">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,191 +18,332 @@ layout: null
             theme: {
                 extend: {
                     colors: {
-                        apple: {
-                            gray: '#f5f5f7',
-                            dark: '#1d1d1f',
-                            blue: '#0066cc'
+                        appleGray: {
+                            50: '#f5f5f7',
+                            100: '#e8e8ed',
                         }
                     }
                 }
             }
         }
     </script>
-
+    
     <style>
-        @import url('https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@300;400;600&display=swap');
+        @import url('https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500;600&display=swap');
 
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Noto Sans SC", sans-serif;
-            background-color: #ffffff;
-            color: #1d1d1f;
+            /* 优先调用 Apple 系统字体 */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Arial", "Noto Sans SC", sans-serif; 
+            scroll-behavior: smooth; 
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
         }
-
-        .dark body { background-color: #000000; color: #f5f5f7; }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.72);
+        
+        /* Apple 风格毛玻璃增强 */
+        .apple-blur {
             backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            background-color: rgba(255, 255, 255, 0.72);
+        }
+        .dark .apple-blur {
+            background-color: rgba(28, 28, 30, 0.72);
         }
 
-        .dark .glass {
-            background: rgba(22, 22, 23, 0.72);
+        /* 卡片悬浮动画 */
+        .hover-lift { 
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.25, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.25, 1); 
+        }
+        .hover-lift:hover { 
+            transform: scale(1.015); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
         }
 
-        /* Cookie Banner & Modal Animation */
-        #cookie-banner { transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .modal-overlay { transition: opacity 0.3s ease; }
-        .modal-content { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        /* 隐藏文章的过渡状态 */
+        .post-hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .post-visible {
+            display: flex !important;
+            animation: appleFadeIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
 
-        .apple-title { letter-spacing: -0.015em; font-weight: 600; }
-        .en-subtitle { font-weight: 400; opacity: 0.5; letter-spacing: 0.05em; font-size: 0.7rem; }
+        @keyframes appleFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #backToTop.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        #mobileMenu.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+
+        .en-sub { font-size: 0.85em; opacity: 0.6; font-weight: 400; margin-top: 2px; }
     </style>
+    
+    <script src="https://cloud.umami.is/script.js" data-website-id="f291870c-3549-4f53-a1c1-5f740bdae6bd"></script>
 </head>
     
-<body class="antialiased">
+<body class="bg-appleGray-50 dark:bg-black text-gray-900 dark:text-gray-100">
 
-    <!-- 导航栏 -->
-    <nav class="fixed w-full top-0 glass z-[100] border-b border-transparent dark:border-white/10">
-        <div class="max-w-[1100px] mx-auto px-6 h-12 flex items-center justify-between">
+    <!-- 全局导航栏 -->
+    <nav class="fixed w-full apple-blur border-b border-gray-200/50 dark:border-white/10 z-[60]">
+        <div class="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <i data-lucide="leaf" class="w-4 h-4 text-green-600"></i>
-                <span class="apple-title text-sm tracking-tight text-black dark:text-white">我什么都读 <span class="en-subtitle ml-1 uppercase">Read Everything</span></span>
+                <span class="text-sm font-semibold tracking-tight uppercase">Read Everything</span>
             </div>
-            <button id="themeToggle" class="opacity-70 hover:opacity-100 transition-all">
-                <i data-lucide="sun" class="hidden dark:block w-4 h-4 text-yellow-400"></i>
-                <i data-lucide="moon" class="block dark:hidden w-4 h-4"></i>
-            </button>
+
+            <!-- 桌面端菜单 -->
+            <div class="flex items-center space-x-1">
+                <div class="hidden md:flex space-x-8 text-[12px] font-medium mr-6">
+                    <a href="/" class="opacity-60 hover:opacity-100 transition-opacity flex flex-col items-center">
+                        <span>首页</span><span class="text-[9px] scale-90">Home</span>
+                    </a>
+                    <a href="#posts" class="opacity-60 hover:opacity-100 transition-opacity flex flex-col items-center">
+                        <span>文章</span><span class="text-[9px] scale-90">Articles</span>
+                    </a>
+                    <a href="#about" class="opacity-60 hover:opacity-100 transition-opacity flex flex-col items-center">
+                        <span>关于</span><span class="text-[9px] scale-90">About</span>
+                    </a>
+                    <a href="/friends/" class="opacity-60 hover:opacity-100 transition-opacity flex flex-col items-center">
+                        <span>友链</span><span class="text-[9px] scale-90">Friends</span>
+                    </a>
+                </div>
+
+                <button id="themeToggle" class="p-2 rounded-full hover:bg-black/5 dark:hover:white/10 transition-colors">
+                    <i data-lucide="sun" class="hidden dark:block w-4 h-4 text-yellow-400"></i>
+                    <i data-lucide="moon" class="block dark:hidden w-4 h-4 text-gray-600"></i>
+                </button>
+
+                <button id="menuBtn" class="md:hidden p-2"><i data-lucide="menu" class="w-5 h-5"></i></button>
+            </div>
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <header class="pt-40 pb-24 px-6 max-w-5xl mx-auto text-center">
-        <h1 class="text-5xl md:text-7xl apple-title mb-6 leading-[1.1]">欢迎来到我的数字天地。</h1>
-        <p class="text-xl text-gray-500 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed italic">
-            "A digital sanctuary for reading, thinking, and growth."
+    <!-- 移动端全屏菜单 -->
+    <div id="mobileMenu" class="fixed inset-0 bg-white dark:bg-black z-[100] flex flex-col items-center justify-center space-y-8 opacity-0 pointer-events-none transform scale-95 transition-all duration-500 md:hidden">
+        <button id="closeMenu" class="absolute top-6 right-6 p-2 opacity-50"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <nav class="flex flex-col items-center space-y-10">
+            <a href="/" class="flex flex-col items-center"><span class="text-2xl font-semibold">首页</span><span class="text-sm opacity-50">Home</span></a>
+            <a href="#posts" class="flex flex-col items-center"><span class="text-2xl font-semibold">文章</span><span class="text-sm opacity-50">Articles</span></a>
+            <a href="#about" class="flex flex-col items-center"><span class="text-2xl font-semibold">关于</span><span class="text-sm opacity-50">About</span></a>
+            <a href="/friends/" class="flex flex-col items-center"><span class="text-2xl font-semibold">友链</span><span class="text-sm opacity-50">Friends</span></a>
+        </nav>
+    </div>
+
+    <!-- 英雄区 (Hero Section) -->
+    <header class="pt-36 pb-24 px-6 text-center max-w-4xl mx-auto">
+        <div class="mb-12 relative inline-block group">
+            <div class="w-28 h-28 rounded-[2rem] shadow-2xl overflow-hidden mx-auto transition-all duration-700 group-hover:shadow-green-500/20">
+                <img src="{{ '/avatar.jpg' | relative_url }}" alt="Avatar" class="w-full h-full object-cover">
+            </div>
+        </div>
+        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
+            欢迎来到我的数字天地
+        </h1>
+        <div class="text-2xl md:text-3xl font-medium text-gray-400 dark:text-gray-500 mb-8 tracking-tight">
+            Welcome to my digital space.
+        </div>
+        <p class="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            我是一名正在探索世界的中学生，这里记录着我的个人笔记和碎碎念。<br>
+            <span class="text-sm opacity-60 italic">A student exploring the world, documenting personal notes and thoughts here.</span>
         </p>
     </header>
 
-    <!-- 文章摘要 -->
-    <main class="max-w-[1100px] mx-auto px-6 py-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {% for post in site.posts limit:4 %}
-            <article class="p-8 rounded-[2.5rem] bg-apple-gray dark:bg-gray-900 transition-all hover:shadow-xl">
-                <time class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ post.date | date: "%B %d, %Y" }}</time>
-                <h3 class="text-2xl apple-title mt-2 mb-4 hover:text-green-600 cursor-pointer">{{ post.title }}</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{{ post.excerpt | strip_html | truncate: 80 }}</p>
+    <!-- 文章展示区 -->
+    <main id="posts" class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col mb-12">
+            <h2 class="text-4xl font-bold tracking-tight">最新发布</h2>
+            <p class="text-gray-400 font-medium mt-1">Latest Updates</p>
+        </div>
+        
+        <div id="postGrid" class="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+            {% for post in site.posts %}
+            <article class="post-card bg-white dark:bg-[#1c1c1e] rounded-[2.5rem] overflow-hidden hover-lift flex flex-col border border-gray-100 dark:border-white/5 shadow-sm">
+                <div class="h-64 bg-gray-100 dark:bg-[#2c2c2e] overflow-hidden">
+                    {% if post.image %}
+                    <img src="{{ post.image | relative_url }}" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center opacity-10">
+                        <i data-lucide="leaf" class="w-20 h-20"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="p-10 flex flex-col flex-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-3 py-1 bg-green-500/10 text-green-600 text-[10px] font-bold rounded-full uppercase tracking-widest">
+                            {{ post.category | default: "Random" }}
+                        </span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 tracking-tight leading-snug">
+                        <a href="{{ post.url | relative_url }}" class="hover:text-green-600 transition-colors">{{ post.title }}</a>
+                    </h3>
+                    <div class="text-gray-500 dark:text-gray-400 mb-8 line-clamp-3 text-sm leading-relaxed">
+                        {{ post.excerpt | strip_html | truncate: 100 }}
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] text-gray-400 mt-auto pt-6 border-t border-gray-50 dark:border-white/5 uppercase tracking-wider font-semibold">
+                        <span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> {{ post.date | date: "%Y-%m-%d" }}</span>
+                        <span class="flex items-center gap-1">VIEW POST <i data-lucide="arrow-up-right" class="w-3 h-3"></i></span>
+                    </div>
+                </div>
             </article>
             {% endfor %}
         </div>
+
+        <!-- 查看更多按钮 (双语) -->
+        <div id="loadMoreContainer" class="hidden mt-16 flex justify-center">
+            <button id="loadMoreBtn" class="group px-10 py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-bold text-sm hover:scale-105 active:scale-95 transition-all shadow-xl flex flex-col items-center">
+                <span>浏览更多文章</span>
+                <span class="text-[10px] opacity-60">View More Articles</span>
+            </button>
+        </div>
     </main>
 
-    <!-- 底部合规声明 -->
-    <footer class="py-20 mt-20 bg-apple-gray dark:bg-gray-900/50">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <p class="text-gray-400 text-[10px] tracking-[0.4em] uppercase mb-6">© 2026 Michael Zhang / ReadEverything</p>
-            
-            <!-- 合规导航链接 -->
-            <div class="flex flex-wrap justify-center gap-6 text-[10px] font-bold uppercase tracking-widest opacity-60">
-                <button onclick="toggleModal('privacy-modal')" class="hover:text-blue-600">Privacy / 隐私政策</button>
-                <button onclick="toggleModal('terms-modal')" class="hover:text-blue-600">Compliance / 合规声明</button>
-                <a href="mailto:michaelzhangjm@outlook.com" class="hover:text-blue-600">Contact / 联系我</a>
-            </div>
-        </div>
-    </footer>
+    <!-- 联系与声明区 -->
+    <section id="about" class="py-24 border-t border-gray-200 dark:border-white/10 bg-white/50 dark:bg-white/[0.02]">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 联系 -->
+                <div class="flex flex-col items-center text-center p-12 bg-white dark:bg-[#1c1c1e] rounded-[3rem] shadow-sm border border-gray-100 dark:border-white/5">
+                    <div class="w-16 h-16 bg-blue-500/10 text-blue-600 rounded-[1.5rem] flex items-center justify-center mb-6">
+                        <i data-lucide="mail" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">交流想法</h3>
+                    <p class="text-sm opacity-50 mb-4 font-medium uppercase tracking-tighter italic">Got something to say?</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-10 max-w-xs">欢迎随时通过邮件与我联系，分享你的见解。<br>Feel free to reach out via email.</p>
+                    <button id="copyEmailText" class="px-10 py-4 bg-blue-600 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-600/20 hover:bg-blue-700 transition-all w-full md:w-auto">
+                        <span id="btnText">复制邮箱地址 / Copy Email</span>
+                    </button>
+                </div>
 
-    <!-- Cookie 同意栏 (GDPR/CCPA 要求) -->
-    <div id="cookie-banner" class="fixed bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-96 glass p-6 rounded-[2rem] shadow-2xl z-[200] border border-white/20 translate-y-[150%]">
-        <div class="flex items-start gap-4">
-            <div class="p-2 bg-blue-500 rounded-xl text-white">
-                <i data-lucide="cookie" class="w-5 h-5"></i>
-            </div>
-            <div class="flex-1">
-                <h4 class="text-sm font-bold mb-1">We respect your privacy</h4>
-                <p class="text-[11px] text-gray-500 leading-relaxed mb-4">
-                    本站使用 Cookie 优化体验。继续使用即表示您同意我们的隐私声明。
-                </p>
-                <div class="flex gap-2">
-                    <button onclick="acceptCookies()" class="flex-1 bg-black dark:bg-white text-white dark:text-black py-2 rounded-full text-[10px] font-bold uppercase tracking-wider">Accept / 接受</button>
-                    <button onclick="toggleModal('privacy-modal')" class="flex-1 bg-gray-200 dark:bg-gray-800 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider">More / 详情</button>
+                <!-- 法律声明 -->
+                <div class="flex flex-col items-center text-center p-12 bg-white dark:bg-[#1c1c1e] rounded-[3rem] shadow-sm border border-gray-100 dark:border-white/5">
+                    <div class="w-16 h-16 bg-amber-500/10 text-amber-500 rounded-[1.5rem] flex items-center justify-center mb-6">
+                        <i data-lucide="shield-check" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">站点声明</h3>
+                    <p class="text-sm opacity-50 mb-4 font-medium uppercase tracking-tighter italic">Legal Information</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-10 max-w-xs">了解版权、免责声明及隐私政策。<br>Copyright and Privacy policy details.</p>
+                    <button onclick="document.getElementById('legalModal').classList.remove('hidden')" class="px-10 py-4 bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white text-sm font-bold rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all w-full md:w-auto">
+                        阅读条款 / View Terms
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- 隐私政策模态框 (GDPR/PIPL/PDPO/CCPA) -->
-    <div id="privacy-modal" class="fixed inset-0 z-[300] hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm modal-overlay" onclick="toggleModal('privacy-modal')"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-2xl max-h-[80vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-[3rem] p-10 shadow-2xl modal-content">
-            <div class="flex justify-between items-start mb-8">
+    <!-- 弹窗 (Legal Modal) -->
+    <div id="legalModal" class="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/40 backdrop-blur-md hidden">
+        <div class="bg-white dark:bg-[#1c1c1e] w-full max-w-xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in duration-300">
+            <div class="p-10 pb-4 flex justify-between items-center">
                 <div>
-                    <h2 class="text-3xl apple-title">Privacy Policy</h2>
-                    <p class="text-[10px] uppercase tracking-widest text-blue-600 mt-1">Global Data Compliance Statement</p>
+                    <h3 class="text-3xl font-bold tracking-tight">站点声明</h3>
+                    <p class="text-xs text-gray-400 font-bold uppercase mt-1">Legal Notice</p>
                 </div>
-                <button onclick="toggleModal('privacy-modal')" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
-                    <i data-lucide="x" class="w-6 h-6"></i>
+                <button onclick="document.getElementById('legalModal').classList.add('hidden')" class="p-3 bg-gray-100 dark:bg-white/10 rounded-full opacity-60 hover:opacity-100 transition-opacity">
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-            
-            <div class="space-y-6 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+            <div class="px-10 py-6 space-y-8 text-sm text-gray-500 dark:text-gray-400 leading-relaxed overflow-y-auto max-h-[60vh]">
                 <section>
-                    <h3 class="font-bold text-black dark:text-white mb-2 uppercase text-xs tracking-wider">1. 数据收集 (Data Collection / GDPR & PIPL)</h3>
-                    <p>本站作为个人非营利博客，不主动收集您的个人识别信息。我们仅通过 Cookie 或类似技术收集基础的匿名访问日志（如 IP、浏览器类型），用于优化访问速度及安全性。</p>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-2 flex flex-col">
+                        <span>版权申明</span>
+                        <span class="text-[10px] opacity-50">Copyright Notice</span>
+                    </h4>
+                    <p>本站内容采用 <strong>CC BY-NC-SA 4.0</strong> 许可协议。转载请务必保留出处。All content is licensed under CC BY-NC-SA 4.0.</p>
                 </section>
                 <section>
-                    <h3 class="font-bold text-black dark:text-white mb-2 uppercase text-xs tracking-wider">2. 权利保护 (Your Rights / CCPA & PDPO)</h3>
-                    <p>根据《个人资料（隐私）条例》（香港）及其他法律，您有权查阅、更正或请求删除本站存储的任何关于您的匿名数据。我们承诺“不销售、不分享”您的个人资料。</p>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-2 flex flex-col">
+                        <span>免责声明</span>
+                        <span class="text-[10px] opacity-50">Disclaimer</span>
+                    </h4>
+                    <p>内容仅代表个人观点，不构成专业建议。Views expressed are personal and for reference only.</p>
                 </section>
-                <section>
-                    <h3 class="font-bold text-black dark:text-white mb-2 uppercase text-xs tracking-wider">3. 安全与存储 (Storage)</h3>
-                    <p>所有数据采取加密处理，仅在必要期限内存储。若发生数据泄露，我们将依法履行告知义务。</p>
-                </section>
-                <div class="pt-6 border-t dark:border-white/10 text-[10px] opacity-50">
-                    Last Updated: January 2026 | Effective for users in EU, US, CN, HK.
-                </div>
+            </div>
+            <div class="p-10 pt-4">
+                <button onclick="document.getElementById('legalModal').classList.add('hidden')" class="w-full py-5 bg-gray-900 dark:bg-white text-white dark:text-black rounded-[1.5rem] font-bold text-lg">确认 / Understood</button>
             </div>
         </div>
     </div>
+
+    <!-- 返回顶部 -->
+    <button id="backToTop" class="fixed bottom-10 right-10 p-4 apple-blur shadow-2xl rounded-2xl border border-gray-200 dark:border-white/10 opacity-0 -translate-y-4 pointer-events-none transition-all duration-500 z-50 text-green-600">
+        <i data-lucide="arrow-up" class="w-6 h-6"></i>
+    </button>
+
+    <!-- 页脚 -->
+    <footer class="py-20 text-center text-gray-400 text-[11px] font-medium tracking-widest uppercase">
+        <div class="flex justify-center items-center gap-3 mb-6 opacity-40">
+             <i data-lucide="leaf" class="w-4 h-4"></i>
+             <span>Read Everything ™️</span>
+        </div>
+        <div class="space-y-1">
+            <p>© 2026 我什么都读™️的个人日志. All rights reserved.</p>
+            <p>Designed with Apple style and international soul.</p>
+        </div>
+    </footer>
 
     <script>
         lucide.createIcons();
 
-        // Cookie Banner Logic
-        window.addEventListener('load', () => {
-            if (!localStorage.getItem('cookies-accepted')) {
+        // 核心折叠逻辑 (超过4篇自动处理)
+        const postGrid = document.getElementById('postGrid');
+        const posts = postGrid.querySelectorAll('.post-card');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const loadMoreContainer = document.getElementById('loadMoreContainer');
+        const MAX_POSTS = 4;
+
+        if (posts.length > MAX_POSTS) {
+            loadMoreContainer.classList.remove('hidden');
+            posts.forEach((post, index) => {
+                if (index >= MAX_POSTS) post.classList.add('post-hidden');
+            });
+        }
+
+        loadMoreBtn.addEventListener('click', () => {
+            const hiddenPosts = postGrid.querySelectorAll('.post-hidden');
+            hiddenPosts.forEach((post, index) => {
                 setTimeout(() => {
-                    document.getElementById('cookie-banner').style.transform = 'translateY(0)';
-                }, 1000);
-            }
+                    post.classList.remove('post-hidden');
+                    post.classList.add('post-visible');
+                }, index * 120);
+            });
+            loadMoreContainer.classList.add('opacity-0');
+            setTimeout(() => loadMoreContainer.remove(), 600);
         });
 
-        function acceptCookies() {
-            localStorage.setItem('cookies-accepted', 'true');
-            document.getElementById('cookie-banner').style.transform = 'translateY(150%)';
-        }
+        // 邮箱复制逻辑
+        const copyEmail = () => {
+            const email = atob("bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20=");
+            const temp = document.createElement("input");
+            temp.value = email;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
 
-        // Modal Logic
-        function toggleModal(id) {
-            const modal = document.getElementById(id);
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            } else {
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
-        }
-
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        }
-        themeToggle.onclick = () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            const btnText = document.getElementById('btnText');
+            const original = btnText.innerText;
+            btnText.innerText = "SUCCESS / 已复制！";
+            setTimeout(() => btnText.innerText = original, 2500);
         };
+        document.getElementById('copyEmailText').onclick = copyEmail;
+
+        // 导航与主题
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.onclick = () => { mobileMenu.classList.add('active'); document.body.style.overflow = 'hidden'; };
+        document.getElementById('closeMenu').onclick = () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; };
+
+        const themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+        themeToggle.onclick = () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        };
+
+        const btt = document.getElementById('backToTop');
+        window.onscroll = () => { if (window.scrollY > 500) btt.classList.add('show'); else btt.classList.remove('show'); };
+        btt.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
     </script>
 </body>
 </html>

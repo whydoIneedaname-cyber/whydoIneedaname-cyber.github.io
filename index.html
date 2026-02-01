@@ -5,15 +5,42 @@ layout: null
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    {% seo %} <!-- 确保首页在搜索结果中显示正确 -->
+    
+    <!-- Jekyll SEO Tag 会自动生成大部分 meta 标签 -->
+    {% seo %}
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    
+    <!-- 额外的 keywords（Jekyll SEO Tag 不会自动生成） -->
     <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客，readeverything，一些碎碎念">
     
-    <!-- 索引指令 -->
-    <meta name="robots" content="index, follow">
+    <!-- Bing 专用的抓取指令 -->
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+    <!-- 🔥 核心优化：JSON-LD 结构化数据（Jekyll SEO Tag 不会生成这个） -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "{{ site.title }}",
+      "description": "{{ site.description }}",
+      "url": "{{ site.url }}",
+      "author": {
+        "@type": "Person",
+        "name": "{{ site.author }}"
+      },
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@type": "Person",
+        "name": "{{ site.author }}"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ site.url }}/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -97,13 +124,13 @@ layout: null
                 </div>
 
                 <!-- 切换主题 -->
-                <button id="themeToggle" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <button id="themeToggle" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="切换主题">
                     <i data-lucide="sun" class="hidden dark:block w-5 h-5 text-yellow-400"></i>
                     <i data-lucide="moon" class="block dark:hidden w-5 h-5 text-gray-600"></i>
                 </button>
 
                 <!-- 移动端菜单按钮 -->
-                <button id="menuBtn" class="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <button id="menuBtn" class="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="打开菜单">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
@@ -112,7 +139,7 @@ layout: null
 
     <!-- 手机端弹出菜单 -->
     <div id="mobileMenu" class="fixed inset-0 bg-white dark:bg-gray-950 z-[100] flex flex-col items-center justify-center space-y-10 opacity-0 pointer-events-none transform scale-95 transition-all duration-300 md:hidden">
-        <button id="closeMenu" class="absolute top-8 right-8 p-3 text-gray-500 hover:text-green-600 transition-colors">
+        <button id="closeMenu" class="absolute top-8 right-8 p-3 text-gray-500 hover:text-green-600 transition-colors" aria-label="关闭菜单">
             <i data-lucide="x" class="w-10 h-10"></i>
         </button>
 
@@ -134,7 +161,7 @@ layout: null
     <header class="bg-soft-green pt-32 pb-20 px-6 text-center border-b dark:border-gray-800">
         <div class="mb-8 relative inline-block">
             <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto">
-                <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover">
+                <img src="{{ '/avatar.jpg' | relative_url }}" alt="我什么都读的头像" class="w-full h-full object-cover">
             </div>
         </div>
         <h1 class="text-4xl font-bold mb-6 text-gray-900 dark:text-white">欢迎来到我的数字天地 🌿</h1>
@@ -151,7 +178,7 @@ layout: null
             <article class="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover-lift flex flex-col shadow-sm">
                 <div class="h-44 bg-gray-50 dark:bg-gray-900/50 flex items-center justify-center">
                     {% if post.image %}
-                    <img src="{{ post.image | relative_url }}" class="w-full h-full object-cover">
+                    <img src="{{ post.image | relative_url }}" class="w-full h-full object-cover" alt="{{ post.title }}">
                     {% else %}
                     <i data-lucide="image" class="w-12 h-12 text-gray-200 dark:text-gray-700"></i>
                     {% endif %}
@@ -163,7 +190,8 @@ layout: null
                     </h3>
                     <div class="text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 text-sm">{{ post.excerpt | strip_html | truncate: 80 }}</div>
                     <div class="flex items-center text-sm text-gray-400 border-t dark:border-gray-700 pt-4 mt-auto">
-                        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> {{ post.date | date: "%Y年%m月%d日" }}
+                        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> 
+                        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y年%m月%d日" }}</time>
                     </div>
                 </div>
             </article>
@@ -182,7 +210,7 @@ layout: null
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- 联系卡片：隐藏并可复制 -->
                 <div class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col items-center text-center">
-                    <button id="copyEmailBtn" class="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-2xl flex items-center justify-center mb-6 hover:scale-110 active:scale-95 transition-all">
+                    <button id="copyEmailBtn" class="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-2xl flex items-center justify-center mb-6 hover:scale-110 active:scale-95 transition-all" aria-label="复制邮箱">
                         <i data-lucide="mail" id="mailIcon"></i>
                     </button>
                     <h3 class="font-bold text-lg mb-2">联系我 Contact</h3>
@@ -212,7 +240,7 @@ layout: null
         <div class="bg-white dark:bg-gray-800 w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col animate-in fade-in zoom-in duration-300">
             <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50">
                 <h3 class="text-xl font-bold">站点声明 Legal Terms</h3>
-                <button onclick="document.getElementById('legalModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 p-1">
+                <button onclick="document.getElementById('legalModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 p-1" aria-label="关闭">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
@@ -232,7 +260,7 @@ layout: null
         </div>
     </div>
 
-    <button id="backToTop" class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 text-green-600 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 opacity-0 -translate-y-4 pointer-events-none transition-all duration-300 z-50">
+    <button id="backToTop" class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 text-green-600 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 opacity-0 -translate-y-4 pointer-events-none transition-all duration-300 z-50" aria-label="回到顶部">
         <i data-lucide="chevron-up" class="w-6 h-6"></i>
     </button>
 

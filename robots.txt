@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /assets/css/
-Disallow: /assets/js/
 
 Sitemap: https://readeverything.us.ci/sitemap.xml

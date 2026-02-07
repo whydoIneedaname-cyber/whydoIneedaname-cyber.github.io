@@ -97,12 +97,164 @@ layout: null
         pointer-events: auto; 
         transform: scale(1);
     }
+
+    /* 8. 隐私同意弹窗动画 */
+    #privacyConsent {
+        animation: slideUp 0.4s ease-out;
+    }
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 </style>
     
-    <script src="https://cloud.umami.is/script.js" data-website-id="f291870c-3549-4f53-a1c1-5f740bdae6bd"></script>
+    <!-- 🔒 隐私合规：仅在用户同意后加载分析脚本 -->
+    <script id="analytics-script"></script>
 </head>
     
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased">
+
+    <!-- 🔒 隐私同意弹窗 -->
+    <div id="privacyConsent" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t-2 border-green-600 shadow-2xl z-[300] hidden">
+        <div class="max-w-5xl mx-auto px-6 py-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="cookie" class="w-5 h-5 text-green-600"></i>
+                        <h3 class="font-bold text-lg">隐私与 Cookie 设置 Privacy & Cookies</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                        我们使用必要的 Cookie 来确保网站正常运行，以及分析工具（Umami）来了解网站使用情况。这些数据是匿名的，不会用于广告或出售给第三方。您可以选择接受或拒绝非必要的 Cookie。
+                        <button onclick="showPrivacyDetails()" class="text-green-600 hover:text-green-700 underline ml-1">了解更多</button>
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <button onclick="rejectAnalytics()" class="px-6 py-2.5 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                        仅必要 Necessary Only
+                    </button>
+                    <button onclick="acceptAnalytics()" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-lg shadow-green-600/30 transition-all">
+                        接受全部 Accept All
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔒 隐私政策详情弹窗 -->
+    <div id="privacyDetailsModal" class="fixed inset-0 z-[400] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col">
+            <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-green-600"></i>
+                    隐私政策 Privacy Policy
+                </h3>
+                <button onclick="hidePrivacyDetails()" class="text-gray-400 hover:text-gray-600 p-1" aria-label="关闭">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-8 overflow-y-auto space-y-6 text-sm leading-relaxed">
+                <section>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="info" class="w-5 h-5 text-green-600"></i>
+                        我们收集什么数据？
+                    </h4>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400 ml-7">
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600 mt-1">•</span>
+                            <span><strong>必要数据：</strong>浏览器类型、操作系统、访问时间（用于网站正常运行）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600 mt-1">•</span>
+                            <span><strong>分析数据（可选）：</strong>页面浏览量、访问来源、停留时间（通过 Umami 匿名收集）</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="lock" class="w-5 h-5 text-green-600"></i>
+                        我们如何使用数据？
+                    </h4>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400 ml-7">
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600 mt-1">•</span>
+                            <span>改善网站内容和用户体验</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600 mt-1">•</span>
+                            <span>了解哪些内容最受欢迎</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600 mt-1">•</span>
+                            <span>保障网站安全和性能</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="users" class="w-5 h-5 text-green-600"></i>
+                        第三方服务
+                    </h4>
+                    <div class="text-gray-600 dark:text-gray-400 ml-7 space-y-2">
+                        <p><strong>Umami Analytics：</strong>开源、隐私友好的网站分析工具，不使用 Cookie，不追踪个人信息。</p>
+                        <p class="text-xs">数据存储位置：Umami Cloud（符合 GDPR 标准）</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+                        您的权利
+                    </h4>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400 ml-7">
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600 mt-1">•</span>
+                            <span>随时更改您的 Cookie 偏好设置</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600 mt-1">•</span>
+                            <span>拒绝非必要的数据收集</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600 mt-1">•</span>
+                            <span>清除浏览器中的所有 Cookie</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl">
+                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                        <strong>数据保护承诺：</strong>我们不会出售、出租或分享您的个人数据给任何第三方用于营销目的。所有数据收集都是匿名和聚合的。
+                    </p>
+                </section>
+
+                <section class="text-xs text-gray-500 dark:text-gray-500 border-t dark:border-gray-700 pt-4">
+                    <p>最后更新：2026年2月7日</p>
+                    <p class="mt-2">符合：GDPR（欧盟）、CCPA（加州）、PIPEDA（加拿大）等数据保护法规</p>
+                </section>
+            </div>
+            <div class="p-6 border-t dark:border-gray-700 flex flex-col sm:flex-row gap-3 justify-end">
+                <button onclick="rejectAnalytics(); hidePrivacyDetails();" class="px-6 py-2.5 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                    仅必要 Cookie
+                </button>
+                <button onclick="acceptAnalytics(); hidePrivacyDetails();" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-lg shadow-green-600/30 transition-all">
+                    接受全部
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔒 隐私设置按钮（固定在左下角） -->
+    <button id="privacySettingsBtn" class="fixed bottom-8 left-8 p-3 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 shadow-xl rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all z-50 hidden" onclick="showPrivacyConsent()" aria-label="隐私设置" title="隐私设置">
+        <i data-lucide="shield" class="w-5 h-5"></i>
+    </button>
 
     <!-- 导航栏 -->
     <nav class="fixed w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 z-[60]">
@@ -270,6 +422,84 @@ layout: null
 
     <script>
         lucide.createIcons();
+
+        // 🔒 隐私合规管理
+        const CONSENT_KEY = 'privacy-consent';
+        const CONSENT_TIMESTAMP_KEY = 'privacy-consent-timestamp';
+        const CONSENT_EXPIRY_DAYS = 365; // 同意有效期1年
+
+        // 检查同意是否过期
+        function isConsentValid() {
+            const timestamp = localStorage.getItem(CONSENT_TIMESTAMP_KEY);
+            if (!timestamp) return false;
+            const consentDate = new Date(parseInt(timestamp));
+            const expiryDate = new Date(consentDate.getTime() + CONSENT_EXPIRY_DAYS * 24 * 60 * 60 * 1000);
+            return new Date() < expiryDate;
+        }
+
+        // 显示隐私同意弹窗
+        function showPrivacyConsent() {
+            document.getElementById('privacyConsent').classList.remove('hidden');
+        }
+
+        // 隐藏隐私同意弹窗
+        function hidePrivacyConsent() {
+            document.getElementById('privacyConsent').classList.add('hidden');
+        }
+
+        // 显示隐私详情
+        function showPrivacyDetails() {
+            document.getElementById('privacyDetailsModal').classList.remove('hidden');
+            lucide.createIcons(); // 重新渲染图标
+        }
+
+        // 隐藏隐私详情
+        function hidePrivacyDetails() {
+            document.getElementById('privacyDetailsModal').classList.add('hidden');
+        }
+
+        // 加载分析脚本
+        function loadAnalytics() {
+            const script = document.createElement('script');
+            script.src = 'https://cloud.umami.is/script.js';
+            script.setAttribute('data-website-id', 'f291870c-3549-4f53-a1c1-5f740bdae6bd');
+            script.async = true;
+            document.getElementById('analytics-script').appendChild(script);
+        }
+
+        // 接受分析
+        function acceptAnalytics() {
+            localStorage.setItem(CONSENT_KEY, 'accepted');
+            localStorage.setItem(CONSENT_TIMESTAMP_KEY, Date.now().toString());
+            loadAnalytics();
+            hidePrivacyConsent();
+            document.getElementById('privacySettingsBtn').classList.remove('hidden');
+        }
+
+        // 拒绝分析
+        function rejectAnalytics() {
+            localStorage.setItem(CONSENT_KEY, 'rejected');
+            localStorage.setItem(CONSENT_TIMESTAMP_KEY, Date.now().toString());
+            hidePrivacyConsent();
+            document.getElementById('privacySettingsBtn').classList.remove('hidden');
+        }
+
+        // 页面加载时检查隐私同意状态
+        window.addEventListener('DOMContentLoaded', function() {
+            const consent = localStorage.getItem(CONSENT_KEY);
+            
+            if (!consent || !isConsentValid()) {
+                // 没有同意记录或已过期，显示弹窗
+                showPrivacyConsent();
+            } else if (consent === 'accepted') {
+                // 已同意，加载分析脚本
+                loadAnalytics();
+                document.getElementById('privacySettingsBtn').classList.remove('hidden');
+            } else {
+                // 已拒绝，只显示设置按钮
+                document.getElementById('privacySettingsBtn').classList.remove('hidden');
+            }
+        });
 
         // 邮箱复制逻辑
         const copyEmail = () => {

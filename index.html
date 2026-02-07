@@ -112,6 +112,29 @@ layout: null
             opacity: 1;
         }
     }
+
+    /* 9. 分享按钮样式 */
+    .share-button {
+        transition: all 0.3s ease;
+    }
+    .share-button:hover {
+        transform: translateY(-4px) scale(1.05);
+    }
+
+    /* 10. 分享菜单动画 */
+    #shareMenu {
+        animation: fadeInScale 0.3s ease-out;
+    }
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 </style>
     
     <!-- 🔒 隐私合规：仅在用户同意后加载分析脚本 -->
@@ -251,6 +274,81 @@ layout: null
         </div>
     </div>
 
+    <!-- 📤 分享菜单弹窗 -->
+    <div id="shareMenu" class="fixed inset-0 z-[250] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
+            <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="share-2" class="w-6 h-6 text-green-600"></i>
+                    分享这篇文章 Share
+                </h3>
+                <button onclick="hideShareMenu()" class="text-gray-400 hover:text-gray-600 p-1" aria-label="关闭">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-8">
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- 微信分享 -->
+                    <button onclick="shareToWechat()" class="share-button flex flex-col items-center gap-3 p-6 bg-green-50 dark:bg-green-900/20 rounded-2xl border-2 border-green-100 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 hover:shadow-lg">
+                        <div class="w-14 h-14 bg-green-500 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1 .207-.665c1.835-1.24 2.941-2.989 2.941-4.888 0-3.491-3.473-6.097-7.530-6.097zm-1.298 2.01c.584 0 1.055.48 1.055 1.07 0 .591-.47 1.071-1.055 1.071-.583 0-1.054-.48-1.054-1.07 0-.591.47-1.071 1.054-1.071zm4.305 0c.584 0 1.055.48 1.055 1.07 0 .591-.47 1.071-1.055 1.071-.583 0-1.054-.48-1.054-1.07 0-.591.47-1.071 1.054-1.071z"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-gray-700 dark:text-gray-300">微信</span>
+                    </button>
+
+                    <!-- QQ分享 -->
+                    <button onclick="shareToQQ()" class="share-button flex flex-col items-center gap-3 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border-2 border-blue-100 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 hover:shadow-lg">
+                        <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.526 4.632 17.351 0 12 0S4.474 4.632 4.474 9.241c0 .274.013.804.014.836l-1.08 2.695a39.548 39.548 0 0 0-.802 2.264c-1.021 3.283-.69 4.643-.438 4.673.253.03 1.084-1.256 1.084-1.256l1.438-1.762c.011 0 .24.033.416.062 0 0 .663 4.212 6.89 4.212s6.89-4.212 6.89-4.212c.177-.03.406-.062.417-.062l1.438 1.762s.831 1.286 1.084 1.256c.252-.03.583-1.39-.438-4.673zm-11.333.413c-.565.271-1.364-.034-1.781-.68-.416-.646-.363-1.417.202-1.688.564-.271 1.364.034 1.78.68.417.646.364 1.417-.201 1.688zm2.31.034c-.156.149-.38.231-.608.226a.975.975 0 0 1-.624-.25 1.08 1.08 0 0 1-.347-.624 1.08 1.08 0 0 1 .208-.661 1.008 1.008 0 0 1 .602-.359.975.975 0 0 1 .663.167c.191.135.33.332.386.556a1.008 1.008 0 0 1-.28.945zm2.319-.23c-.565.27-1.364-.035-1.78-.681-.417-.646-.364-1.417.201-1.688.565-.27 1.364.035 1.781.681.416.646.363 1.417-.202 1.688z"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-gray-700 dark:text-gray-300">QQ</span>
+                    </button>
+
+                    <!-- X (Twitter) 分享 -->
+                    <button onclick="shareToX()" class="share-button flex flex-col items-center gap-3 p-6 bg-gray-50 dark:bg-gray-700 rounded-2xl border-2 border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-lg">
+                        <div class="w-14 h-14 bg-black dark:bg-white rounded-2xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-white dark:text-black" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-gray-700 dark:text-gray-300">X</span>
+                    </button>
+
+                    <!-- Instagram 分享 -->
+                    <button onclick="shareToInstagram()" class="share-button flex flex-col items-center gap-3 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl border-2 border-purple-100 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 hover:shadow-lg">
+                        <div class="w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-gray-700 dark:text-gray-300">Instagram</span>
+                    </button>
+                </div>
+
+                <!-- 复制链接 -->
+                <div class="mt-6 pt-6 border-t dark:border-gray-700">
+                    <div class="flex items-center gap-3">
+                        <input 
+                            type="text" 
+                            id="shareUrl" 
+                            readonly 
+                            class="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-600 dark:text-gray-400"
+                            value=""
+                        />
+                        <button onclick="copyShareUrl()" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-lg shadow-green-600/30 transition-all flex items-center gap-2">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span id="copyBtnText">复制</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 🔒 隐私设置按钮（固定在左下角） -->
     <button id="privacySettingsBtn" class="fixed bottom-8 left-8 p-3 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 shadow-xl rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all z-50 hidden" onclick="showPrivacyConsent()" aria-label="隐私设置" title="隐私设置">
         <i data-lucide="shield" class="w-5 h-5"></i>
@@ -274,6 +372,11 @@ layout: null
                     <a href="#about" class="hover:text-green-600 transition-colors">关于 About</a>
                     <a href="/friends/" class="hover:text-green-600 transition-colors">友链 Friends</a>
                 </div>
+
+                <!-- 分享按钮 -->
+                <button onclick="showShareMenu()" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="分享" title="分享网站">
+                    <i data-lucide="share-2" class="w-5 h-5 text-gray-600 dark:text-gray-400"></i>
+                </button>
 
                 <!-- 切换主题 -->
                 <button id="themeToggle" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="切换主题">
@@ -426,9 +529,8 @@ layout: null
         // 🔒 隐私合规管理
         const CONSENT_KEY = 'privacy-consent';
         const CONSENT_TIMESTAMP_KEY = 'privacy-consent-timestamp';
-        const CONSENT_EXPIRY_DAYS = 365; // 同意有效期1年
+        const CONSENT_EXPIRY_DAYS = 365;
 
-        // 检查同意是否过期
         function isConsentValid() {
             const timestamp = localStorage.getItem(CONSENT_TIMESTAMP_KEY);
             if (!timestamp) return false;
@@ -437,28 +539,23 @@ layout: null
             return new Date() < expiryDate;
         }
 
-        // 显示隐私同意弹窗
         function showPrivacyConsent() {
             document.getElementById('privacyConsent').classList.remove('hidden');
         }
 
-        // 隐藏隐私同意弹窗
         function hidePrivacyConsent() {
             document.getElementById('privacyConsent').classList.add('hidden');
         }
 
-        // 显示隐私详情
         function showPrivacyDetails() {
             document.getElementById('privacyDetailsModal').classList.remove('hidden');
-            lucide.createIcons(); // 重新渲染图标
+            lucide.createIcons();
         }
 
-        // 隐藏隐私详情
         function hidePrivacyDetails() {
             document.getElementById('privacyDetailsModal').classList.add('hidden');
         }
 
-        // 加载分析脚本
         function loadAnalytics() {
             const script = document.createElement('script');
             script.src = 'https://cloud.umami.is/script.js';
@@ -467,7 +564,6 @@ layout: null
             document.getElementById('analytics-script').appendChild(script);
         }
 
-        // 接受分析
         function acceptAnalytics() {
             localStorage.setItem(CONSENT_KEY, 'accepted');
             localStorage.setItem(CONSENT_TIMESTAMP_KEY, Date.now().toString());
@@ -476,7 +572,6 @@ layout: null
             document.getElementById('privacySettingsBtn').classList.remove('hidden');
         }
 
-        // 拒绝分析
         function rejectAnalytics() {
             localStorage.setItem(CONSENT_KEY, 'rejected');
             localStorage.setItem(CONSENT_TIMESTAMP_KEY, Date.now().toString());
@@ -484,26 +579,82 @@ layout: null
             document.getElementById('privacySettingsBtn').classList.remove('hidden');
         }
 
-        // 页面加载时检查隐私同意状态
         window.addEventListener('DOMContentLoaded', function() {
             const consent = localStorage.getItem(CONSENT_KEY);
             
             if (!consent || !isConsentValid()) {
-                // 没有同意记录或已过期，显示弹窗
                 showPrivacyConsent();
             } else if (consent === 'accepted') {
-                // 已同意，加载分析脚本
                 loadAnalytics();
                 document.getElementById('privacySettingsBtn').classList.remove('hidden');
             } else {
-                // 已拒绝，只显示设置按钮
                 document.getElementById('privacySettingsBtn').classList.remove('hidden');
             }
         });
 
+        // 📤 分享功能
+        function showShareMenu() {
+            const shareUrl = window.location.href;
+            document.getElementById('shareUrl').value = shareUrl;
+            document.getElementById('shareMenu').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function hideShareMenu() {
+            document.getElementById('shareMenu').classList.add('hidden');
+        }
+
+        function shareToWechat() {
+            const url = window.location.href;
+            const title = document.title;
+            
+            // 微信不支持直接分享链接，显示二维码提示
+            alert('请使用微信扫一扫功能分享此页面\n\n或复制链接后在微信中粘贴分享：\n' + url);
+            
+            // 自动复制链接
+            copyShareUrl();
+        }
+
+        function shareToQQ() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            const summary = encodeURIComponent(document.querySelector('meta[name="description"]')?.content || '');
+            
+            window.open(`https://connect.qq.com/widget/shareqq/index.html?url=${url}&title=${title}&summary=${summary}`, '_blank');
+        }
+
+        function shareToX() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(document.title);
+            
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        }
+
+        function shareToInstagram() {
+            // Instagram 不支持直接网页分享，提供指引
+            alert('Instagram 不支持直接分享网页链接\n\n建议：\n1. 截图此页面\n2. 在 Instagram 发布图片时添加链接到简介');
+            
+            // 自动复制链接
+            copyShareUrl();
+        }
+
+        function copyShareUrl() {
+            const urlInput = document.getElementById('shareUrl');
+            urlInput.select();
+            document.execCommand('copy');
+            
+            const btnText = document.getElementById('copyBtnText');
+            const originalText = btnText.innerText;
+            btnText.innerText = '已复制！';
+            
+            setTimeout(() => {
+                btnText.innerText = originalText;
+            }, 2000);
+        }
+
         // 邮箱复制逻辑
         const copyEmail = () => {
-            const encoded = "bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20="; // Base64 编码 
+            const encoded = "bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20=";
             const email = atob(encoded);
             
             const tempInput = document.createElement("input");
@@ -513,7 +664,6 @@ layout: null
             document.execCommand("copy");
             document.body.removeChild(tempInput);
 
-            // 反馈效果
             const btn = document.getElementById('copyEmailText');
             const btnText = document.getElementById('btnText');
             const originalText = btnText.innerText;
@@ -531,7 +681,7 @@ layout: null
         document.getElementById('copyEmailBtn').onclick = copyEmail;
         document.getElementById('copyEmailText').onclick = copyEmail;
 
-        // 菜单与主题逻辑保持不变
+        // 菜单与主题逻辑
         const menuBtn = document.getElementById('menuBtn');
         const closeMenu = document.getElementById('closeMenu');
         const mobileMenu = document.getElementById('mobileMenu');
@@ -551,6 +701,14 @@ layout: null
         const btt = document.getElementById('backToTop');
         window.addEventListener('scroll', () => { if (window.scrollY > 400) btt.classList.add('show'); else btt.classList.remove('show'); });
         btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ESC 键关闭弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideShareMenu();
+                hidePrivacyDetails();
+            }
+        });
     </script>
 </body>
 </html>

@@ -126,8 +126,8 @@ layout: null
                         <h3 class="font-bold text-lg">隐私与 Cookie 设置</h3>
                     </div>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                        我们使用分析工具（Umami）来了解网站使用情况。数据匿名，不用于广告。
-                        <button onclick="alert('查看完整隐私政策：我们仅收集匿名访问数据，不追踪个人信息，符合 GDPR 标准。')" class="text-green-600 underline ml-1">了解更多</button>
+                        我们使用匿名分析工具来了解网站使用情况。不用于商业用途。
+                        <button onclick="alert('查看完整隐私政策：我们仅收集匿名访问数据，不追踪具体个人信息。您的信息可能会被跨境处理或储存。')" class="text-green-600 underline ml-1">了解更多</button>
                     </p>
                 </div>
                 <div class="flex gap-3">
@@ -312,7 +312,7 @@ layout: null
                     </div>
                     <h3 class="font-bold text-lg mb-2">站点声明</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">了解版权协议与免责声明。</p>
-                    <button onclick="alert('版权：CC BY-NC-SA 4.0\n免责：内容仅代表个人观点')" class="px-8 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all">
+                    <button onclick="alert('版权：CC BY-NC-SA 4.0\n免责：内容仅代表个人观点,不构成任何专业性建议。部分所载信息来源第三方，本站不对信息的时效性，准确性担保。')" class="px-8 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all">
                         查看详细
                     </button>
                 </div>
@@ -352,6 +352,11 @@ layout: null
                 minutesEl.textContent = minutes;
                 minutesEl.classList.add('flip');
                 setTimeout(() => minutesEl.classList.remove('flip'), 600);
+            }
+            if (secondsEl.textContent !== seconds) {
+                secondsEl.textContent = seconds;
+                secondsEl.classList.add('flip');
+                setTimeout(() => secondsEl.classList.remove('flip'), 600);
             }
             
             document.getElementById('date').textContent = date;

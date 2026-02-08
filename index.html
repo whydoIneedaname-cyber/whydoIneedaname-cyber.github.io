@@ -38,14 +38,18 @@ layout: null
     }
     
     .serif, h1, h2 { font-family: 'Noto Serif SC', serif; }
+
     .hover-lift { transition: all 0.3s; }
     .hover-lift:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
+
     .bg-soft-green { background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%); }
     .dark .bg-soft-green { background: linear-gradient(135deg, #064e3b 0%, #111827 100%); }
+
     #backToTop.show, #mobileMenu.active { opacity: 1; pointer-events: auto; }
     #backToTop.show { transform: translateY(0); }
     #mobileMenu.active { transform: scale(1); }
 
+    /* 时钟磨砂玻璃效果 */
     .glass {
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(20px);
@@ -57,6 +61,7 @@ layout: null
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    /* 时钟数字翻转动画 */
     .flip { animation: flip 0.6s ease; }
     @keyframes flip {
         0% { transform: rotateX(0deg); }
@@ -64,6 +69,7 @@ layout: null
         100% { transform: rotateX(0deg); }
     }
 
+    /* 文章展开/收起动画 */
     .article-hidden { 
         max-height: 0; 
         opacity: 0; 
@@ -78,50 +84,12 @@ layout: null
         transition: max-height 0.5s ease, opacity 0.5s ease, margin 0.5s ease;
     }
 
+    /* 弹窗动画简化 */
     .modal-enter { animation: fadeScale 0.3s ease; }
     @keyframes fadeScale {
         from { opacity: 0; transform: scale(0.9); }
         to { opacity: 1; transform: scale(1); }
     }
-
-    /* 股票滚动条样式 */
-    .ticker-wrap {
-        width: 100%;
-        overflow: hidden;
-        height: 36px;
-        background-color: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-        display: flex;
-        align-items: center;
-    }
-    .dark .ticker-wrap {
-        background-color: rgba(17, 24, 39, 0.95);
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .ticker-move {
-        display: inline-block;
-        white-space: nowrap;
-        padding-right: 100%;
-        animation: ticker 45s linear infinite;
-    }
-    .ticker-move:hover { 
-        animation-play-state: paused; 
-    }
-    @keyframes ticker {
-        0% { transform: translate3d(0, 0, 0); }
-        100% { transform: translate3d(-100%, 0, 0); }
-    }
-    .stock-item {
-        display: inline-flex;
-        align-items: center;
-        padding: 0 2.5rem;
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 0.03em;
-    }
-    .stock-up { color: #ef4444; } /* 红涨 */
-    .stock-down { color: #22c55e; } /* 绿跌 */
 </style>
     
     <script id="analytics-script"></script>
@@ -129,7 +97,7 @@ layout: null
     
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
 
-    <!-- 🕐 实时时钟 -->
+    <!-- 🕐 实时时钟（左侧固定） -->
     <div id="liveClock" class="fixed top-24 left-8 glass rounded-3xl p-6 shadow-2xl z-40 hidden lg:block">
         <div class="text-center space-y-3">
             <div class="flex items-center justify-center gap-2">
@@ -148,7 +116,7 @@ layout: null
         </div>
     </div>
 
-    <!-- 🔒 隐私同意弹窗 -->
+    <!-- 🔒 隐私同意弹窗（简化版） -->
     <div id="privacyConsent" class="fixed bottom-0 inset-x-0 bg-white dark:bg-gray-800 border-t-2 border-green-600 shadow-2xl z-[300] hidden">
         <div class="max-w-5xl mx-auto px-6 py-6">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -164,17 +132,17 @@ layout: null
                 </div>
                 <div class="flex gap-3">
                     <button onclick="rejectAnalytics()" class="px-6 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
-                        仅必要
+                        仅必要Necessary Only
                     </button>
                     <button onclick="acceptAnalytics()" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-lg transition-all">
-                        接受全部
+                        接受全部Accept All
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 📤 分享菜单 -->
+    <!-- 📤 分享菜单（简化版） -->
     <div id="shareMenu" class="fixed inset-0 z-[250] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">
         <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-3xl shadow-2xl modal-enter">
             <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center">
@@ -239,10 +207,10 @@ layout: null
             </div>
             <div class="flex items-center gap-2">
                 <div class="hidden md:flex gap-8 text-sm font-medium mr-4">
-                    <a href="/" class="hover:text-green-600 transition-colors">首页</a>
-                    <a href="#posts" class="hover:text-green-600 transition-colors">文章</a>
-                    <a href="#about" class="hover:text-green-600 transition-colors">关于</a>
-                    <a href="/friends/" class="hover:text-green-600 transition-colors">友链</a>
+                    <a href="/" class="hover:text-green-600 transition-colors">首页Home Page</a>
+                    <a href="#posts" class="hover:text-green-600 transition-colors">文章Articles</a>
+                    <a href="#about" class="hover:text-green-600 transition-colors">关于About</a>
+                    <a href="/friends/" class="hover:text-green-600 transition-colors">友链Friends</a>
                 </div>
                 <button onclick="showShareMenu()" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <i data-lucide="share-2" class="w-5 h-5"></i>
@@ -258,15 +226,6 @@ layout: null
         </div>
     </nav>
 
-    <!-- 📈 股票滚动条（导航栏下方）-->
-    <div class="fixed w-full top-16 z-[55] ticker-wrap">
-        <div class="ticker-move" id="stockTicker">
-            <span class="stock-item text-gray-400 dark:text-gray-500">
-                正在连接全球交易所...
-            </span>
-        </div>
-    </div>
-
     <!-- 移动端菜单 -->
     <div id="mobileMenu" class="fixed inset-0 bg-white dark:bg-gray-950 z-[100] flex flex-col items-center justify-center gap-10 opacity-0 pointer-events-none transform scale-95 transition-all duration-300 md:hidden">
         <button id="closeMenu" class="absolute top-8 right-8 p-3">
@@ -280,8 +239,8 @@ layout: null
         </nav>
     </div>
 
-    <!-- 页面内容（增加 padding-top 以避免被股票栏遮挡） -->
-    <header class="bg-soft-green pt-36 pb-20 px-6 text-center border-b dark:border-gray-800" style="padding-top: 140px;">
+    <!-- 页面内容 -->
+    <header class="bg-soft-green pt-32 pb-20 px-6 text-center border-b dark:border-gray-800">
         <div class="mb-8">
             <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto">
                 <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover">
@@ -353,7 +312,7 @@ layout: null
                     </div>
                     <h3 class="font-bold text-lg mb-2">站点声明</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">了解版权协议与免责声明。</p>
-                    <button onclick="alert('版权：CC BY-NC-SA 4.0\n免责：内容仅代表个人观点')" class="px-8 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all">
+                    <button onclick="alert('版权：CC BY-NC-SA 4.0\n免责：内容仅代表个人观点,不构成任何专业性建议。部分所载信息来源第三方，本站不对信息的时效性，准确性担保。')" class="px-8 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all">
                         查看详细
                     </button>
                 </div>
@@ -372,92 +331,6 @@ layout: null
     <script>
         lucide.createIcons();
 
-        // 📈 股票数据功能
-        const API_KEY = 'd640fb1r01ql6dj1npmgd640fb1r01ql6dj1npn0';
-        
-        // 使用正确的 Finnhub 股票代码格式
-        const indices = [
-            { symbol: 'HSI', name: '恒生指数' },        // 去掉 ^ 前缀
-            { symbol: '^N225', name: '日经225' },
-            { symbol: '^IXIC', name: 'NASDAQ' },        // 添加 ^ 前缀
-            { symbol: '^GSPC', name: '标普500' },
-            { symbol: 'FTSE', name: '富时100' }
-        ];
-
-        async function getStockPrice(symbol) {
-            try {
-                const response = await fetch(
-                    `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`,
-                    {
-                        method: 'GET',
-                        headers: { 'Content-Type': 'application/json' }
-                    }
-                );
-                
-                if (!response.ok) {
-                    console.error(`API Error for ${symbol}:`, response.status);
-                    return null;
-                }
-                
-                const data = await response.json();
-                
-                // 检查数据有效性
-                if (!data || data.c === 0 || data.c === null) {
-                    console.warn(`Invalid data for ${symbol}`);
-                    return null;
-                }
-                
-                return {
-                    current: data.c.toFixed(2),
-                    percent: data.dp.toFixed(2)
-                };
-            } catch (error) {
-                console.error(`Fetch error for ${symbol}:`, error);
-                return null;
-            }
-        }
-
-        async function updateStockTicker() {
-            const ticker = document.getElementById('stockTicker');
-            ticker.innerHTML = '<span class="stock-item text-gray-400 dark:text-gray-500">正在更新行情...</span>';
-            
-            const results = [];
-            
-            // 逐个获取数据，避免同时发送过多请求
-            for (const idx of indices) {
-                const priceData = await getStockPrice(idx.symbol);
-                
-                if (priceData) {
-                    const isUp = parseFloat(priceData.percent) >= 0;
-                    const colorClass = isUp ? 'stock-up' : 'stock-down';
-                    const sign = isUp ? '+' : '';
-                    
-                    results.push(`
-                        <span class="stock-item">
-                            <span class="text-gray-500 dark:text-gray-400 mr-3">${idx.name}</span>
-                            <span class="text-gray-900 dark:text-white mr-2">${priceData.current}</span>
-                            <span class="${colorClass}">${sign}${priceData.percent}%</span>
-                        </span>
-                    `);
-                }
-                
-                // 添加延迟避免触发 API 速率限制
-                await new Promise(resolve => setTimeout(resolve, 300));
-            }
-            
-            if (results.length > 0) {
-                // 拼接两次实现无缝循环
-                ticker.innerHTML = results.join('') + results.join('');
-            } else {
-                ticker.innerHTML = '<span class="stock-item text-gray-400 dark:text-gray-500">暂时无法获取行情数据</span>';
-            }
-        }
-
-        // 初始化股票数据
-        updateStockTicker();
-        // 每 60 秒更新一次（避免超过 API 限制）
-        setInterval(updateStockTicker, 60000);
-
         // 🕐 实时时钟
         function updateClock() {
             const now = new Date();
@@ -465,7 +338,7 @@ layout: null
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             const date = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-            const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][now.getDay()];
+            const weekday = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'][now.getDay()];
             
             const hoursEl = document.getElementById('hours');
             const minutesEl = document.getElementById('minutes');
@@ -481,7 +354,11 @@ layout: null
                 minutesEl.classList.add('flip');
                 setTimeout(() => minutesEl.classList.remove('flip'), 600);
             }
-            if (secondsEl) secondsEl.textContent = seconds;
+            if (secondsEl.textContent !== seconds) {
+                secondsEl.textContent = seconds;
+                secondsEl.classList.add('flip');
+                setTimeout(() => secondsEl.classList.remove('flip'), 600);
+            }
             
             document.getElementById('date').textContent = date;
             document.getElementById('weekday').textContent = weekday;
@@ -511,7 +388,7 @@ layout: null
             lucide.createIcons();
         }
 
-        // 🔒 隐私管理
+        // 🔒 隐私管理（简化）
         const CONSENT_KEY = 'privacy-consent';
         
         function showPrivacyConsent() {
@@ -546,7 +423,7 @@ layout: null
             }
         });
 
-        // 📤 分享功能
+        // 📤 分享功能（简化）
         function showShareMenu() {
             document.getElementById('shareUrl').value = window.location.href;
             document.getElementById('shareMenu').classList.remove('hidden');
@@ -575,7 +452,7 @@ layout: null
         }
         
         function shareToInstagram() {
-            alert('Instagram 暂不支持网页分享\n请截图后在 Instagram 发布');
+            alert('Instagram 不支持网页分享\n请截图后在 Instagram 发布');
             copyShareUrl();
         }
         

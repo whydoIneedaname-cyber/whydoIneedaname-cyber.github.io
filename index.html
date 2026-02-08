@@ -106,8 +106,8 @@ layout: null
                     Beijing Time
                 </div>
             </div>
-            <div class="text-5xl font-bold text-gray-900 dark:text-white tabular-nums">
-                <span id="hours">00</span>:<span id="minutes">00</span>
+            <div class="text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+                <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
             </div>
             <div class="text-sm text-gray-500 dark:text-gray-400 font-medium">
                 <div id="date"></div>
@@ -338,7 +338,7 @@ layout: null
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             const date = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-            const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][now.getDay()];
+            const weekday = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'][now.getDay()];
             
             const hoursEl = document.getElementById('hours');
             const minutesEl = document.getElementById('minutes');

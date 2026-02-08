@@ -373,12 +373,10 @@ layout: null
         lucide.createIcons();
 
         // 📈 股票数据功能
-        const API_KEY = 'd640fl1r01ql6dj1nqtgd640fl1r01ql6dj1nqu0';
+        const API_KEY = 'd640fb1r01ql6dj1npmgd640fb1r01ql6dj1npn0';
         
         // 使用正确的 Finnhub 股票代码格式
         const indices = [
-            { symbol: '000001.SS', name: '上证指数' },
-            { symbol: '399001.SZ', name: '深证成指' },
             { symbol: 'HSI', name: '恒生指数' },        // 去掉 ^ 前缀
             { symbol: '^N225', name: '日经225' },
             { symbol: '^IXIC', name: 'NASDAQ' },        // 添加 ^ 前缀

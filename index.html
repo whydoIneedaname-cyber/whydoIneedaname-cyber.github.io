@@ -92,7 +92,7 @@ layout: null
     }
 </style>
     
-    <script id="analytics-script"></script>
+    <script id="analytics-script" type="application/json"></script>
 </head>
     
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
@@ -397,11 +397,14 @@ layout: null
         
         function acceptAnalytics() {
             localStorage.setItem(CONSENT_KEY, 'accepted');
-            const script = document.createElement('script');
-            script.src = 'https://cloud.umami.is/script.js';
-            script.setAttribute('data-website-id', 'f291870c-3549-4f53-a1c1-5f740bdae6bd');
-            script.async = true;
-            document.getElementById('analytics-script').appendChild(script);
+            if (!document.getElementById('umami-script')) {
+                const script = document.createElement('script');
+                script.id = 'umami-script';
+                script.src = 'https://cloud.umami.is/script.js';
+                script.setAttribute('data-website-id', 'f291870c-3549-4f53-a1c1-5f740bdae6bd');
+                script.async = true;
+                document.head.appendChild(script);
+            }
             document.getElementById('privacyConsent').classList.add('hidden');
             document.getElementById('privacySettingsBtn').classList.remove('hidden');
         }

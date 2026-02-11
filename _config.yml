@@ -20,3 +20,8 @@ exclude:
   - sitemap.xml        # 确保手动的文件不会干扰插件
   - setup_guide.md
   - seo_fix_guide.md
+
+# 将 legal 目录作为静态文件处理
+include:
+  - legal
+

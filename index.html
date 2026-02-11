@@ -968,26 +968,26 @@ layout: null
         <i data-lucide="chevron-up" class="w-6 h-6"></i>
     </button>
 
-    <!-- Apple 风格的 Footer -->
+   <!-- Apple 风格的 Footer -->
     <footer class="border-t dark:border-gray-800 bg-white dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-6 py-8">
-            <!-- 法律链接（Apple 风格） -->
-            <div class="flex flex-wrap items-center justify-center gap-3 text-xs text-gray-500 dark:text-gray-400 mb-4">
-                <button onclick="showPrivacyPolicy()" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
+            <!-- 法律链接 -->
+            <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3 text-xs text-gray-500 dark:text-gray-400 mb-3 md:mb-4">
+                <button onclick="showLegalHub('privacy')" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
                     Privacy Policy
                 </button>
                 <span class="text-gray-300 dark:text-gray-600">|</span>
-                <button onclick="showTermsOfUse()" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
+                <button onclick="showLegalHub('terms')" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
                     Terms of Use
                 </button>
                 <span class="text-gray-300 dark:text-gray-600">|</span>
-                <button onclick="showContentDisclaimer()" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
+                <button onclick="showLegalHub('content')" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
                     Content Disclaimer
                 </button>
                 <span class="text-gray-300 dark:text-gray-600">|</span>
-                <a href="#about" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
+                <button onclick="showLegalHub('contact')" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
                     Contact
-                </a>
+                </button>
             </div>
             
             <!-- 版权声明 -->

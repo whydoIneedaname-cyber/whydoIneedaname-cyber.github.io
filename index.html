@@ -1,0 +1,897 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    {% seo %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="我什么都读, 个人空间, 学习笔记, 阅读心得, 中学生博客，readeverything，一些碎碎念">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "{{ site.title }}",
+      "description": "{{ site.description }}",
+      "url": "{{ site.url }}",
+      "author": {"@type": "Person", "name": "{{ site.author }}"},
+      "inLanguage": "zh-CN",
+      "publisher": {"@type": "Person", "name": "{{ site.author }}"}
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+
+<style>
+    @import url('https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap');
+
+    body { 
+        font-family: 'Noto Sans SC', sans-serif; 
+        scroll-behavior: smooth; 
+        -webkit-font-smoothing: antialiased;
+        transition: background-color 0.4s, color 0.4s;
+    }
+    
+    .serif, h1, h2 { font-family: 'Noto Serif SC', serif; }
+
+    .hover-lift { transition: all 0.3s; }
+    .hover-lift:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
+
+    .bg-soft-green { background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%); }
+    .dark .bg-soft-green { background: linear-gradient(135deg, #064e3b 0%, #111827 100%); }
+
+    #backToTop.show, #mobileMenu.active { opacity: 1; pointer-events: auto; }
+    #backToTop.show { transform: translateY(0); }
+    #mobileMenu.active { transform: scale(1); }
+
+    .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .dark .glass {
+        background: rgba(17, 24, 39, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .flip { animation: flip 0.6s ease; }
+    @keyframes flip {
+        0% { transform: rotateX(0deg); }
+        50% { transform: rotateX(90deg); }
+        100% { transform: rotateX(0deg); }
+    }
+
+    .article-hidden { 
+        max-height: 0; 
+        opacity: 0; 
+        overflow: hidden; 
+        transition: max-height 0.5s ease, opacity 0.5s ease, margin 0.5s ease;
+        margin: 0;
+    }
+    .article-visible { 
+        max-height: 1000px; 
+        opacity: 1; 
+        margin-bottom: 2rem;
+        transition: max-height 0.5s ease, opacity 0.5s ease, margin 0.5s ease;
+    }
+
+    .modal-enter { animation: fadeScale 0.3s ease; }
+    @keyframes fadeScale {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    /* 法律文档弹窗滚动 */
+    .legal-content {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    .legal-content::-webkit-scrollbar {
+        width: 8px;
+    }
+    .legal-content::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.05);
+        border-radius: 10px;
+    }
+    .legal-content::-webkit-scrollbar-thumb {
+        background: rgba(0,0,0,0.2);
+        border-radius: 10px;
+    }
+    .legal-content::-webkit-scrollbar-thumb:hover {
+        background: rgba(0,0,0,0.3);
+    }
+</style>
+    
+    <script id="analytics-script"></script>
+</head>
+    
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+
+    <!-- 🕐 实时时钟（左侧固定） -->
+    <div id="liveClock" class="fixed top-24 left-8 glass rounded-3xl p-6 shadow-2xl z-40 hidden lg:block">
+        <div class="text-center space-y-3">
+            <div class="flex items-center justify-center gap-2">
+                <i data-lucide="clock" class="w-5 h-5 text-green-600"></i>
+                <div class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                    Beijing Time
+                </div>
+            </div>
+            <div class="text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+                <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+            </div>
+            <div class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                <div id="date"></div>
+                <div id="weekday" class="text-xs mt-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔒 隐私同意弹窗（简化版） -->
+    <div id="privacyConsent" class="fixed bottom-0 inset-x-0 bg-white dark:bg-gray-800 border-t-2 border-green-600 shadow-2xl z-[300] hidden">
+        <div class="max-w-5xl mx-auto px-6 py-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="cookie" class="w-5 h-5 text-green-600"></i>
+                        <h3 class="font-bold text-lg">隐私与 Cookie 设置</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        我们使用匿名分析工具来了解网站使用情况。不用于商业用途。
+                        <button onclick="showPrivacyPolicy()" class="text-green-600 underline ml-1">了解更多</button>
+                    </p>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="rejectAnalytics()" class="px-6 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                        仅必要
+                    </button>
+                    <button onclick="acceptAnalytics()" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-lg transition-all">
+                        接受全部
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📄 隐私政策弹窗 -->
+    <div id="privacyPolicyModal" class="fixed inset-0 z-[400] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden modal-enter flex flex-col" style="max-height: 90vh;">
+            <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+                <h3 class="text-2xl font-bold flex items-center gap-2">
+                    <i data-lucide="shield-check" class="w-7 h-7 text-blue-600"></i>
+                    <span>隐私政策 Privacy Policy</span>
+                </h3>
+                <button onclick="hidePrivacyPolicy()" class="text-gray-400 hover:text-gray-600 p-1">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="legal-content p-8 text-sm leading-relaxed">
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">Last Updated: February 10, 2026 | 最后更新：2026年2月10日</p>
+                
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">1. 信息收集 Information Collection</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>我们使用第三方分析服务（Umami Analytics）收集匿名访问数据，包括但不限于：页面浏览量、访问来源、浏览器类型、操作系统、地理位置（国家/地区层面）。我们不收集可识别个人身份的信息（PII）。</p>
+                        <p><strong>English:</strong> We use third-party analytics services (Umami Analytics) to collect anonymous visitor data, including but not limited to: page views, referral sources, browser type, operating system, and geographic location (country/region level). We do not collect personally identifiable information (PII).</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">2. 数据使用目的 Data Usage</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>收集的数据仅用于：(a) 改善网站内容和用户体验；(b) 分析网站流量和使用模式；(c) 保障网站安全和性能。我们不会将数据用于商业营销或出售给第三方。</p>
+                        <p><strong>English:</strong> Collected data is used solely for: (a) improving website content and user experience; (b) analyzing traffic and usage patterns; (c) ensuring site security and performance. We do not use data for commercial marketing or sell it to third parties.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">3. Cookie 使用 Cookie Usage</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>我们使用必要的 Cookie 来保存您的偏好设置（如主题模式、隐私选择）。Umami Analytics 不使用 Cookie 进行追踪。您可以通过浏览器设置管理 Cookie。</p>
+                        <p><strong>English:</strong> We use essential cookies to save your preference settings (such as theme mode and privacy choices). Umami Analytics does not use cookies for tracking. You can manage cookies through your browser settings.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">4. 数据存储与跨境传输 Data Storage & Cross-Border Transfer</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>分析数据存储于 Umami Cloud 服务器（符合 GDPR 标准）。由于服务器可能位于不同国家/地区，您的数据可能会被跨境传输和存储。我们确保所有数据传输均采用加密保护。</p>
+                        <p><strong>English:</strong> Analytics data is stored on Umami Cloud servers (GDPR compliant). As servers may be located in different countries/regions, your data may be transferred and stored across borders. We ensure all data transfers are encrypted.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">5. 您的权利 Your Rights</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>您有权：(a) 随时撤回同意；(b) 要求删除您的数据；(c) 拒绝非必要的数据收集。由于我们不收集个人身份信息，我们无法识别特定用户的数据。</p>
+                        <p><strong>English:</strong> You have the right to: (a) withdraw consent at any time; (b) request deletion of your data; (c) refuse non-essential data collection. As we do not collect PII, we cannot identify specific users' data.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">6. 未成年人保护 Minor Protection</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>本网站不专门针对13岁以下儿童。我们不会故意收集未成年人的个人信息。如果发现此类情况，我们将立即删除相关数据。</p>
+                        <p><strong>English:</strong> This website is not specifically directed at children under 13. We do not knowingly collect personal information from minors. If we discover such collection, we will immediately delete the relevant data.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">7. 法律合规 Legal Compliance</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>本隐私政策遵守：欧盟《通用数据保护条例》(GDPR)、美国《加州消费者隐私法》(CCPA)、中国《个人信息保护法》、香港《个人资料（私隐）条例》等适用法律。</p>
+                        <p><strong>English:</strong> This Privacy Policy complies with: EU General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA), China's Personal Information Protection Law (PIPL), Hong Kong Personal Data (Privacy) Ordinance, and other applicable laws.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">8. 联系我们 Contact Us</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>如有任何隐私问题或数据请求，请通过网站联系方式与我们联系。</p>
+                        <p><strong>English:</strong> For any privacy questions or data requests, please contact us through the website's contact information.</p>
+                    </div>
+                </section>
+            </div>
+            <div class="p-6 border-t dark:border-gray-700 text-center">
+                <button onclick="hidePrivacyPolicy()" class="px-10 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg">
+                    关闭 Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📜 内容声明弹窗 -->
+    <div id="contentDisclaimerModal" class="fixed inset-0 z-[400] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden modal-enter flex flex-col" style="max-height: 90vh;">
+            <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+                <h3 class="text-2xl font-bold flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-7 h-7 text-amber-600"></i>
+                    <span>内容声明 Content Disclaimer</span>
+                </h3>
+                <button onclick="hideContentDisclaimer()" class="text-gray-400 hover:text-gray-600 p-1">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="legal-content p-8 text-sm leading-relaxed">
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">Last Updated: February 10, 2026 | 最后更新：2026年2月10日</p>
+                
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">1. 版权声明 Copyright Notice</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>本网站原创内容采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议 (CC BY-NC-SA 4.0)。转载时请注明出处并保留原作者署名。商业使用需事先获得书面许可。</p>
+                        <p><strong>English:</strong> Original content on this website is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). When reposting, please credit the source and maintain author attribution. Commercial use requires prior written permission.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">2. 免责声明 Disclaimer</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>本网站内容仅代表作者个人观点，不构成任何专业建议（包括但不限于法律、医疗、财务、投资建议）。所载信息可能存在偏差或过时，仅供参考。读者应自行判断并承担使用本网站信息的风险。</p>
+                        <p><strong>English:</strong> Content on this website represents the author's personal opinions only and does not constitute professional advice (including but not limited to legal, medical, financial, or investment advice). Information may be biased or outdated and is for reference only. Readers should exercise their own judgment and bear the risks of using information from this website.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">3. 第三方内容 Third-Party Content</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>本网站可能包含第三方链接、引用或嵌入内容。我们不对第三方内容的准确性、合法性或适用性负责。访问第三方链接的风险由用户自行承担。</p>
+                        <p><strong>English:</strong> This website may contain third-party links, references, or embedded content. We are not responsible for the accuracy, legality, or suitability of third-party content. Users access third-party links at their own risk.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">4. 准确性声明 Accuracy Statement</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>我们努力确保内容准确无误，但不对信息的完整性、时效性或准确性作出任何明示或暗示的保证。内容可能随时更新或修改，恕不另行通知。</p>
+                        <p><strong>English:</strong> We strive to ensure content accuracy but make no express or implied warranties regarding the completeness, timeliness, or accuracy of information. Content may be updated or modified at any time without prior notice.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">5. 责任限制 Limitation of Liability</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>在法律允许的最大范围内，本网站及其运营者不对因使用或无法使用本网站而产生的任何直接、间接、附带、特殊或后果性损害承担责任，包括但不限于利润损失、数据丢失或业务中断。</p>
+                        <p><strong>English:</strong> To the maximum extent permitted by law, this website and its operators shall not be liable for any direct, indirect, incidental, special, or consequential damages arising from the use or inability to use this website, including but not limited to loss of profits, data loss, or business interruption.</p>
+                    </div>
+                </section>
+            </div>
+            <div class="p-6 border-t dark:border-gray-700 text-center">
+                <button onclick="hideContentDisclaimer()" class="px-10 py-3 bg-amber-600 text-white rounded-xl font-bold hover:bg-amber-700 transition-all shadow-lg">
+                    关闭 Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⚖️ 使用条款弹窗 -->
+    <div id="termsOfUseModal" class="fixed inset-0 z-[400] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden modal-enter flex flex-col" style="max-height: 90vh;">
+            <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+                <h3 class="text-2xl font-bold flex items-center gap-2">
+                    <i data-lucide="scale" class="w-7 h-7 text-green-600"></i>
+                    <span>使用条款 Terms of Use</span>
+                </h3>
+                <button onclick="hideTermsOfUse()" class="text-gray-400 hover:text-gray-600 p-1">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="legal-content p-8 text-sm leading-relaxed">
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">Last Updated: February 10, 2026 | 最后更新：2026年2月10日</p>
+                
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">1. 接受条款 Acceptance of Terms</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>访问或使用本网站即表示您同意受本使用条款约束。如果您不同意这些条款，请勿使用本网站。我们保留随时修改这些条款的权利，修改后的条款将在发布后立即生效。</p>
+                        <p><strong>English:</strong> By accessing or using this website, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use this website. We reserve the right to modify these terms at any time, and modifications will take effect immediately upon posting.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">2. 用户行为规范 User Conduct</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>您同意不会：(a) 发布非法、有害、威胁、辱骂、骚扰、诽谤、粗俗、淫秽或侵犯他人隐私的内容；(b) 冒充他人或虚假陈述与任何人或实体的关系；(c) 干扰或破坏网站服务或服务器；(d) 收集或存储他人的个人数据；(e) 用于任何非法或未经授权的目的。</p>
+                        <p><strong>English:</strong> You agree not to: (a) post illegal, harmful, threatening, abusive, harassing, defamatory, vulgar, obscene, or privacy-invasive content; (b) impersonate others or misrepresent relationships with any person or entity; (c) interfere with or disrupt website services or servers; (d) collect or store others' personal data; (e) use for any illegal or unauthorized purpose.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">3. 打赏功能 Tipping/Donation Feature</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>本网站可能提供自愿打赏功能。打赏是自愿的、不可退款的赠与，不构成任何商品或服务的购买。打赏不赋予打赏者任何特殊权利、权益或对网站内容的控制权。打赏者应遵守其所在司法管辖区的税务和法律要求。我们不对打赏的税务后果负责。</p>
+                        <p><strong>English:</strong> This website may offer voluntary tipping/donation features. Tips are voluntary, non-refundable gifts and do not constitute a purchase of any goods or services. Tipping does not grant donors any special rights, interests, or control over website content. Donors should comply with tax and legal requirements in their jurisdiction. We are not responsible for tax consequences of donations.</p>
+                        <p class="text-xs italic mt-2">Applicable Laws: US IRC § 170 (charitable contributions), China Civil Code Art. 657-666 (gifts), Hong Kong Inland Revenue Ordinance Cap. 112</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">4. 广告与赞助内容 Advertising & Sponsored Content</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>本网站可能展示第三方广告或赞助内容。所有广告和赞助内容将被明确标识。我们不对广告商或赞助商的产品、服务或主张负责。广告和赞助内容不构成我们的背书或推荐。用户与广告商的任何交易完全由用户自行承担风险。</p>
+                        <p><strong>English:</strong> This website may display third-party advertisements or sponsored content. All ads and sponsored content will be clearly identified. We are not responsible for advertisers' or sponsors' products, services, or claims. Ads and sponsored content do not constitute our endorsement or recommendation. Any transactions between users and advertisers are entirely at users' own risk.</p>
+                        <p class="text-xs italic mt-2">Compliance: FTC 16 CFR Part 255 (endorsement guidelines), China Advertising Law, Hong Kong Trade Descriptions Ordinance</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">5. 个性化建议 Personalized Recommendations</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>本网站可能基于您的浏览历史和偏好提供个性化内容建议。这些建议仅供参考，不构成专业建议。我们不保证建议的准确性、适用性或有效性。您有权选择退出个性化建议，通过隐私设置管理您的偏好。个性化处理基于您的同意，您可以随时撤回同意。</p>
+                        <p><strong>English:</strong> This website may provide personalized content recommendations based on your browsing history and preferences. These recommendations are for reference only and do not constitute professional advice. We do not guarantee the accuracy, suitability, or effectiveness of recommendations. You have the right to opt out of personalized recommendations through privacy settings. Personalization is based on your consent, which you may withdraw at any time.</p>
+                        <p class="text-xs italic mt-2">Rights: GDPR Art. 21-22 (right to object/automated decision-making), CCPA § 1798.120 (right to opt-out), China PIPL Art. 24</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">6. 知识产权 Intellectual Property</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>除非另有说明，网站上的所有内容（文字、图像、视频、音频、软件、设计）均受版权、商标和其他知识产权法保护。未经事先书面许可，禁止复制、修改、分发或商业使用。用户生成内容的版权归用户所有，但用户授予我们免费、永久、全球性的使用许可。</p>
+                        <p><strong>English:</strong> Unless otherwise stated, all content on the website (text, images, videos, audio, software, design) is protected by copyright, trademark, and other intellectual property laws. Reproduction, modification, distribution, or commercial use without prior written permission is prohibited. User-generated content remains owned by users, but users grant us a free, perpetual, worldwide license to use.</p>
+                        <p class="text-xs italic mt-2">Protection: US Copyright Act 17 USC, China Copyright Law, Berne Convention, Hong Kong Copyright Ordinance</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">7. 服务中断与修改 Service Interruption & Modification</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>我们保留随时修改、暂停或终止网站全部或部分服务的权利，恕不另行通知。我们不对服务中断、错误、病毒或数据丢失承担责任。网站按"现状"提供，不提供任何明示或暗示的保证。</p>
+                        <p><strong>English:</strong> We reserve the right to modify, suspend, or terminate all or part of the website services at any time without notice. We are not liable for service interruptions, errors, viruses, or data loss. The website is provided "as is" without any express or implied warranties.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">8. 赔偿 Indemnification</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>您同意赔偿、辩护并使我们及其关联方、董事、员工、代理免受因您违反本条款、侵犯第三方权利或使用网站而产生的任何索赔、损失、责任、费用（包括合理的律师费）。</p>
+                        <p><strong>English:</strong> You agree to indemnify, defend, and hold harmless us and our affiliates, directors, employees, and agents from any claims, losses, liabilities, expenses (including reasonable attorney fees) arising from your breach of these terms, infringement of third-party rights, or use of the website.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">9. 争议解决 Dispute Resolution</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>因本条款引起的任何争议应首先通过友好协商解决。如协商失败，争议应提交至网站所有者所在地有管辖权的法院。对于美国用户，您同意仲裁解决争议（小额索赔法院案件除外）。中国内地和香港用户适用当地法律规定的争议解决程序。</p>
+                        <p><strong>English:</strong> Any disputes arising from these terms should first be resolved through friendly negotiation. If negotiation fails, disputes shall be submitted to courts with jurisdiction where the website owner is located. For US users, you agree to arbitration for dispute resolution (except small claims court cases). Mainland China and Hong Kong users are subject to dispute resolution procedures under local laws.</p>
+                        <p class="text-xs italic mt-2">Governing Law: Subject to the laws of the website owner's jurisdiction, with respect to international users' local consumer protection laws</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">10. 可分割性 Severability</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>如果本条款的任何条款被判定为无效或不可执行,该条款将被修改以实现其预期目的,或者在无法修改的情况下被删除,其余条款将继续完全有效。</p>
+                        <p><strong>English:</strong> If any provision of these terms is found to be invalid or unenforceable, that provision shall be modified to achieve its intended purpose or deleted if modification is impossible, and the remaining provisions shall remain in full force and effect.</p>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-4">11. 联系方式 Contact Information</h4>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p><strong>中文：</strong>如对本使用条款有任何疑问,请通过网站提供的联系方式与我们联系。</p>
+                        <p><strong>English:</strong> For any questions about these Terms of Use, please contact us through the contact information provided on the website.</p>
+                    </div>
+                </section>
+            </div>
+            <div class="p-6 border-t dark:border-gray-700 text-center">
+                <button onclick="hideTermsOfUse()" class="px-10 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all shadow-lg">
+                    关闭 Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📤 分享菜单（简化版） -->
+    <div id="shareMenu" class="fixed inset-0 z-[250] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-3xl shadow-2xl modal-enter">
+            <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="share-2" class="w-6 h-6 text-green-600"></i>
+                    分享 Share
+                </h3>
+                <button onclick="hideShareMenu()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-8">
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="shareToWechat()" class="share-btn flex flex-col items-center gap-3 p-6 bg-green-50 dark:bg-green-900/20 rounded-2xl border-2 border-green-100 dark:border-green-800 hover:border-green-400 hover:shadow-lg transition-all">
+                        <div class="w-14 h-14 bg-green-500 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zm-2.906 3.803c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1 .207-.665c1.835-1.24 2.941-2.989 2.941-4.888 0-3.491-3.473-6.097-7.53-6.097zm-1.298 2.01c.584 0 1.055.48 1.055 1.07 0 .591-.47 1.071-1.055 1.071-.583 0-1.054-.48-1.054-1.07 0-.591.47-1.071 1.054-1.071zm4.305 0c.584 0 1.055.48 1.055 1.07 0 .591-.47 1.071-1.055 1.071-.583 0-1.054-.48-1.054-1.07 0-.591.47-1.071 1.054-1.071z"/></svg>
+                        </div>
+                        <span class="font-bold">微信</span>
+                    </button>
+                    <button onclick="shareToQQ()" class="share-btn flex flex-col items-center gap-3 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border-2 border-blue-100 dark:border-blue-800 hover:border-blue-400 hover:shadow-lg transition-all">
+                        <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.526 4.632 17.351 0 12 0S4.474 4.632 4.474 9.241c0 .274.013.804.014.836l-1.08 2.695a39.548 39.548 0 0 0-.802 2.264c-1.021 3.283-.69 4.643-.438 4.673.253.03 1.084-1.256 1.084-1.256l1.438-1.762c.011 0 .24.033.416.062 0 0 .663 4.212 6.89 4.212s6.89-4.212 6.89-4.212c.177-.03.406-.062.417-.062l1.438 1.762s.831 1.286 1.084 1.256c.252-.03.583-1.39-.438-4.673z"/></svg>
+                        </div>
+                        <span class="font-bold">QQ</span>
+                    </button>
+                    <button onclick="shareToX()" class="share-btn flex flex-col items-center gap-3 p-6 bg-gray-50 dark:bg-gray-700 rounded-2xl border-2 border-gray-200 dark:border-gray-600 hover:border-gray-400 hover:shadow-lg transition-all">
+                        <div class="w-14 h-14 bg-black dark:bg-white rounded-2xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-white dark:text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </div>
+                        <span class="font-bold">X</span>
+                    </button>
+                    <button onclick="shareToInstagram()" class="share-btn flex flex-col items-center gap-3 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl border-2 border-purple-100 dark:border-purple-800 hover:border-purple-400 hover:shadow-lg transition-all">
+                        <div class="w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8z"/></svg>
+                        </div>
+                        <span class="font-bold">Instagram</span>
+                    </button>
+                </div>
+                <div class="mt-6 pt-6 border-t dark:border-gray-700 flex gap-3">
+                    <input type="text" id="shareUrl" readonly class="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm" value=""/>
+                    <button onclick="copyShareUrl()" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all">
+                        <span id="copyBtnText">复制</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 隐私设置按钮 -->
+    <button id="privacySettingsBtn" class="fixed bottom-8 left-8 p-3 bg-white dark:bg-gray-800 shadow-xl rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all z-50 hidden" onclick="showPrivacyConsent()">
+        <i data-lucide="shield" class="w-5 h-5"></i>
+    </button>
+
+    <!-- 导航栏 -->
+    <nav class="fixed w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 z-[60]">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="bg-green-600 p-1.5 rounded-lg text-white">
+                    <i data-lucide="leaf" class="w-5 h-5"></i>
+                </div>
+                <span class="text-xl font-bold">我什么都读™️</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="hidden md:flex gap-8 text-sm font-medium mr-4">
+                    <a href="/" class="hover:text-green-600 transition-colors">首页</a>
+                    <a href="#posts" class="hover:text-green-600 transition-colors">文章</a>
+                    <a href="#about" class="hover:text-green-600 transition-colors">关于</a>
+                    <a href="/friends/" class="hover:text-green-600 transition-colors">友链</a>
+                </div>
+                <button onclick="showShareMenu()" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <i data-lucide="share-2" class="w-5 h-5"></i>
+                </button>
+                <button id="themeToggle" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <i data-lucide="sun" class="hidden dark:block w-5 h-5 text-yellow-400"></i>
+                    <i data-lucide="moon" class="block dark:hidden w-5 h-5"></i>
+                </button>
+                <button id="menuBtn" class="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 移动端菜单 -->
+    <div id="mobileMenu" class="fixed inset-0 bg-white dark:bg-gray-950 z-[100] flex flex-col items-center justify-center gap-10 opacity-0 pointer-events-none transform scale-95 transition-all duration-300 md:hidden">
+        <button id="closeMenu" class="absolute top-8 right-8 p-3">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <nav class="flex flex-col items-center gap-8">
+            <a href="/" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">首页</a>
+            <a href="#posts" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">文章</a>
+            <a href="#about" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">关于</a>
+            <a href="/friends/" class="mobile-link text-3xl font-bold hover:text-green-600 transition-colors">友链</a>
+        </nav>
+    </div>
+
+    <!-- 页面内容 -->
+    <header class="bg-soft-green pt-32 pb-20 px-6 text-center border-b dark:border-gray-800">
+        <div class="mb-8">
+            <div class="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden mx-auto">
+                <img src="{{ '/avatar.jpg' | relative_url }}" alt="头像" class="w-full h-full object-cover">
+            </div>
+        </div>
+        <h1 class="text-4xl font-bold mb-6">欢迎来到我的数字天地 🌿</h1>
+        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">我是一名正在探索世界的中学生。这里记录着我的个人笔记和心得。</p>
+    </header>
+
+    <!-- 文章列表 -->
+    <main id="posts" class="max-w-5xl mx-auto px-6 py-20">
+        <h2 class="text-2xl font-bold mb-12 flex items-center gap-2">
+            <i data-lucide="clock-3" class="w-6 h-6 text-green-600"></i>
+            最新更新 Updates
+        </h2>
+        
+        <div id="articlesGrid" class="grid md:grid-cols-2 gap-8">
+            {% for post in site.posts %}
+            <article class="article-item {% if forloop.index > 4 %}article-hidden{% else %}article-visible{% endif %} bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 overflow-hidden hover-lift flex flex-col shadow-sm">
+                <div class="h-44 bg-gray-50 dark:bg-gray-900/50 flex items-center justify-center">
+                    {% if post.image %}
+                    <img src="{{ post.image | relative_url }}" class="w-full h-full object-cover" alt="{{ post.title }}">
+                    {% else %}
+                    <i data-lucide="image" class="w-12 h-12 text-gray-200 dark:text-gray-700"></i>
+                    {% endif %}
+                </div>
+                <div class="p-8 flex flex-col flex-1">
+                    <div class="text-xs font-bold text-green-600 mb-3 uppercase tracking-widest">{{ post.category | default: "日常随笔" }}</div>
+                    <h3 class="text-2xl font-bold mb-4 hover:text-green-600">
+                        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                    </h3>
+                    <div class="text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 text-sm">{{ post.excerpt | strip_html | truncate: 80 }}</div>
+                    <div class="flex items-center text-sm text-gray-400 border-t dark:border-gray-700 pt-4 mt-auto">
+                        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> 
+                        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y年%m月%d日" }}</time>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <!-- 展开/收起按钮 -->
+        <div id="toggleButtonContainer" class="mt-12 text-center hidden">
+            <button id="toggleArticles" onclick="toggleArticles()" class="px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-2xl font-bold shadow-lg shadow-green-600/30 transition-all flex items-center gap-3 mx-auto">
+                <i data-lucide="chevron-down" id="toggleIcon" class="w-5 h-5"></i>
+                <span id="toggleText">展开更多文章</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- 关于与法律声明 -->
+    <section id="about" class="py-20 border-t dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950/50">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-2xl font-bold mb-10 text-center">关于与法律 About & Legal</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 联系我 -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm text-center hover-lift">
+                    <button id="copyEmailBtn" class="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto hover:scale-110 transition-all">
+                        <i data-lucide="mail"></i>
+                    </button>
+                    <h3 class="font-bold text-lg mb-2">联系我 Contact</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">任何想法，欢迎交流</p>
+                    <button id="copyEmailText" class="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all">
+                        <span id="btnText">复制邮箱</span>
+                    </button>
+                </div>
+
+                <!-- 内容声明 -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm text-center hover-lift">
+                    <div class="w-16 h-16 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <i data-lucide="file-text" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">内容声明</h3>
+                    <h4 class="text-xs text-gray-400 mb-4">Content Disclaimer</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">版权协议与免责声明</p>
+                    <button onclick="showContentDisclaimer()" class="px-8 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all">
+                        查看详细
+                    </button>
+                </div>
+
+                <!-- 隐私政策 -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm text-center hover-lift">
+                    <div class="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <i data-lucide="shield-check" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">隐私政策</h3>
+                    <h4 class="text-xs text-gray-400 mb-4">Privacy Policy</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">数据收集与保护政策</p>
+                    <button onclick="showPrivacyPolicy()" class="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all">
+                        查看详细
+                    </button>
+                </div>
+            </div>
+
+            <!-- 使用条款单独一行 -->
+            <div class="mt-6">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm text-center hover-lift">
+                    <div class="flex items-center justify-center gap-4 mb-4">
+                        <div class="w-16 h-16 bg-green-50 dark:bg-green-900/30 text-green-600 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="scale" class="w-8 h-8"></i>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-bold text-lg">使用条款 Terms of Use</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">打赏、广告、个性化建议等服务条款</p>
+                        </div>
+                    </div>
+                    <button onclick="showTermsOfUse()" class="px-10 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-xl transition-all shadow-lg">
+                        查看完整条款 View Full Terms
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <button id="backToTop" class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 text-green-600 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 opacity-0 -translate-y-4 pointer-events-none transition-all z-50">
+        <i data-lucide="chevron-up" class="w-6 h-6"></i>
+    </button>
+
+    <!-- Apple 风格的 Footer -->
+    <footer class="border-t dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            <!-- 法律链接（Apple 风格） -->
+            <div class="flex flex-wrap items-center justify-center gap-3 text-xs text-gray-500 dark:text-gray-400 mb-4">
+                <button onclick="showPrivacyPolicy()" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
+                    Privacy Policy
+                </button>
+                <span class="text-gray-300 dark:text-gray-600">|</span>
+                <button onclick="showTermsOfUse()" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
+                    Terms of Use
+                </button>
+                <span class="text-gray-300 dark:text-gray-600">|</span>
+                <button onclick="showContentDisclaimer()" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
+                    Content Disclaimer
+                </button>
+                <span class="text-gray-300 dark:text-gray-600">|</span>
+                <a href="#about" class="hover:text-gray-700 dark:hover:text-gray-200 hover:underline transition-colors">
+                    Contact
+                </a>
+            </div>
+            
+            <!-- 版权声明 -->
+            <div class="text-center text-xs text-gray-400 dark:text-gray-500">
+                <p>© 2026 我什么都读™️ (ReadEverything™️). All rights reserved.</p>
+                <p class="mt-1">Designed with ♥ in China | 基于 CC BY-NC-SA 4.0 许可</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // 🕐 实时时钟
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const date = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+            const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][now.getDay()];
+            
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            
+            if (hoursEl.textContent !== hours) {
+                hoursEl.textContent = hours;
+                hoursEl.classList.add('flip');
+                setTimeout(() => hoursEl.classList.remove('flip'), 600);
+            }
+            if (minutesEl.textContent !== minutes) {
+                minutesEl.textContent = minutes;
+                minutesEl.classList.add('flip');
+                setTimeout(() => minutesEl.classList.remove('flip'), 600);
+            }
+            if (secondsEl) secondsEl.textContent = seconds;
+            
+            document.getElementById('date').textContent = date;
+            document.getElementById('weekday').textContent = weekday;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // 📄 文章展开/收起
+        let articlesExpanded = false;
+        const articles = document.querySelectorAll('.article-item');
+        const toggleBtn = document.getElementById('toggleButtonContainer');
+        
+        if (articles.length > 4) {
+            toggleBtn.classList.remove('hidden');
+        }
+
+        function toggleArticles() {
+            articlesExpanded = !articlesExpanded;
+            articles.forEach((article, index) => {
+                if (index >= 4) {
+                    article.classList.toggle('article-hidden');
+                    article.classList.toggle('article-visible');
+                }
+            });
+            document.getElementById('toggleText').textContent = articlesExpanded ? '收起文章' : '展开更多文章';
+            document.getElementById('toggleIcon').style.transform = articlesExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+            lucide.createIcons();
+        }
+
+        // 📜 法律文档弹窗控制
+        function showPrivacyPolicy() {
+            document.getElementById('privacyPolicyModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function hidePrivacyPolicy() {
+            document.getElementById('privacyPolicyModal').classList.add('hidden');
+        }
+
+        function showContentDisclaimer() {
+            document.getElementById('contentDisclaimerModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function hideContentDisclaimer() {
+            document.getElementById('contentDisclaimerModal').classList.add('hidden');
+        }
+
+        function showTermsOfUse() {
+            document.getElementById('termsOfUseModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function hideTermsOfUse() {
+            document.getElementById('termsOfUseModal').classList.add('hidden');
+        }
+
+        // 🔒 隐私管理
+        const CONSENT_KEY = 'privacy-consent';
+        
+        function showPrivacyConsent() {
+            document.getElementById('privacyConsent').classList.remove('hidden');
+        }
+        
+        function acceptAnalytics() {
+            localStorage.setItem(CONSENT_KEY, 'accepted');
+            const script = document.createElement('script');
+            script.src = 'https://cloud.umami.is/script.js';
+            script.setAttribute('data-website-id', 'f291870c-3549-4f53-a1c1-5f740bdae6bd');
+            script.async = true;
+            document.getElementById('analytics-script').appendChild(script);
+            document.getElementById('privacyConsent').classList.add('hidden');
+            document.getElementById('privacySettingsBtn').classList.remove('hidden');
+        }
+        
+        function rejectAnalytics() {
+            localStorage.setItem(CONSENT_KEY, 'rejected');
+            document.getElementById('privacyConsent').classList.add('hidden');
+            document.getElementById('privacySettingsBtn').classList.remove('hidden');
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            const consent = localStorage.getItem(CONSENT_KEY);
+            if (!consent) {
+                showPrivacyConsent();
+            } else if (consent === 'accepted') {
+                acceptAnalytics();
+            } else {
+                document.getElementById('privacySettingsBtn').classList.remove('hidden');
+            }
+        });
+
+        // 📤 分享功能
+        function showShareMenu() {
+            document.getElementById('shareUrl').value = window.location.href;
+            document.getElementById('shareMenu').classList.remove('hidden');
+            lucide.createIcons();
+        }
+        
+        function hideShareMenu() {
+            document.getElementById('shareMenu').classList.add('hidden');
+        }
+        
+        function shareToWechat() {
+            alert('请复制链接在微信中分享');
+            copyShareUrl();
+        }
+        
+        function shareToQQ() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            window.open(`https://connect.qq.com/widget/shareqq/index.html?url=${url}&title=${title}`, '_blank');
+        }
+        
+        function shareToX() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(document.title);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        }
+        
+        function shareToInstagram() {
+            alert('Instagram 不支持网页分享\n请截图后在 Instagram 发布');
+            copyShareUrl();
+        }
+        
+        function copyShareUrl() {
+            const urlInput = document.getElementById('shareUrl');
+            urlInput.select();
+            document.execCommand('copy');
+            const btnText = document.getElementById('copyBtnText');
+            btnText.innerText = '已复制！';
+            setTimeout(() => btnText.innerText = '复制', 2000);
+        }
+
+        // 📧 邮箱复制
+        const copyEmail = () => {
+            const email = atob("bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20=");
+            const tempInput = document.createElement("input");
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            const btnText = document.getElementById('btnText');
+            btnText.innerText = "已复制！";
+            setTimeout(() => btnText.innerText = "复制邮箱", 2000);
+        };
+        document.getElementById('copyEmailBtn').onclick = copyEmail;
+        document.getElementById('copyEmailText').onclick = copyEmail;
+
+        // 🎨 主题切换
+        const themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // 📱 移动端菜单
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        const hideMenu = () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+        
+        closeMenu.addEventListener('click', hideMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', hideMenu));
+
+        // ⬆️ 回到顶部
+        const btt = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) btt.classList.add('show');
+            else btt.classList.remove('show');
+        });
+        btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ESC 关闭弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideShareMenu();
+                hidePrivacyPolicy();
+                hideContentDisclaimer();
+                hideTermsOfUse();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -192,330 +192,81 @@ layout: null
             </div>
         </div>
     </div>
-    
-<!-- 📚 法律中心（统一入口） -->
+
     <div id="legalHubModal" class="fixed inset-0 z-[400] flex items-center justify-center p-3 md:p-6 bg-gray-900/60 backdrop-blur-sm hidden">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-5xl rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden modal-enter flex flex-col" style="max-height: 95vh;">
-            <!-- 标题栏 -->
-            <div class="p-4 md:p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20">
-                <h3 class="text-lg md:text-2xl font-bold flex items-center gap-2">
-                    <i data-lucide="scale" class="w-5 h-5 md:w-7 md:h-7 text-green-600"></i>
-                    <span>法律中心 Legal Center</span>
-                </h3>
-                <button onclick="hideLegalHub()" class="text-gray-400 hover:text-gray-600 p-1">
-                    <i data-lucide="x" class="w-5 h-5 md:w-6 md:h-6"></i>
+    <div class="bg-white dark:bg-gray-800 w-full max-w-5xl rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden modal-enter flex flex-col" style="max-height: 95vh;">
+        <!-- 标题栏 -->
+        <div class="p-4 md:p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20">
+            <h3 class="text-lg md:text-2xl font-bold flex items-center gap-2">
+                <i data-lucide="scale" class="w-5 h-5 md:w-7 md:h-7 text-green-600"></i>
+                <span>法律中心 Legal Center</span>
+            </h3>
+            <button onclick="hideLegalHub()" class="text-gray-400 hover:text-gray-600 p-1">
+                <i data-lucide="x" class="w-5 h-5 md:w-6 md:h-6"></i>
+            </button>
+        </div>
+        
+        <!-- 选项卡 -->
+        <div class="border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 overflow-x-auto">
+            <div class="flex min-w-max md:min-w-0">
+                <button onclick="switchLegalTab('privacy')" class="tab-btn px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors whitespace-nowrap" data-tab="privacy">
+                    <i data-lucide="shield-check" class="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2"></i>
+                    隐私政策
                 </button>
-            </div>
-            
-            <!-- 选项卡 -->
-            <div class="border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 overflow-x-auto">
-                <div class="flex min-w-max md:min-w-0">
-                    <button onclick="switchLegalTab('privacy')" class="tab-btn px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors whitespace-nowrap" data-tab="privacy">
-                        <i data-lucide="shield-check" class="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2"></i>
-                        隐私政策
-                    </button>
-                    <button onclick="switchLegalTab('content')" class="tab-btn px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-amber-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors whitespace-nowrap" data-tab="content">
-                        <i data-lucide="file-text" class="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2"></i>
-                        内容声明
-                    </button>
-                    <button onclick="switchLegalTab('terms')" class="tab-btn px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors whitespace-nowrap" data-tab="terms">
-                        <i data-lucide="file-check" class="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2"></i>
-                        使用条款
-                    </button>
-                    <button onclick="switchLegalTab('contact')" class="tab-btn px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors whitespace-nowrap" data-tab="contact">
-                        <i data-lucide="mail" class="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2"></i>
-                        联系方式
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 内容区域 -->
-            <div class="legal-content p-4 md:p-8 text-xs md:text-sm leading-relaxed mobile-optimize">
-                <!-- 隐私政策内容 -->
-                <div id="privacyContent" class="legal-tab-content hidden">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 md:mb-6">最后更新：2026年2月10日 | Last Updated: February 10, 2026</p>
-                    
-                    <!-- 中文完整版 -->
-                    <div class="mb-8 md:mb-12 pb-8 md:pb-12 border-b-2 border-gray-200 dark:border-gray-700">
-                        <h4 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                            <span class="text-2xl">🇨🇳</span> 中文版
-                        </h4>
-                        
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">一、信息收集</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">我们使用第三方分析服务（Umami Analytics）收集匿名访问数据，包括但不限于：页面浏览量、访问来源、浏览器类型、操作系统、地理位置（国家/地区层面）。</p>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">我们不收集可识别个人身份的信息（PII）。所有数据收集均经过匿名化处理，确保无法追溯到具体个人。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">二、数据使用目的</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">收集的数据仅用于以下目的：</p>
-                            <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
-                                <li>改善网站内容和用户体验</li>
-                                <li>分析网站流量和使用模式</li>
-                                <li>保障网站安全和性能</li>
-                            </ul>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mt-3">我们承诺不会将数据用于商业营销目的，也不会出售、出租或以其他方式转让给任何第三方。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">三、Cookie 使用</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">我们使用必要的 Cookie 来保存您的偏好设置，包括主题模式、语言选择和隐私同意状态。这些 Cookie 对网站功能至关重要。</p>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Umami Analytics 采用无 Cookie 追踪技术，不会在您的设备上存储任何追踪标识。您可以通过浏览器设置管理或删除 Cookie，但这可能影响网站的部分功能。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">四、数据存储与跨境传输</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">分析数据存储于 Umami Cloud 服务器，该服务符合欧盟《通用数据保护条例》(GDPR) 标准。由于互联网的全球性特点，服务器可能位于不同国家或地区，您的数据可能会被跨境传输和存储。</p>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">我们确保所有数据传输均采用行业标准的加密技术（TLS/SSL），并与数据处理方签订数据保护协议，要求其遵守适用的数据保护法律。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">五、您的权利</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">根据适用的数据保护法律，您享有以下权利：</p>
-                            <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
-                                <li>随时撤回对数据处理的同意</li>
-                                <li>要求访问我们持有的关于您的数据</li>
-                                <li>要求更正不准确的数据</li>
-                                <li>要求删除您的数据（"被遗忘权"）</li>
-                                <li>拒绝非必要的数据收集</li>
-                                <li>数据可携带权</li>
-                            </ul>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mt-3">由于我们采用匿名化数据收集方式，无法识别特定用户的数据，因此可能无法完全满足某些个人数据请求。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">六、未成年人保护</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">本网站不专门针对13岁（或根据当地法律规定的其他年龄）以下儿童。我们不会故意收集未成年人的个人信息。如果我们发现在不知情的情况下收集了未成年人的个人信息，我们将立即采取措施删除相关数据。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">七、法律合规</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">本隐私政策遵守以下法律法规：欧盟《通用数据保护条例》(GDPR)、美国《加州消费者隐私法》(CCPA)、中华人民共和国《个人信息保护法》、香港特别行政区《个人资料（私隐）条例》以及其他适用的数据保护法律。</p>
-                        </section>
-
-                        <section>
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">八、联系我们</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">如果您对本隐私政策有任何疑问，或需要行使您的数据权利，请通过"联系方式"标签页中提供的方式与我们联系。</p>
-                        </section>
-                    </div>
-
-                    <!-- 英文完整版 -->
-                    <div>
-                        <h4 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                            <span class="text-2xl">🇺🇸</span> English Version
-                        </h4>
-                        
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">1. Information Collection</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">We use third-party analytics services (Umami Analytics) to collect anonymous visitor data, including but not limited to: page views, referral sources, browser type, operating system, and geographic location (country/region level).</p>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">We do not collect personally identifiable information (PII). All collected data is anonymized to ensure it cannot be traced back to specific individuals.</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">2. Data Usage</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Collected data is used solely for the following purposes:</p>
-                            <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
-                                <li>Improving website content and user experience</li>
-                                <li>Analyzing traffic and usage patterns</li>
-                                <li>Ensuring site security and performance</li>
-                            </ul>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mt-3">We pledge not to use data for commercial marketing purposes, nor will we sell, rent, or otherwise transfer it to any third party.</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">3. Cookie Usage</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">We use essential cookies to save your preference settings, including theme mode, language selection, and privacy consent status. These cookies are critical to website functionality.</p>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Umami Analytics employs cookie-less tracking technology and does not store any tracking identifiers on your device. You can manage or delete cookies through your browser settings, though this may affect certain website functions.</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">4. Data Storage & Cross-Border Transfer</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Analytics data is stored on Umami Cloud servers, which comply with EU General Data Protection Regulation (GDPR) standards. Due to the global nature of the internet, servers may be located in different countries or regions, and your data may be transferred and stored across borders.</p>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">We ensure all data transfers use industry-standard encryption technology (TLS/SSL) and enter into data protection agreements with processors requiring compliance with applicable data protection laws.</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">5. Your Rights</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Under applicable data protection laws, you have the following rights:</p>
-                            <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
-                                <li>Withdraw consent to data processing at any time</li>
-                                <li>Request access to data we hold about you</li>
-                                <li>Request correction of inaccurate data</li>
-                                <li>Request deletion of your data ("right to be forgotten")</li>
-                                <li>Object to non-essential data collection</li>
-                                <li>Data portability</li>
-                            </ul>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mt-3">Due to our anonymized data collection approach, we cannot identify specific users' data and may be unable to fully satisfy certain personal data requests.</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">6. Minor Protection</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">This website is not specifically directed at children under 13 (or other ages as defined by local law). We do not knowingly collect personal information from minors. If we discover that we have inadvertently collected personal information from a minor, we will immediately take steps to delete the relevant data.</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">7. Legal Compliance</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">This Privacy Policy complies with: EU General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA), Personal Information Protection Law of the People's Republic of China, Personal Data (Privacy) Ordinance of the Hong Kong Special Administrative Region, and other applicable data protection laws.</p>
-                        </section>
-
-                        <section>
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">8. Contact Us</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">If you have any questions about this Privacy Policy or need to exercise your data rights, please contact us through the methods provided in the "Contact" tab.</p>
-                        </section>
-                    </div>
-                </div>
-
-                <!-- 内容声明 -->
-                <div id="contentContent" class="legal-tab-content hidden">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 md:mb-6">最后更新：2026年2月10日 | Last Updated: February 10, 2026</p>
-                    
-                    <!-- 中文版 -->
-                    <div class="mb-8 md:mb-12 pb-8 md:pb-12 border-b-2 border-gray-200 dark:border-gray-700">
-                        <h4 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                            <span class="text-2xl">🇨🇳</span> 中文版
-                        </h4>
-                        
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">一、版权声明</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">本网站原创内容采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议 (CC BY-NC-SA 4.0) 进行许可。转载时请注明出处并保留原作者署名。商业使用需事先获得书面许可。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">二、免责声明</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">本网站内容仅代表作者个人观点和经验分享，不构成任何专业建议。所载信息可能存在主观偏差、事实错误或信息过时的情况，仅供读者参考。读者应当自行判断信息的准确性和适用性。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">三、第三方内容</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">本网站可能包含指向第三方网站的链接或嵌入第三方内容。我们对第三方内容的准确性、合法性不承担责任。访问第三方链接的风险由用户自行承担。</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">四、责任限制</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">在适用法律允许的最大范围内，本网站及其运营者不对因使用本网站而产生的任何直接、间接、附带或后果性损害承担责任。</p>
-                        </section>
-                    </div>
-
-                    <!-- 英文版 -->
-                    <div>
-                        <h4 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                            <span class="text-2xl">🇺🇸</span> English Version
-                        </h4>
-                        
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">1. Copyright Notice</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Original content on this website is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). When reposting, please credit the source and maintain author attribution. Commercial use requires prior written permission.</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">2. Disclaimer</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Content on this website represents the author's personal opinions and experience sharing only and does not constitute professional advice. Information may contain subjective bias, factual errors, or be outdated, and is for reference only. Readers should exercise their own judgment regarding accuracy and suitability.</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">3. Third-Party Content</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">This website may contain links to third-party websites or embedded third-party content. We assume no responsibility for the accuracy or legality of third-party content. Users access third-party links at their own risk.</p>
-                        </section>
-
-                        <section>
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">4. Limitation of Liability</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">To the maximum extent permitted by applicable law, this website and its operators shall not be liable for any direct, indirect, incidental, or consequential damages arising from the use of this website.</p>
-                        </section>
-                    </div>
-                </div>
-
-                <!-- 使用条款 -->
-                <div id="termsContent" class="legal-tab-content hidden">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 md:mb-6">最后更新：2026年2月10日 | Last Updated: February 10, 2026</p>
-                    
-                    <!-- 中文版 -->
-                    <div class="mb-8 md:mb-12 pb-8 md:pb-12 border-b-2 border-gray-200 dark:border-gray-700">
-                        <h4 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                            <span class="text-2xl">🇨🇳</span> 中文版
-                        </h4>
-                        
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">一、打赏功能</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-2">本网站可能提供自愿打赏功能。打赏是自愿的、不可退款的赠与行为，不构成商品或服务的购买。打赏不赋予打赏者任何特殊权利或对网站内容的控制权。</p>
-                            <p class="text-xs italic text-gray-500 mt-2">适用法律：US IRC § 170, China Civil Code Art. 657-666, Hong Kong Inland Revenue Ordinance</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">二、广告与赞助</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-2">本网站可能展示第三方广告或赞助内容。所有广告将被明确标识。我们不对广告商的产品或服务负责，广告不构成我们的背书。</p>
-                            <p class="text-xs italic text-gray-500 mt-2">合规：FTC 16 CFR Part 255, China Advertising Law, HK Trade Descriptions Ordinance</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">三、个性化建议</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-2">本网站可能基于您的浏览历史提供个性化内容建议。这些建议仅供参考，不构成专业建议。您可以通过隐私设置退出个性化功能。</p>
-                            <p class="text-xs italic text-gray-500 mt-2">权利保护：GDPR Art. 21-22, CCPA § 1798.120, China PIPL Art. 24</p>
-                        </section>
-
-                        <section>
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">四、争议解决</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">因本条款引起的任何争议应首先通过友好协商解决。如协商失败，争议应提交至网站所有者所在地有管辖权的法院。</p>
-                        </section>
-                    </div>
-
-                    <!-- 英文版 -->
-                    <div>
-                        <h4 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                            <span class="text-2xl">🇺🇸</span> English Version
-                        </h4>
-                        
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">1. Tipping Feature</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-2">This website may offer voluntary tipping features. Tips are voluntary, non-refundable gifts and do not constitute a purchase. Tipping does not grant donors any special rights or control over website content.</p>
-                            <p class="text-xs italic text-gray-500 mt-2">Applicable Laws: US IRC § 170, China Civil Code Art. 657-666, Hong Kong Inland Revenue Ordinance</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">2. Advertising & Sponsorship</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-2">This website may display third-party advertisements or sponsored content. All ads will be clearly identified. We are not responsible for advertisers' products or services, and ads do not constitute our endorsement.</p>
-                            <p class="text-xs italic text-gray-500 mt-2">Compliance: FTC 16 CFR Part 255, China Advertising Law, HK Trade Descriptions Ordinance</p>
-                        </section>
-
-                        <section class="mb-6 md:mb-8">
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">3. Personalized Recommendations</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-2">This website may provide personalized content recommendations based on your browsing history. These recommendations are for reference only and do not constitute professional advice. You may opt out through privacy settings.</p>
-                            <p class="text-xs italic text-gray-500 mt-2">Rights: GDPR Art. 21-22, CCPA § 1798.120, China PIPL Art. 24</p>
-                        </section>
-
-                        <section>
-                            <h5 class="font-bold text-base md:text-lg text-gray-900 dark:text-white mb-3 md:mb-4">4. Dispute Resolution</h5>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Any disputes arising from these terms should first be resolved through friendly negotiation. If negotiation fails, disputes shall be submitted to courts with jurisdiction where the website owner is located.</p>
-                        </section>
-                    </div>
-                </div>
-
-                <!-- 联系方式 -->
-                <div id="contactContent" class="legal-tab-content hidden">
-                    <div class="text-center py-8 md:py-12">
-                        <div class="w-20 h-20 md:w-24 md:h-24 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-3xl flex items-center justify-center mb-6 md:mb-8 mx-auto">
-                            <i data-lucide="mail" class="w-10 h-10 md:w-12 md:h-12"></i>
-                        </div>
-                        <h4 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">联系我们 Contact Us</h4>
-                        <p class="text-sm md:text-base text-gray-600 dark:text-gray-400 mb-6 md:mb-8 max-w-md mx-auto px-4">
-                            如有任何问题、建议或法律事务咨询，欢迎通过邮件与我们联系。<br class="hidden md:block">
-                            For any questions, suggestions, or legal inquiries, please contact us via email.
-                        </p>
-                        <button onclick="copyEmailInHub()" class="px-8 md:px-10 py-3 md:py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm md:text-base font-bold rounded-xl transition-all shadow-lg inline-flex items-center gap-2">
-                            <i data-lucide="copy" class="w-4 h-4 md:w-5 md:h-5"></i>
-                            <span id="hubEmailBtnText">复制邮箱地址 Copy Email</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="p-4 md:p-6 border-t dark:border-gray-700 text-center">
-                <button onclick="hideLegalHub()" class="px-8 md:px-10 py-2.5 md:py-3 bg-gray-600 text-white rounded-xl text-sm md:text-base font-bold hover:bg-gray-700 transition-all">
-                    关闭 Close
+                <button onclick="switchLegalTab('content')" class="tab-btn px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-amber-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors whitespace-nowrap" data-tab="content">
+                    <i data-lucide="file-text" class="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2"></i>
+                    内容声明
+                </button>
+                <button onclick="switchLegalTab('terms')" class="tab-btn px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors whitespace-nowrap" data-tab="terms">
+                    <i data-lucide="file-check" class="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2"></i>
+                    使用条款
+                </button>
+                <button onclick="switchLegalTab('contact')" class="tab-btn px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors whitespace-nowrap" data-tab="contact">
+                    <i data-lucide="mail" class="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2"></i>
+                    联系方式
                 </button>
             </div>
         </div>
+        
+        <!-- 动态内容区域（简化） -->
+        <div class="legal-content p-4 md:p-8 text-xs md:text-sm leading-relaxed mobile-optimize">
+            <!-- 加载指示器 -->
+            <div id="loadingIndicator" class="hidden text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+                <p class="mt-4 text-gray-500 dark:text-gray-400">加载中...</p>
+            </div>
+            
+            <!-- 动态内容容器 -->
+            <div id="dynamicContent" class="prose dark:prose-invert max-w-none">
+                <!-- Markdown 内容将被渲染到这里 -->
+            </div>
+            
+            <!-- 联系方式（静态保留） -->
+            <div id="contactContent" class="legal-tab-content hidden">
+                <div class="text-center py-8 md:py-12">
+                    <div class="w-20 h-20 md:w-24 md:h-24 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-3xl flex items-center justify-center mb-6 md:mb-8 mx-auto">
+                        <i data-lucide="mail" class="w-10 h-10 md:w-12 md:h-12"></i>
+                    </div>
+                    <h4 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">联系我们 Contact Us</h4>
+                    <p class="text-sm md:text-base text-gray-600 dark:text-gray-400 mb-6 md:mb-8 max-w-md mx-auto px-4">
+                        如有任何问题、建议或法律事务咨询，欢迎通过邮件与我们联系。<br class="hidden md:block">
+                        For any questions, suggestions, or legal inquiries, please contact us via email.
+                    </p>
+                    <button onclick="copyEmailInHub()" class="px-8 md:px-10 py-3 md:py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm md:text-base font-bold rounded-xl transition-all shadow-lg inline-flex items-center gap-2">
+                        <i data-lucide="copy" class="w-4 h-4 md:w-5 md:h-5"></i>
+                        <span id="hubEmailBtnText">复制邮箱地址 Copy Email</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4 md:p-6 border-t dark:border-gray-700 text-center">
+            <button onclick="hideLegalHub()" class="px-8 md:px-10 py-2.5 md:py-3 bg-gray-600 text-white rounded-xl text-sm md:text-base font-bold hover:bg-gray-700 transition-all">
+                关闭 Close
+            </button>
+        </div>
     </div>
+</div>
 
     <!-- 📤 分享菜单（简化版） -->
     <div id="shareMenu" class="fixed inset-0 z-[250] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-sm hidden">

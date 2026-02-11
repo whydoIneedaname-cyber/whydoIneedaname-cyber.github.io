@@ -88,6 +88,36 @@ layout: null
         from { opacity: 0; transform: scale(0.9); }
         to { opacity: 1; transform: scale(1); }
     }
+    /* 时钟最小化状态 */
+    #liveClock.minimized {
+        padding: 0.75rem 1rem;
+    }
+    #liveClock.minimized .clock-details {
+        display: none;
+    }
+    #liveClock.minimized .text-4xl {
+        font-size: 1.5rem;
+    }
+
+    /* 法律选项卡 */
+    .tab-btn {
+        transition: all 0.3s;
+        border-bottom: 2px solid transparent;
+    }
+    .tab-btn.active {
+        border-bottom-color: currentColor;
+        font-weight: 700;
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        .mobile-optimize {
+            padding: 1rem;
+        }
+        .legal-content {
+            max-height: 60vh;
+        }
+    }
 
     /* 法律文档弹窗滚动 */
     .legal-content {
@@ -116,23 +146,26 @@ layout: null
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
 
     <!-- 🕐 实时时钟（左侧固定） -->
-    <div id="liveClock" class="fixed top-24 left-8 glass rounded-3xl p-6 shadow-2xl z-40 hidden lg:block">
-        <div class="text-center space-y-3">
-            <div class="flex items-center justify-center gap-2">
-                <i data-lucide="clock" class="w-5 h-5 text-green-600"></i>
-                <div class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-                    Beijing Time
-                </div>
-            </div>
-            <div class="text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
-                <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
-            </div>
-            <div class="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                <div id="date"></div>
-                <div id="weekday" class="text-xs mt-1"></div>
+   <div id="liveClock" class="fixed top-24 left-8 glass rounded-3xl p-6 shadow-2xl z-40 hidden lg:block">
+    <button onclick="toggleClockSize()" class="absolute top-2 right-2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" aria-label="最小化/展开">
+        <i data-lucide="minimize-2" id="clockToggleIcon" class="w-4 h-4"></i>
+    </button>
+    <div class="text-center space-y-3">
+        <div class="flex items-center justify-center gap-2 clock-details">
+            <i data-lucide="clock" class="w-5 h-5 text-green-600"></i>
+            <div class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                Beijing Time
             </div>
         </div>
+        <div class="text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+            <span id="hours">00</span>:<span id="minutes">00</span><span class="clock-details">:<span id="seconds">00</span></span>
+        </div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 font-medium clock-details">
+            <div id="date"></div>
+            <div id="weekday" class="text-xs mt-1"></div>
+        </div>
     </div>
+</div>
 
     <!-- 🔒 隐私同意弹窗（简化版） -->
     <div id="privacyConsent" class="fixed bottom-0 inset-x-0 bg-white dark:bg-gray-800 border-t-2 border-green-600 shadow-2xl z-[300] hidden">

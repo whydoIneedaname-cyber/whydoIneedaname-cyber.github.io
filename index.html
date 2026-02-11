@@ -735,6 +735,76 @@ layout: null
 
     <script>
         lucide.createIcons();
+        
+        // 🕐 时钟最小化功能
+        let clockMinimized = false;
+        function toggleClockSize() {
+            const clock = document.getElementById('liveClock');
+            const icon = document.getElementById('clockToggleIcon');
+            clockMinimized = !clockMinimized;
+            
+            if (clockMinimized) {
+                clock.classList.add('minimized');
+                icon.setAttribute('data-lucide', 'maximize-2');
+            } else {
+                clock.classList.remove('minimized');
+                icon.setAttribute('data-lucide', 'minimize-2');
+            }
+            lucide.createIcons();
+        }
+
+        // 📚 法律中心控制
+        function showLegalHub(tab = 'privacy') {
+            document.getElementById('legalHubModal').classList.remove('hidden');
+            switchLegalTab(tab);
+            lucide.createIcons();
+        }
+
+        function hideLegalHub() {
+            document.getElementById('legalHubModal').classList.add('hidden');
+        }
+
+        function switchLegalTab(tabName) {
+            // 隐藏所有内容
+            document.querySelectorAll('.legal-tab-content').forEach(el => el.classList.add('hidden'));
+            // 移除所有激活状态
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // 显示选中的内容
+            const contentMap = {
+                'privacy': 'privacyContent',
+                'content': 'contentContent',
+                'terms': 'termsContent',
+                'contact': 'contactContent'
+            };
+            
+            const contentId = contentMap[tabName];
+            if (contentId) {
+                document.getElementById(contentId).classList.remove('hidden');
+            }
+            
+            // 激活选中的标签
+            const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+            
+            lucide.createIcons();
+        }
+
+        // 法律中心内的邮箱复制
+        function copyEmailInHub() {
+            const email = atob("bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20=");
+            const tempInput = document.createElement("input");
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            const btnText = document.getElementById('hubEmailBtnText');
+            btnText.innerText = "已复制！ Copied!";
+            setTimeout(() => btnText.innerText = "复制邮箱地址 Copy Email", 2000);
+        }
 
         // 🕐 实时时钟
         function updateClock() {
@@ -946,12 +1016,10 @@ layout: null
         btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
         // ESC 关闭弹窗
-        document.addEventListener('keydown', (e) => {
+       document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 hideShareMenu();
-                hidePrivacyPolicy();
-                hideContentDisclaimer();
-                hideTermsOfUse();
+                hideLegalHub();
             }
         });
     </script>

@@ -108,6 +108,102 @@ layout: null
         border-bottom-color: currentColor;
         font-weight: 700;
     }
+    
+    /* Markdown 内容样式 */
+.prose {
+    color: inherit;
+}
+
+.prose h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dark .prose h2 {
+    color: #f9fafb;
+}
+
+.prose h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #374151;
+}
+
+.dark .prose h3 {
+    color: #e5e7eb;
+}
+
+.prose h4,
+.prose h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+}
+
+.dark .prose h4,
+.dark .prose h5 {
+    color: #d1d5db;
+}
+
+.prose p {
+    margin-bottom: 1rem;
+    line-height: 1.75;
+}
+
+.prose ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.prose li {
+    margin-bottom: 0.5rem;
+}
+
+.prose strong {
+    font-weight: 600;
+    color: #111827;
+}
+
+.dark .prose strong {
+    color: #f9fafb;
+}
+
+.prose hr {
+    border-color: #e5e7eb;
+    margin: 2rem 0;
+}
+
+.dark .prose hr {
+    border-color: #374151;
+}
+
+.prose a {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.prose a:hover {
+    color: #1d4ed8;
+}
+
+.dark .prose a {
+    color: #60a5fa;
+}
+
+.dark .prose a:hover {
+    color: #3b82f6;
+}
 
     /* 移动端优化 */
     @media (max-width: 768px) {
@@ -504,10 +600,82 @@ layout: null
             lucide.createIcons();
         }
 
-        // 📚 法律中心控制
-        function showLegalHub(tab = 'privacy') {
+     // ============================================
+        // 📚 法律文档动态加载器
+        // ============================================
+        
+        const legalDocCache = {}; // 缓存已加载的文档
+        
+        async function loadLegalDocument(docName) {
+            // 如果已缓存，直接使用
+            if (legalDocCache[docName]) {
+                return legalDocCache[docName];
+            }
+            
+            // 显示加载指示器
+            const loadingEl = document.getElementById('loadingIndicator');
+            const contentEl = document.getElementById('dynamicContent');
+            
+            if (loadingEl) loadingEl.classList.remove('hidden');
+            if (contentEl) contentEl.classList.add('hidden');
+            
+            try {
+                // 文档路径映射
+                const docMap = {
+                    'privacy': '/legal/privacy-policy.md',
+                    'content': '/legal/content-disclaimer.md',
+                    'terms': '/legal/terms-of-use.md'
+                };
+                
+                const docPath = docMap[docName];
+                if (!docPath) {
+                    throw new Error('文档不存在');
+                }
+                
+                // 获取 Markdown 文件
+                const response = await fetch(docPath);
+                if (!response.ok) {
+                    throw new Error('加载失败: ' + response.status);
+                }
+                
+                const markdown = await response.text();
+                
+                // 使用 marked.js 渲染 Markdown
+                const html = marked.parse(markdown);
+                
+                // 缓存结果
+                legalDocCache[docName] = html;
+                
+                return html;
+                
+            } catch (error) {
+                console.error('加载法律文档失败:', error);
+                return `
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 mx-auto mb-4 text-red-500">
+                            <i data-lucide="alert-circle" class="w-16 h-16"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">加载失败</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">无法加载文档内容，请稍后重试。</p>
+                        <button onclick="switchLegalTab('${docName}')" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
+                            重新加载
+                        </button>
+                    </div>
+                `;
+            } finally {
+                // 隐藏加载指示器
+                if (loadingEl) loadingEl.classList.add('hidden');
+                if (contentEl) contentEl.classList.remove('hidden');
+            }
+        }
+        
+        // ============================================
+        // 📚 法律中心控制（修改版）
+        // ============================================
+        
+        async function showLegalHub(tab = 'privacy') {
             document.getElementById('legalHubModal').classList.remove('hidden');
-            switchLegalTab(tab);
+            await switchLegalTab(tab);
             lucide.createIcons();
         }
 
@@ -515,24 +683,9 @@ layout: null
             document.getElementById('legalHubModal').classList.add('hidden');
         }
 
-        function switchLegalTab(tabName) {
-            // 隐藏所有内容
-            document.querySelectorAll('.legal-tab-content').forEach(el => el.classList.add('hidden'));
+        async function switchLegalTab(tabName) {
             // 移除所有激活状态
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // 显示选中的内容
-            const contentMap = {
-                'privacy': 'privacyContent',
-                'content': 'contentContent',
-                'terms': 'termsContent',
-                'contact': 'contactContent'
-            };
-            
-            const contentId = contentMap[tabName];
-            if (contentId) {
-                document.getElementById(contentId).classList.remove('hidden');
-            }
             
             // 激活选中的标签
             const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
@@ -540,10 +693,39 @@ layout: null
                 activeTab.classList.add('active');
             }
             
+            // 如果是联系方式，显示静态内容
+            if (tabName === 'contact') {
+                const contactEl = document.getElementById('contactContent');
+                const dynamicEl = document.getElementById('dynamicContent');
+                const loadingEl = document.getElementById('loadingIndicator');
+                
+                if (contactEl) contactEl.classList.remove('hidden');
+                if (dynamicEl) dynamicEl.classList.add('hidden');
+                if (loadingEl) loadingEl.classList.add('hidden');
+                
+                lucide.createIcons();
+                return;
+            }
+            
+            // 隐藏联系方式
+            const contactEl = document.getElementById('contactContent');
+            if (contactEl) contactEl.classList.add('hidden');
+            
+            // 加载并显示对应的法律文档
+            const html = await loadLegalDocument(tabName);
+            const dynamicEl = document.getElementById('dynamicContent');
+            if (dynamicEl) {
+                dynamicEl.innerHTML = html;
+            }
+            
+            // 刷新图标
             lucide.createIcons();
         }
-
-        // 法律中心内的邮箱复制
+        
+        // ============================================
+        // 📧 法律中心内的邮箱复制
+        // ============================================
+        
         function copyEmailInHub() {
             const email = atob("bWljaGFlbHpoYW5nam1Ab3V0bG9vay5jb20=");
             const tempInput = document.createElement("input");
@@ -552,9 +734,14 @@ layout: null
             tempInput.select();
             document.execCommand("copy");
             document.body.removeChild(tempInput);
+            
             const btnText = document.getElementById('hubEmailBtnText');
-            btnText.innerText = "已复制！ Copied!";
-            setTimeout(() => btnText.innerText = "复制邮箱地址 Copy Email", 2000);
+            if (btnText) {
+                btnText.innerText = "已复制！ Copied!";
+                setTimeout(() => {
+                    btnText.innerText = "复制邮箱地址 Copy Email";
+                }, 2000);
+            }
         }
 
         // 🕐 实时时钟

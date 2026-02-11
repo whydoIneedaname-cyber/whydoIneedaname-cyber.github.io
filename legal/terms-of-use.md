@@ -1,6 +1,6 @@
 # 使用条款 Terms of Use
 
-**最后更新：2026年2月10日 | Last Updated: February 10, 2026**
+**最后更新：2026年2月11日 | Last Updated: February 11, 2026**
 
 ---
 
@@ -129,7 +129,6 @@
 
 **使用限制：**
 - **禁止**未经事先书面许可进行以下行为：
-  - 复制、修改、分发网站内容
   - 商业使用网站内容
   - 创建衍生作品
   - 反向工程或反编译
@@ -182,15 +181,8 @@
 - 因本条款引起的任何争议应首先通过友好协商解决
 - 协商期限为30天
 
-**仲裁条款（美国用户）：**
-- 如协商失败，美国用户同意通过**具有约束力的仲裁**解决争议
-- 仲裁地点：[网站所有者所在地]
-- 仲裁规则：美国仲裁协会（AAA）规则
-- **例外：** 小额索赔法院案件除外
-
-**诉讼管辖（其他用户）：**
+**诉讼管辖：**
 - 中国内地用户：适用中国法律，由网站所有者所在地人民法院管辖
-- 香港用户：适用香港法律，由香港法院管辖
 - 其他用户：由网站所有者所在地有管辖权的法院管辖
 
 **适用法律：**
@@ -211,6 +203,10 @@
 ### 十二、联系方式
 
 如对本使用条款有任何疑问，请通过网站提供的联系方式与我们联系。
+
+### 十三、语言版本
+
+本声明提供中文和英文两个版本。如中英文版本存在任何不一致，以**中文版本**为准。
 
 ---
 
@@ -339,7 +335,6 @@ This website may provide personalized content recommendations based on your brow
 
 **Usage Restrictions:**
 - The following are **prohibited** without prior written permission:
-  - Copying, modifying, distributing website content
   - Commercial use of website content
   - Creating derivative works
   - Reverse engineering or decompiling
@@ -392,15 +387,8 @@ You agree to indemnify, defend, and hold harmless us and our affiliates, directo
 - Any disputes arising from these terms should first be resolved through friendly negotiation
 - Negotiation period: 30 days
 
-**Arbitration Clause (US Users):**
-- If negotiation fails, US users agree to resolve disputes through **binding arbitration**
-- Arbitration location: [website owner's location]
-- Arbitration rules: American Arbitration Association (AAA) rules
-- **Exception:** Small claims court cases excluded
-
-**Litigation Jurisdiction (Other Users):**
+**Litigation Jurisdiction :**
 - Mainland China users: Chinese law applies, jurisdiction with courts at website owner's location
-- Hong Kong users: Hong Kong law applies, jurisdiction with Hong Kong courts
 - Other users: Jurisdiction with courts at website owner's location
 
 **Applicable Law:**
@@ -421,3 +409,7 @@ These Terms of Use, together with the Privacy Policy and Content Disclaimer, con
 ### 12. Contact Information
 
 For any questions about these Terms of Use, please contact us through the contact information provided on the website.
+
+### 13. Language Versions
+
+This statement is provided in both Chinese and English. In case of any inconsistency between the Chinese and English versions, the **Chinese version** shall prevail.

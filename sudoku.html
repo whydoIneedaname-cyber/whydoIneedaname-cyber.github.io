@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>数独游戏 - Sudoku Game</title>
-    <meta name="description" content="在线数独游戏，支持多种难度，提示系统，笔记功能，统计追踪">
+    <meta name="description" content="我什么都读™ 在线数独游戏，支持多种难度，提示系统，笔记功能，统计追踪">
     
     <style>
         * {
@@ -645,8 +645,8 @@
                 this.isPaused = false;
                 this.difficulty = 'medium';
                 this.errors = 0;
-                this.maxErrors = 3;
-                this.hintsRemaining = 3;
+                this.maxErrors = 10;
+                this.hintsRemaining = 10;
                 this.history = [];
                 
                 this.init();
@@ -1065,7 +1065,7 @@
 
             gameOver() {
                 this.stopTimer();
-                alert('❌ 游戏结束！错误次数过多。\n\n点击"新游戏"重新开始。');
+                alert('❌ OH NO!!!错误次数过多。\n\n点击"新游戏"重新开始。');
             }
 
             startTimer() {

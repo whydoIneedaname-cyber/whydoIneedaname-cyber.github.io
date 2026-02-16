@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>文字加密解密系统 | Text Encryption System</title>
+    <meta name="description" content="基于AES-GCM算法的安全文字加密解密工具">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 头部 */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+
+        /* 主卡片 */
+        .main-card {
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 算法说明 */
+        .algorithm-info {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .algorithm-info h3 {
+            color: var(--primary-color);
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .algorithm-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .algorithm-info li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .algorithm-info li::before {
+            content: "✓";
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        /* 密钥输入 */
+        .key-section {
+            margin-bottom: 2rem;
+        }
+
+        .key-section label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .key-input-wrapper {
+            position: relative;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .key-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .key-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .toggle-key-btn {
+            padding: 0 1.25rem;
+            background: var(--border-color);
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.25rem;
+        }
+
+        .toggle-key-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* 文本区域 */
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .text-area-wrapper {
+            margin-bottom: 1.5rem;
+        }
+
+        .text-area {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .text-area:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* 操作按钮 */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 结果显示 */
+        .result-box {
+            background: #f8fafc;
+            border: 2px dashed var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            min-height: 150px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        .result-box.has-content {
+            border-color: var(--success-color);
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .placeholder {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+        }
+
+        /* 提示消息 */
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: slideInRight 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast.success {
+            background: var(--success-color);
+        }
+
+        .toast.error {
+            background: var(--error-color);
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
+        }
+
+        .footer-divider {
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.5);
+            margin: 1.5rem auto;
+            border-radius: 2px;
+        }
+
+        .tips {
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+
+        .tips strong {
+            font-weight: 600;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .main-card {
+                padding: 1.5rem;
+                border-radius: 1rem;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>🔐 文字加密解密系统</h1>
+            <div class="subtitle">Text Encryption & Decryption System</div>
+        </div>
+
+        <!-- 主卡片 -->
+        <div class="main-card">
+            <!-- 算法说明 -->
+            <div class="algorithm-info">
+                <h3>🛡️ 加密算法说明</h3>
+                <ul>
+                    <li>加密算法：AES-GCM (256-bit)</li>
+                    <li>密钥派生：SHA-256 哈希算法</li>
+                    <li>初始化向量：随机生成 (12 bytes)</li>
+                    <li>加密流程：数字密钥 → SHA-256 → 32字节AES密钥 → AES-GCM加密
+                    <li>数据格式：Base64编码（便于传输和存储）</li>
+                    <li>所有操作在浏览器本地完成，数据不会上传服务器</li>
+                </ul>
+            </div>
+
+            <!-- 密钥输入 -->
+            <div class="key-section">
+                <label for="keyInput">🔑 数字密钥 (仅支持数字)</label>
+                <div class="key-input-wrapper">
+                    <input 
+                        type="password" 
+                        id="keyInput" 
+                        class="key-input" 
+                        placeholder="请输入数字密钥，例如：123456"
+                        pattern="[0-9]*"
+                        inputmode="numeric"
+                    >
+                    <button class="toggle-key-btn" onclick="toggleKeyVisibility()" title="显示/隐藏密钥">
+                        <span id="toggleIcon">👁️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 加密区域 -->
+            <div class="encrypt-section">
+                <div class="section-title">
+                    <span class="icon">📝</span>
+                    加密区域
+                </div>
+                <div class="text-area-wrapper">
+                    <textarea 
+                        id="plainText" 
+                        class="text-area" 
+                        placeholder="请输入要加密的文本内容（支持中英文）..."
+                        oninput="updateCharCount('plain')"
+                    ></textarea>
+                    <div class="char-count" id="plainCharCount">0 字符</div>
+                </div>
+            </div>
+
+            <!-- 操作区 -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="encryptText()">
+                    🔒 加密文本
+                </button>
+                <button class="btn btn-secondary" onclick="clearAll()">
+                    🗑️ 清空所有
+                </button>
+                <button class="btn btn-primary" onclick="decryptText()">
+                    🔓 解密文本
+                </button>
+            </div>
+
+            <!-- 加密结果 -->
+            <div class="result-section">
+                <div class="section-title">
+                    <span class="icon">🔒</span>
+                    加密结果
+                </div>
+                <div class="result-box" id="encryptResult">
+                    <span class="placeholder">加密结果将显示在这里...</span>
+                    <button class="copy-btn" id="copyEncryptBtn" style="display: none;" onclick="copyResult('encrypt')">
+                        📋 复制
+                    </button>
+                </div>
+            </div>
+
+            <div style="height: 2rem;"></div>
+
+            <!-- 解密区域 -->
+            <div class="decrypt-section">
+                <div class="section-title">
+                    <span class="icon">🔓</span>
+                    解密区域
+                </div>
+                <div class="text-area-wrapper">
+                    <textarea 
+                        id="cipherText" 
+                        class="text-area" 
+                        placeholder="请粘贴要解密的密文..."
+                        oninput="updateCharCount('cipher')"
+                    ></textarea>
+                    <div class="char-count" id="cipherCharCount">0 字符</div>
+                </div>
+            </div>
+
+            <!-- 解密结果 -->
+            <div class="result-section">
+                <div class="section-title">
+                    <span class="icon">✅</span>
+                    解密结果
+                </div>
+                <div class="result-box" id="decryptResult">
+                    <span class="placeholder">解密结果将显示在这里...</span>
+                    <button class="copy-btn" id="copyDecryptBtn" style="display: none;" onclick="copyResult('decrypt')">
+                        📋 复制
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer">
+            <div class="footer-divider"></div>
+            <div class="tips">
+                <strong>💡 使用提示：</strong><br>
+                1. 加密和解密必须使用相同的数字密钥<br>
+                2. 请妥善保管您的密钥，密钥丢失将无法解密<br>
+                3. 所有加密操作均在您的浏览器本地完成，数据绝不上传<br>
+                4. 建议使用较长且复杂的数字密钥以提高安全性
+            </div>
+            <div class="footer-divider"></div>
+            <div>
+                © 2024 Readevrything™ | 基于 Web Crypto API | AES-GCM 256-bit<br>
+                All Rights Reserved
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 工具函数 ====================
+        
+        // 显示提示消息
+        function showToast(message, type = 'success') {
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // 切换密钥可见性
+        function toggleKeyVisibility() {
+            const keyInput = document.getElementById('keyInput');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (keyInput.type === 'password') {
+                keyInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                keyInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+
+        // 更新字符计数
+        function updateCharCount(type) {
+            const textarea = document.getElementById(type === 'plain' ? 'plainText' : 'cipherText');
+            const countEl = document.getElementById(type === 'plain' ? 'plainCharCount' : 'cipherCharCount');
+            countEl.textContent = `${textarea.value.length} 字符`;
+        }
+
+        // 清空所有内容
+        function clearAll() {
+            if (confirm('确定要清空所有内容吗？')) {
+                document.getElementById('plainText').value = '';
+                document.getElementById('cipherText').value = '';
+                document.getElementById('encryptResult').innerHTML = '<span class="placeholder">加密结果将显示在这里...</span>';
+                document.getElementById('decryptResult').innerHTML = '<span class="placeholder">解密结果将显示在这里...</span>';
+                document.getElementById('encryptResult').classList.remove('has-content');
+                document.getElementById('decryptResult').classList.remove('has-content');
+                document.getElementById('copyEncryptBtn').style.display = 'none';
+                document.getElementById('copyDecryptBtn').style.display = 'none';
+                updateCharCount('plain');
+                updateCharCount('cipher');
+                showToast('已清空所有内容', 'success');
+            }
+        }
+
+        // 复制结果
+        async function copyResult(type) {
+            const resultBox = document.getElementById(type === 'encrypt' ? 'encryptResult' : 'decryptResult');
+            const text = resultBox.textContent.trim();
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast('复制成功！', 'success');
+            } catch (err) {
+                // 降级方案
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('复制成功！', 'success');
+            }
+        }
+
+        // ==================== 加密解密核心函数 ====================
+
+        // 将数字密钥通过SHA-256转换为AES密钥
+        async function deriveKey(password) {
+            const encoder = new TextEncoder();
+            const passwordData = encoder.encode(password);
+            
+            // 使用SHA-256生成密钥
+            const hashBuffer = await crypto.subtle.digest('SHA-256', passwordData);
+            
+            // 导入为CryptoKey
+            return await crypto.subtle.importKey(
+                'raw',
+                hashBuffer,
+                { name: 'AES-GCM' },
+                false,
+                ['encrypt', 'decrypt']
+            );
+        }
+
+        // 加密文本
+        async function encryptText() {
+            const plainText = document.getElementById('plainText').value;
+            const keyInput = document.getElementById('keyInput').value;
+
+            // 验证输入
+            if (!plainText.trim()) {
+                showToast('请输入要加密的文本！', 'error');
+                return;
+            }
+
+            if (!keyInput.trim()) {
+                showToast('请输入数字密钥！', 'error');
+                return;
+            }
+
+            if (!/^\d+$/.test(keyInput)) {
+                showToast('密钥必须为纯数字！', 'error');
+                return;
+            }
+
+            try {
+                // 派生密钥
+                const key = await deriveKey(keyInput);
+
+                // 生成随机初始化向量 (IV)
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+
+                // 加密
+                const encoder = new TextEncoder();
+                const encodedText = encoder.encode(plainText);
+                
+                const encryptedData = await crypto.subtle.encrypt(
+                    {
+                        name: 'AES-GCM',
+                        iv: iv
+                    },
+                    key,
+                    encodedText
+                );
+
+                // 将IV和加密数据合并
+                const combined = new Uint8Array(iv.length + encryptedData.byteLength);
+                combined.set(iv, 0);
+                combined.set(new Uint8Array(encryptedData), iv.length);
+
+                // 转换为Base64
+                const base64 = btoa(String.fromCharCode(...combined));
+
+                // 显示结果
+                const resultBox = document.getElementById('encryptResult');
+                resultBox.textContent = base64;
+                resultBox.classList.add('has-content');
+                document.getElementById('copyEncryptBtn').style.display = 'block';
+
+                showToast('加密成功！', 'success');
+            } catch (error) {
+                console.error('加密失败:', error);
+                showToast('加密失败：' + error.message, 'error');
+            }
+        }
+
+        // 解密文本
+        async function decryptText() {
+            const cipherText = document.getElementById('cipherText').value;
+            const keyInput = document.getElementById('keyInput').value;
+
+            // 验证输入
+            if (!cipherText.trim()) {
+                showToast('请输入要解密的密文！', 'error');
+                return;
+            }
+
+            if (!keyInput.trim()) {
+                showToast('请输入数字密钥！', 'error');
+                return;
+            }
+
+            if (!/^\d+$/.test(keyInput)) {
+                showToast('密钥必须为纯数字！', 'error');
+                return;
+            }
+
+            try {
+                // 派生密钥
+                const key = await deriveKey(keyInput);
+
+                // 从Base64解码
+                const combined = Uint8Array.from(atob(cipherText), c => c.charCodeAt(0));
+
+                // 分离IV和加密数据
+                const iv = combined.slice(0, 12);
+                const encryptedData = combined.slice(12);
+
+                // 解密
+                const decryptedData = await crypto.subtle.decrypt(
+                    {
+                        name: 'AES-GCM',
+                        iv: iv
+                    },
+                    key,
+                    encryptedData
+                );
+
+                // 解码文本
+                const decoder = new TextDecoder();
+                const plainText = decoder.decode(decryptedData);
+
+                // 显示结果
+                const resultBox = document.getElementById('decryptResult');
+                resultBox.textContent = plainText;
+                resultBox.classList.add('has-content');
+                document.getElementById('copyDecryptBtn').style.display = 'block';
+
+                showToast('解密成功！', 'success');
+            } catch (error) {
+                console.error('解密失败:', error);
+                showToast('解密失败：密钥错误或密文损坏！', 'error');
+            }
+        }
+
+        // ==================== 键盘快捷键 ====================
+        
+        document.addEventListener('keydown', function(event) {
+            // Ctrl/Cmd + Enter: 加密
+            if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+                if (document.activeElement === document.getElementById('plainText')) {
+                    event.preventDefault();
+                    encryptText();
+                } else if (document.activeElement === document.getElementById('cipherText')) {
+                    event.preventDefault();
+                    decryptText();
+                }
+            }
+            
+            // Ctrl/Cmd + K: 清空
+            if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+                event.preventDefault();
+                clearAll();
+            }
+        });
+
+        // ==================== 初始化 ====================
+        
+        // 检查浏览器支持
+        if (!window.crypto || !window.crypto.subtle) {
+            showToast('您的浏览器不支持Web Crypto API！请使用现代浏览器。', 'error');
+        }
+
+        // 提示用户
+        console.log('%c🔐 Text Encryption System', 'color: #6366f1; font-size: 20px; font-weight: bold;');
+        console.log('%cAlgorithm: AES-GCM 256-bit', 'color: #8b5cf6; font-size: 14px;');
+        console.log('%cKey Derivation: SHA-256', 'color: #8b5cf6; font-size: 14px;');
+        console.log('%cAll operations are performed locally in your browser.', 'color: #10b981; font-size: 14px;');
+    </script>
+</body>
+</html>

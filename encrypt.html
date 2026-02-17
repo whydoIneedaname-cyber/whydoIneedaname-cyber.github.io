@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>文字加密解密系统 | Text Encryption & Decryption</title>
-    <meta name="description" content="基于AES-GCM的文字加密解密工具，支持中英文，安全可靠">
+    <meta name="description" content="基于AES-GCM的文字加密解密工具，支持中英文，安全开源可靠">
     
     <style>
         * {
@@ -599,10 +599,10 @@
             <div class="algorithm-info">
                 <h3>🔒 加密算法说明</h3>
                 <p>
-                    <strong>加密算法：</strong>AES-GCM (Advanced Encryption Standard - Galois/Counter Mode) |
+                    <strong>加密算法：</strong>AES-GCM|
                     <strong>密钥派生：</strong>SHA-256 (输入数字 → 256位哈希 → 32字节密钥) |
                     <strong>密钥长度：</strong>256位 |
-                    <strong>安全级别：</strong>军事级加密
+                    <strong>安全级别：</strong>三四层楼那么高
                 </p>
             </div>
         </div>
@@ -800,9 +800,9 @@
             </div>
 
             <div class="copyright">
-                <p>© 2026 Text Encryption & Decryption System | 基于 Web Crypto API 实现</p>
+                <p>© 2026 Readeverything™ | Text Encryption & Decryption System | 基于 Web Crypto API 实现</p>
                 <p style="margin-top: 0.5rem;">
-                    <small>算法：AES-256-GCM | 密钥派生：SHA-256 | 安全级别：军事级</small>
+                    <small>算法：AES-256-GCM | 密钥派生：SHA-256 | 安全级别：三四层楼那么高</small>
                 </p>
             </div>
         </div>
@@ -885,8 +885,8 @@
             if (!/^\d+$/.test(key)) {
                 return { valid: false, message: '❌ 密钥必须是纯数字！' };
             }
-            if (key.length < 6) {
-                return { valid: false, message: '⚠️ 密钥太短，建议至少6位！' };
+            if (key.length < 4) {
+                return { valid: false, message: '⚠️ 密钥太短，建议至少4位！' };
             }
             return { valid: true };
         }

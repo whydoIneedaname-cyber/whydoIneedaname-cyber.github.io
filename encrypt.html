@@ -14,17 +14,33 @@
         }
 
         :root {
-            --primary-color: #6366f1;
-            --secondary-color: #8b5cf6;
+            color-scheme: light;
+            --primary-color: #0071e3;
+            --secondary-color: #4f46e5;
             --success-color: #10b981;
             --error-color: #ef4444;
             --warning-color: #f59e0b;
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
-            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --bg-gradient: radial-gradient(circle at 20% 20%, #d8ebff 0%, #eff3f8 45%, #e8edf5 100%);
+            --card-bg: rgba(255, 255, 255, 0.72);
+            --surface-bg: rgba(255, 255, 255, 0.45);
+            --text-color: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --border-color: rgba(255, 255, 255, 0.55);
+            --shadow: 0 24px 45px rgba(15, 23, 42, 0.1);
+            --glass-blur: blur(20px);
+        }
+
+        body.dark-mode {
+            color-scheme: dark;
+            --primary-color: #4da3ff;
+            --secondary-color: #818cf8;
+            --bg-gradient: radial-gradient(circle at 20% 10%, #1f2937 0%, #0b1120 55%, #020617 100%);
+            --card-bg: rgba(15, 23, 42, 0.66);
+            --surface-bg: rgba(30, 41, 59, 0.55);
+            --text-color: #f5f5f7;
+            --text-secondary: #c7c7cc;
+            --border-color: rgba(148, 163, 184, 0.35);
+            --shadow: 0 24px 45px rgba(0, 0, 0, 0.35);
         }
 
         body {
@@ -35,6 +51,7 @@
             flex-direction: column;
             color: var(--text-color);
             padding: 1rem;
+            transition: background 0.35s ease, color 0.35s ease;
         }
 
         .container {
@@ -49,8 +66,9 @@
 
         /* Header */
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
             border-radius: 1.5rem;
             padding: 2rem;
             box-shadow: var(--shadow);
@@ -61,10 +79,25 @@
         .header h1 {
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 0.65rem;
+            flex-wrap: wrap;
         }
 
         .header .subtitle {
@@ -75,7 +108,7 @@
         .algorithm-info {
             margin-top: 1rem;
             padding: 1rem;
-            background: #f8fafc;
+            background: var(--surface-bg);
             border-radius: 0.75rem;
             border-left: 4px solid var(--primary-color);
         }
@@ -103,6 +136,8 @@
 
         .section {
             background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
             border-radius: 1.5rem;
             padding: 2rem;
             box-shadow: var(--shadow);
@@ -162,15 +197,22 @@
             font-size: 0.95rem;
             font-family: inherit;
             transition: all 0.2s ease;
-            background: #f8fafc;
+            color: var(--text-color);
+            background: var(--surface-bg);
         }
 
         .form-input:focus,
         .form-textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: rgba(255, 255, 255, 0.86);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+        }
+
+        body.dark-mode .form-input:focus,
+        body.dark-mode .form-textarea:focus {
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.22);
         }
 
         .form-textarea {
@@ -214,6 +256,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            border: 1px solid transparent;
         }
 
         .btn:hover {
@@ -226,12 +269,12 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a84ff 0%, #4f7dff 100%);
             color: white;
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            background: linear-gradient(135deg, #5e5ce6 0%, #a855f7 100%);
             color: white;
         }
 
@@ -241,9 +284,17 @@
         }
 
         .btn-outline {
-            background: white;
-            border: 2px solid var(--border-color);
+            background: var(--surface-bg);
+            border: 1px solid var(--border-color);
             color: var(--text-color);
+        }
+
+        .btn-ghost {
+            background: rgba(10, 132, 255, 0.1);
+            border: 1px solid rgba(10, 132, 255, 0.25);
+            color: var(--primary-color);
+            padding: 0.625rem 1rem;
+            font-size: 0.85rem;
         }
 
         .btn:disabled {
@@ -261,6 +312,8 @@
         /* Operation Area */
         .operation-area {
             background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
             border-radius: 1.5rem;
             padding: 1.5rem;
             box-shadow: var(--shadow);
@@ -318,8 +371,9 @@
 
         /* Footer */
         .footer {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
             border-radius: 1.5rem;
             padding: 2rem;
             box-shadow: var(--shadow);
@@ -348,7 +402,7 @@
             display: flex;
             gap: 0.75rem;
             padding: 1rem;
-            background: #f8fafc;
+            background: var(--surface-bg);
             border-radius: 0.75rem;
         }
 
@@ -428,6 +482,20 @@
                 border-radius: 1rem;
             }
 
+            .header-top {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .header-actions {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .header-actions .btn {
+                flex: 1;
+            }
+
             .header h1 {
                 font-size: 1.5rem;
             }
@@ -460,6 +528,28 @@
             .footer {
                 padding: 1.5rem;
                 border-radius: 1rem;
+            }
+
+            .form-textarea {
+                min-height: 130px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .header,
+            .section,
+            .operation-area,
+            .footer {
+                border-radius: 0.9rem;
+                padding: 1.1rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1rem;
             }
         }
 
@@ -496,6 +586,13 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
+            <div class="header-top">
+                <div></div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost" onclick="goHome()">🏠 返回主页</button>
+                    <button id="themeToggleBtn" class="btn btn-ghost" onclick="toggleTheme()">🌙 深色模式</button>
+                </div>
+            </div>
             <h1>🔐 文字加密解密系统</h1>
             <p class="subtitle">Text Encryption & Decryption System</p>
             
@@ -719,7 +816,34 @@
         // 字符计数器更新
         document.addEventListener('DOMContentLoaded', () => {
             setupCharCounters();
+            initTheme();
         });
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('encryptTheme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.body.classList.add('dark-mode');
+            }
+            updateThemeButton();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('encryptTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            updateThemeButton();
+        }
+
+        function updateThemeButton() {
+            const button = document.getElementById('themeToggleBtn');
+            if (!button) return;
+            const isDark = document.body.classList.contains('dark-mode');
+            button.innerHTML = isDark ? '☀️ 浅色模式' : '🌙 深色模式';
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
 
         function setupCharCounters() {
             const counters = [

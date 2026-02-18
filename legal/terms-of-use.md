@@ -1,6 +1,6 @@
 # 使用条款 Terms of Use
 
-**最后更新：2026年2月11日 | Last Updated: February 11, 2026**
+**最后更新：2026年2月18日 | Last Updated: February 18, 2026**
 
 ---
 
@@ -204,7 +204,43 @@
 
 如对本使用条款有任何疑问，请通过网站提供的联系方式与我们联系。
 
-### 十三、语言版本
+### 十三、加密系统
+
+1. 软件性质与工具中立性
+
+本软件是一款纯粹的文字加密/解密技术工具（以下简称“本工具”）。开发者仅提供技术实现，不对用户通过本工具处理的具体信息内容进行审核、存储或监控。
+
+2. 用户行为责任
+
+用户在使用本工具时，必须遵守其所在地及相关司法辖区的法律法规。用户对其使用本工具产生的任何后果承担全部法律责任。
+
+3. 禁止后门与隐私承诺
+
+开发者郑重承诺：本工具不设任何形式的“后门”或预留访问权限。 开发者无法在未经用户授权的情况下解密任何数据，亦无法访问用户的原始明文内容。这种技术上的不可访问性保证了用户数据的绝对私密性。
+
+4. 密码与密钥管理
+
+本工具采用端到端或本地加密机制，遵循“零知识”原则。开发者不存储用户的密码或密钥，因此无法找回用户遗失的凭据。因密码丢失导致的任何数据无法恢复风险，由用户自行承担。
+
+5. 禁止用途
+
+严禁利用本工具进行任何非法活动，包括但不限于：
+
+传播非法、侵权或违禁信息；
+
+从事任何形式的网络欺诈或恶意破坏行为；
+
+侵犯他人的知识产权、隐私权或其他合法权益。
+
+6. 免责限制
+
+在法律允许的最大范围内，开发者不对因使用或无法使用本工具而导致的任何直接、间接、偶然或特殊的损害承担责任（包括但不限于利润损失、数据丢失或业务中断）。
+
+7. 司法协作
+
+开发者尊重并配合各司法辖区的合法执法行动。由于开发者不持有解密密钥且不存储用户数据，在技术可及范围内，开发者仅能提供有关工具本身的技术参数说明。
+
+### 十四、语言版本
 
 本声明提供中文和英文两个版本。如中英文版本存在任何不一致，以**中文版本**为准。
 
@@ -410,6 +446,40 @@ These Terms of Use, together with the Privacy Policy and Content Disclaimer, con
 
 For any questions about these Terms of Use, please contact us through the contact information provided on the website.
 
-### 13. Language Versions
+### 13.1. Nature of Software and Tool Neutrality
+
+This software is a technical tool designed solely for text encryption and decryption (hereinafter referred to as the "Tool"). The developer provides only the technical implementation and does not review, store, or monitor the specific content processed by users through this Tool.
+
+2. User Responsibility
+
+Users must comply with the laws and regulations of their respective locations and relevant jurisdictions when using this Tool. Users shall bear full legal responsibility for any consequences arising from their use of this Tool.
+
+3. No Backdoors and Privacy Commitment
+
+The developer solemnly pledges: No "backdoors" or reserved access permissions of any kind exist within this Tool. The developer cannot decrypt any data without user authorization, nor can the developer access the user's original plaintext content. This technical impossibility ensures the absolute privacy of user data.
+
+4. Password and Key Management
+
+This Tool employs end-to-end or local encryption mechanisms and follows the "Zero-Knowledge" principle. The developer does not store user passwords or keys and therefore cannot recover lost credentials. Any risk of data irretrievability caused by password loss shall be borne by the user.
+
+5. Prohibited Uses
+
+It is strictly prohibited to use this Tool for any illegal activities, including but not limited to:
+
+Disseminating illegal, infringing, or prohibited information;
+
+Engaging in any form of cyber fraud or malicious activities;
+
+Infringing upon the intellectual property rights, privacy, or other legal rights of others.
+
+6. Limitation of Liability
+
+To the maximum extent permitted by law, the developer shall not be liable for any direct, indirect, incidental, or special damages (including but not limited to loss of profits, loss of data, or business interruption) resulting from the use of or inability to use this Tool.
+
+7. Judicial Cooperation
+
+The developer respects and cooperates with legal law enforcement actions in various jurisdictions. Since the developer does not possess decryption keys nor store user data, the developer can only provide technical parameters regarding the Tool itself within the scope of technical feasibility.
+
+### 14. Language Versions
 
 This statement is provided in both Chinese and English. In case of any inconsistency between the Chinese and English versions, the **Chinese version** shall prevail.
